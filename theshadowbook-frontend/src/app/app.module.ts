@@ -17,6 +17,7 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UpdateEmailComponent } from './components/update-email/update-email.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { UpdateEmailComponent } from './components/update-email/update-email.com
     AngularFirestoreModule,
     AngularFireStorageModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
