@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { from } from 'rxjs/internal/observable/from';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +22,7 @@ export class BackendService {
 
   createUser() {
     let user = JSON.parse(localStorage.getItem('user') ?? '');
-
+    console.log(user);
     return this.http.post('/api/user', {
       email: user.email,
       uid: user.uid
@@ -37,7 +36,7 @@ export class BackendService {
 
   updateUser(userData: any) {
     let user = JSON.parse(localStorage.getItem('user') ?? '');
-
+    console.log(userData);
     return this.http.put('/api/user', {
       name: userData.name,
       email: userData.email,
@@ -47,6 +46,17 @@ export class BackendService {
       risingSign: userData.risingSign,
       id: userData.id
     }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
+
+  getZodiac() {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.get('/api/zodiac', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${user.stsTokenManager.accessToken}`

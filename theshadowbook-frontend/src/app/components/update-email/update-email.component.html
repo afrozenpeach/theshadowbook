@@ -1,0 +1,42 @@
+<div class="displayTable">
+    <div class="displayTableCell">
+      <div class="authBlock">
+        <h3>Update Email</h3>
+        <div class="formGroup">
+          <input
+            type="email"
+            class="formControl"
+            placeholder="Old Email Address"
+            #userOldEmail
+            required
+          />
+        </div>
+        <div class="formGroup">
+          <input
+            type="email"
+            class="formControl"
+            placeholder="New Email Address"
+            #userNewEmail
+            required
+          />
+        </div>
+        <div class="formGroup">
+          <input
+            type="password"
+            class="formControl"
+            placeholder="Password"
+            #userPwd
+            required
+          />
+        </div>
+        <div class="formGroup">
+          <input
+            type="button"
+            class="btn btnPrimary"
+            value="Update Email"
+            (click)="authService.UpdateEmail(userOldEmail.value, userNewEmail.value, userPwd.value)"
+          />
+        </div>
+      </div>
+    </div>
+  </div>

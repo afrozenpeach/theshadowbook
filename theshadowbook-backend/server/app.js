@@ -76,4 +76,16 @@ app.put('/api/user', async (req, res) => {
   })
 });
 
+app.get('/api/zodiac', async (req, res) => {
+  let zodiac = await models.Zodiac.findAll({
+    order: [
+      ['sign', 'ASC']
+    ]
+  });
+
+  res.json({
+    zodiac: zodiac
+  });
+});
+
 module.exports = app;

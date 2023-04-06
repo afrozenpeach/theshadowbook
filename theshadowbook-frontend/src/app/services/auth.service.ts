@@ -57,12 +57,26 @@ export class AuthService {
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
         this.SendVerificationMail();
-        this.backendService.createUser().subscribe();
         this.SetUserData(result.user);
       })
       .catch((error) => {
         window.alert(error.message);
       });
+  }
+  // Update email
+  UpdateEmail(oldEmail: string, newEmail: string, password: string) {
+    return this.afAuth
+      .signInWithEmailAndPassword(oldEmail, password)
+      .then(result => {
+        this.afAuth.currentUser.then(user => {
+          user?.updateEmail(newEmail).then(result => {
+            this.SendVerificationMail();
+            this.SetUserData({
+              emailVerified: false
+            });
+          })
+        })
+      })
   }
   // Send email verfificaiton when new user sign up
   SendVerificationMail() {
