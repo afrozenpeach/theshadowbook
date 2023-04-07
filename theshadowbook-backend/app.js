@@ -76,6 +76,16 @@ app.put('/api/user', async (req, res) => {
   })
 });
 
+app.put('/api/user/email', async (req, res) => {
+  await models.User.update({
+    email: req.body.email
+  }, {
+    where: {
+      id: req.body.id
+    }
+  })
+});
+
 app.get('/api/zodiac', async (req, res) => {
   let zodiac = await models.Zodiac.findAll({
     order: [

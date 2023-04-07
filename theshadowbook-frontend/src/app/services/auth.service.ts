@@ -70,10 +70,15 @@ export class AuthService {
       .then(result => {
         this.afAuth.currentUser.then(user => {
           user?.updateEmail(newEmail).then(result => {
-            this.SendVerificationMail();
-            this.SetUserData({
-              emailVerified: false
+            this.backendService.getUser().subscribe(data => {
+              if (data.user.id !== undefined) {
+                this.backendService.updateUser({
+                  id: data.user.id,
+                  email: newEmail
+                })
+              }
             });
+            this.SendVerificationMail();
           })
         })
       })

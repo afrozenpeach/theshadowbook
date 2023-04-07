@@ -10,7 +10,7 @@ import { BackendService } from 'src/app/services/backend.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  userData: any = [];
+  userData: any = {};
   zodiac: any = [];
 
   userForm = new FormGroup({
@@ -23,7 +23,8 @@ export class DashboardComponent {
 
   constructor(
     private backendService: BackendService,
-    public authService: AuthService) {
+    public authService: AuthService,
+    private angularFireAuth: AngularFireAuth) {
   }
 
   ngOnInit(): void {
@@ -35,8 +36,20 @@ export class DashboardComponent {
       this.userData = data;
 
       if (this.userData.user === undefined) {
+        //The user account has been created, but their profile hasn't been
         this.backendService.createUser().subscribe();
       } else {
+        //Sync email addresses between firebase and mysql
+        this.angularFireAuth.user.subscribe(user => {
+          if (user?.email !== this.userData.user.email) {
+            this.backendService.updateUserEmail({
+              id: this.userData.user.id,
+              email: user?.email
+            }).subscribe();
+          }
+        })
+
+        //update form
         this.userForm.patchValue({
           name: this.userData.user.name,
           profile: this.userData.user.profile,
