@@ -3,36 +3,31 @@
       <div class="authBlock">
         <h3>Sign Up</h3>
         <div class="formGroup">
-          <input
-            type="email"
-            class="formControl"
-            placeholder="Email Address"
-            #userEmail
-            required
-          />
-        </div>
+          <div class="formGroup">
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput id="email" #userEmail required>
+            </mat-form-field>
+          </div>
+          <div class="formGroup">
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput id="password" type="password" #userPassword required>
+            </mat-form-field>
+          </div>
         <div class="formGroup">
-          <input
-            type="password"
-            class="formControl"
-            placeholder="Password"
-            #userPwd
-            required
-          />
-        </div>
-        <div class="formGroup">
-          <input
+          <button mat-raised-button color="primary"
             type="button"
             class="btn btnPrimary"
             value="Sign Up"
-            (click)="authService.SignUp(userEmail.value, userPwd.value)"
-          />
+            (click)="authService.SignUp(userEmail.value, userPassword.value)"
+          >Sign Up</button>
         </div>
       </div>
       <div class="redirectToLogin">
         <span
           >Already have an account?
-          <span class="redirect" routerLink="/sign-in">Log In</span></span
+          <button mat-raised-button color="accent" (click)="router.navigate(['/sign-in'])">Log In</button></span
         >
       </div>
     </div>

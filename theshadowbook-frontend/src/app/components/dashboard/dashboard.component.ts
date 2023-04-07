@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { BackendService } from 'src/app/services/backend.service';
 
@@ -24,7 +25,8 @@ export class DashboardComponent {
   constructor(
     private backendService: BackendService,
     public authService: AuthService,
-    private angularFireAuth: AngularFireAuth) {
+    private angularFireAuth: AngularFireAuth,
+    public router: Router) {
   }
 
   ngOnInit(): void {

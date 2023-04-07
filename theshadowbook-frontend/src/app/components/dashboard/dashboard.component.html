@@ -1,37 +1,47 @@
 <!-- Show user data when logged in -->
 <div *ngIf="authService.userData as user">
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-        <label for="name">Name: </label>
-        <input id="name" type="text" formControlName="name">
+        <mat-form-field>
+            <mat-label>User Name</mat-label>
+            <input matInput id="name" formControlName="name">
+        </mat-form-field>
 
-        <label for="profile">Profile: </label>
-        <input id="profile" type="text" formControlName="profile">
+        <mat-form-field>
+            <mat-label>Sun Sign</mat-label>
+            <mat-select formControlName="sunSign">
+                <mat-option *ngFor="let z of zodiac.zodiac" [value]="z.id">
+                    {{ z.sign }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-        <label for="sunSign">Sun Sign: </label>
-        <select formControlName="sunSign">
-            <option *ngFor="let z of zodiac.zodiac" [ngValue]="z.id">
-                {{ z.sign }}
-            </option>
-        </select>
+        <mat-form-field>
+            <mat-label>Moon Sign</mat-label>
+            <mat-select formControlName="moonSign">
+                <mat-option *ngFor="let z of zodiac.zodiac" [value]="z.id">
+                    {{ z.sign }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-        <label for="moonSign">Moon Sign: </label>
-        <select formControlName="moonSign">
-            <option *ngFor="let z of zodiac.zodiac" [ngValue]="z.id">
-                {{ z.sign }}
-            </option>
-        </select>
+        <mat-form-field>
+            <mat-label>Rising Sign</mat-label>
+            <mat-select formControlName="risingSign">
+                <mat-option *ngFor="let z of zodiac.zodiac" [value]="z.id">
+                    {{ z.sign }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-        <label for="risingSign">Rising Sign: </label>
-        <select formControlName="risingSign">
-            <option *ngFor="let z of zodiac.zodiac" [ngValue]="z.id">
-                {{ z.sign }}
-            </option>
-        </select>
+        <mat-form-field>
+            <mat-label>Profile</mat-label>
+            <textarea matInput id="profile" formControlName="profile"></textarea>
+        </mat-form-field>
 
-        <button type="submit" [disabled]="!userForm.valid">Save</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">Save</button>
     </form>
 
-    <a href="/update-email">Update email</a>
+    <button mat-raised-button color="accent" (click)="router.navigate(['/update-email'])">Update email</button>
 
-    <button type="button" (click)="authService.SignOut()">Sign Out</button>
+    <button mat-raised-button color="warn" (click)="authService.SignOut()">Sign Out</button>
 </div>
