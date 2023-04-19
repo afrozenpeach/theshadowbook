@@ -10,6 +10,7 @@ const { configure } = require('sequelize-pg-utilities');
 const config = require('./config/config.json');
 const { name, user, password, options } = configure(config)
 const sequelize = new Sequelize(name, user, password, options);
+const { Op } = require("sequelize");
 var initModels = require("./models/init-models");
 var models = initModels(sequelize);
 
@@ -97,5 +98,25 @@ app.get('/api/zodiac', async (req, res) => {
     zodiac: zodiac
   });
 });
+
+app.get('/api/user/checkName/:name/:id', async (req, res) => {
+  let users = await models.User.findAll({
+    attributes: ['name', 'firebaseid'],
+    where: {
+      [Op.and]: [
+        { name: req.params.name },
+        {
+          firebaseid: {
+            [Op.ne]: req.params.id
+          }
+        }
+      ]
+    }
+  });
+
+  res.json({
+    isValid: users.length === 0
+  });
+})
 
 module.exports = app;

@@ -76,4 +76,15 @@ export class BackendService {
       }
     });
   }
+
+  isValidUserName(name: any) {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.get<any>('/api/user/checkName/' + name + '/' + user.uid, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
 }

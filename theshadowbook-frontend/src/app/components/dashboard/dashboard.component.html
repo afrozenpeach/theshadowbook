@@ -6,6 +6,8 @@
             <input matInput id="name" formControlName="name">
         </mat-form-field>
 
+        <div *ngIf="this.userForm.controls['name'].errors?.['invalid']">That user name is already taken!</div>
+
         <mat-form-field>
             <mat-label>Sun Sign</mat-label>
             <mat-select formControlName="sunSign">
