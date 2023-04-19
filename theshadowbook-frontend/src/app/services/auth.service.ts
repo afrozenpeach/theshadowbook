@@ -57,8 +57,9 @@ export class AuthService {
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
         this.SendVerificationMail();
-        this.SetUserData(result.user);
-        this.SignOut();
+        this.SetUserData(result.user).then(() => {
+          this.SignOut();
+        })
       })
       .catch((error) => {
         window.alert(error.message);
