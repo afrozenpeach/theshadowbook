@@ -53,6 +53,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(45),
       allowNull: true,
       unique: "firebaseId_UNIQUE"
+    },
+    isAdmin: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {
     sequelize,

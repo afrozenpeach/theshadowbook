@@ -43,6 +43,8 @@
         <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">Save</button>
     </form>
 
+    <div id="isAdmin" *ngIf="this.userData.user?.isAdmin">You're an admin!</div>
+
     <button mat-raised-button color="accent" (click)="router.navigate(['/update-email'])">Update email</button>
 
     <button mat-raised-button color="warn" (click)="authService.SignOut()">Sign Out</button>
