@@ -9,14 +9,14 @@
 
         <!-- Calling SendVerificationMail() method using authService Api -->
         <div class="formGroup">
-          <button type="button" class="btn btnPrimary" (click)="authService.SendVerificationMail()">
+          <button mat-raised-button color="primary" type="button" class="btn btnPrimary" (click)="authService.SendVerificationMail()">
             <i class="fas fa-redo-alt"></i>
             Resend Verification Email
           </button>
         </div>
       </div>
       <div class="redirectToLogin">
-        <span>Go back to?<span class="redirect" routerLink="/sign-in"> Sign in</span></span>
+        <span>Once you have verified your email: <button mat-raised-button color="accent" (click)="router.navigate(['/sign-in'])">Log In</button></span>
       </div>
     </div>
   </div>

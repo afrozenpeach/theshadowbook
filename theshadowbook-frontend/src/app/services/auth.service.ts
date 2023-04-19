@@ -58,6 +58,7 @@ export class AuthService {
         up and returns promise */
         this.SendVerificationMail();
         this.SetUserData(result.user);
+        this.SignOut();
       })
       .catch((error) => {
         window.alert(error.message);
