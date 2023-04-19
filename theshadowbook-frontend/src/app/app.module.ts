@@ -21,6 +21,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { CrystalsComponent } from './components/crystals/crystals.component';
+import { CrystalComponent } from './components/crystal/crystal.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { MatButtonModule } from '@angular/material/button';
     SignUpComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,
-    UpdateEmailComponent
+    UpdateEmailComponent,
+    CrystalsComponent,
+    CrystalComponent
   ],
   imports: [
     BrowserModule,

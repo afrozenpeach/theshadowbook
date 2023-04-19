@@ -117,6 +117,26 @@ app.get('/api/user/checkName/:name/:id', async (req, res) => {
   res.json({
     isValid: users.length === 0
   });
-})
+});
+
+app.get('/api/crystals', async (req, res) => {
+  let crystals = await models.Crystal.findAll();
+
+  res.json({
+    crystals: crystals
+  });
+});
+
+app.get('/api/crystals/:name', async (req, res) => {
+  let crystal = await models.Crystal.findAll({
+    where: {
+      crystal: req.params.name
+    }
+  });
+
+  res.json({
+    crystal: crystal[0]
+  });
+});
 
 module.exports = app;

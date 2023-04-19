@@ -87,4 +87,26 @@ export class BackendService {
       }
     });
   }
+
+  getCrystals() {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.get<any>('/api/crystals', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
+
+  getCrystal(name: String) {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.get<any>('/api/crystals/' + name, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
 }

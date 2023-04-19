@@ -7,6 +7,8 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { AuthGuard } from './guard/auth.guard';
 import { UpdateEmailComponent } from './components/update-email/update-email.component';
+import { CrystalsComponent } from './components/crystals/crystals.component';
+import { CrystalComponent } from './components/crystal/crystal.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent },
   { path: 'update-email', component: UpdateEmailComponent},
+  { path: 'crystals', component: CrystalsComponent},
+  { path: 'crystals/:name', component: CrystalComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
