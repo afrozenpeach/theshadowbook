@@ -65,7 +65,7 @@ function checkAdmin(req, res, next) {
   }
 }
 
-app.use('/api/', checkAuth)
+app.use('/api/user', checkAuth)
 
 app.get('/api/user/:uid', async (req, res) => {
   let users = await models.User.findAll({
