@@ -11,6 +11,7 @@ import { CrystalsComponent } from './components/crystals/crystals.component';
 import { CrystalComponent } from './components/crystal/crystal.component';
 import { CrystalEditorComponent } from './components/crystal-editor/crystal-editor.component';
 import { AdminGuard } from './guard/admin.guard';
+import { FourOhFourComponent } from './components/four-oh-four/four-oh-four.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 'update-email', component: UpdateEmailComponent},
   { path: 'crystals', component: CrystalsComponent},
   { path: 'crystals/:name', component: CrystalComponent },
-  { path: 'crystal-editor/:id', component: CrystalEditorComponent, canActivate: [AdminGuard] }
+  { path: 'crystal-editor/:id', component: CrystalEditorComponent, canActivate: [AdminGuard] },
+  { path: '**', pathMatch: 'full', component: FourOhFourComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

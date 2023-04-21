@@ -24,6 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CrystalsComponent } from './components/crystals/crystals.component';
 import { CrystalComponent } from './components/crystal/crystal.component';
 import { CrystalEditorComponent } from './components/crystal-editor/crystal-editor.component';
+import { FourOhFourComponent } from './components/four-oh-four/four-oh-four.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { CrystalEditorComponent } from './components/crystal-editor/crystal-edit
     UpdateEmailComponent,
     CrystalsComponent,
     CrystalComponent,
-    CrystalEditorComponent
+    CrystalEditorComponent,
+    FourOhFourComponent
   ],
   imports: [
     BrowserModule,
