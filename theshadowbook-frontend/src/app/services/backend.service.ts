@@ -21,8 +21,8 @@ export class BackendService {
         }
       });
     } else {
-      let result = new Subject<boolean>;
-      result.next(false);
+      let result = new Subject<any>;
+      result.next(null);
       result.complete();
 
       return result.asObservable();
