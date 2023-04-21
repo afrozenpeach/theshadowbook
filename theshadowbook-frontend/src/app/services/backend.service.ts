@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,20 @@ export class BackendService {
   getUser() {
     let user = JSON.parse(localStorage.getItem('user') ?? '');
 
-    return this.http.get<any>('/api/user/' + user.uid, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
-    });
+    if (user) {
+      return this.http.get<any>('/api/user/' + user.uid, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+        }
+      });
+    } else {
+      let result = new Subject<boolean>;
+      result.next(false);
+      result.complete();
+
+      return result.asObservable();
+    }
   }
 
   createUser() {
