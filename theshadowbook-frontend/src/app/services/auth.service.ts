@@ -37,19 +37,19 @@ export class AuthService {
   }
   // Sign in with email/password
   SignIn(email: string, password: string) {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.SetUserData(result.user);
-
-        this.afAuth.authState.subscribe((user) => {
-          if (user) {
-            this.router.navigate(['dashboard']);
-          }
+    return this.afAuth.signOut()
+      .then(() => {
+        this.afAuth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          this.afAuth.authState.subscribe(user => {
+            if (user) {
+              this.router.navigate(['/dashboard']);
+            }
+          })
         })
-      })
-      .catch((error) => {
-        window.alert(error.message);
+        .catch((error) => {
+          window.alert(error.message);
+        });
       });
   }
   // Sign up with email/password
@@ -59,10 +59,14 @@ export class AuthService {
       .then((result) => {
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
-        this.SendVerificationMail();
-        this.SetUserData(result.user).then(() => {
-          this.SignOut();
-        })
+        this.SendVerificationMail().then(() => {
+          this.SetUserData(result.user).then(() => {
+            this.afAuth.signOut().then(() => {
+              localStorage.removeItem('user');
+              this.router.navigate(['/sign-in']);
+            })
+          })
+        });
       })
       .catch((error) => {
         window.alert(error.message);

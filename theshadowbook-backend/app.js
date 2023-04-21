@@ -84,6 +84,16 @@ app.post('/api/user', async (req, res) => {
     email: req.body.email,
     firebaseId: req.body.uid
   })
+
+  let user = await models.User.findOne({
+    where: {
+      firebaseId: req.body.uid
+    }
+  });
+
+  res.json({
+    user: user
+  })
 });
 
 app.put('/api/user', async (req, res) => {

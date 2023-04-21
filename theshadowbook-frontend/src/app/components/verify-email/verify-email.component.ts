@@ -13,5 +13,6 @@ export class VerifyEmailComponent {
     public router: Router
   ) { }
   ngOnInit() {
+    localStorage.clear();
   }
 }

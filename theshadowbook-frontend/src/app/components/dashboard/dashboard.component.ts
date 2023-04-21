@@ -38,7 +38,17 @@ export class DashboardComponent {
 
         if (this.userData.user === undefined) {
           //The user account has been created, but their profile hasn't been
-          this.backendService.createUser().subscribe();
+          this.backendService.createUser().subscribe(u => {
+            this.userData = u;
+
+            this.userForm.patchValue({
+              name: this.userData.user.name,
+              profile: this.userData.user.profile,
+              sunSign: this.userData.user.sunSign,
+              moonSign: this.userData.user.moonSign,
+              risingSign: this.userData.user.risingSign
+            })
+          });
         } else {
           //Sync email addresses between firebase and mysql
           this.angularFireAuth.user.subscribe(user => {
@@ -48,7 +58,7 @@ export class DashboardComponent {
                 email: user?.email
               }).subscribe();
             }
-          })
+          });
 
           //update form
           this.userForm.patchValue({

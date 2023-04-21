@@ -2,25 +2,27 @@
     <div class="displayTableCell">
       <div class="authBlock">
         <h3>Sign In</h3>
-        <div class="formGroup">
-          <mat-form-field>
-              <mat-label>Email</mat-label>
-              <input matInput id="email" #userName required>
-          </mat-form-field>
-        </div>
-        <div class="formGroup">
-          <mat-form-field>
-              <mat-label>Password</mat-label>
-              <input matInput id="password" type="password" #userPassword required>
-          </mat-form-field>
-        </div>
-        <!-- Calling SignIn Api from AuthService -->
-        <div class="formGroup">
-          <button mat-raised-button color="primary" (click)="authService.SignIn(userName.value, userPassword.value)">Sign In</button>
-        </div>
-        <div class="forgotPassword">
-          <button mat-raised-button color="warn" (click)="router.navigate(['/forgot-password'])">Forgot Password</button>
-        </div>
+        <form>
+            <div class="formGroup">
+              <mat-form-field>
+                  <mat-label>Email</mat-label>
+                  <input matInput id="email" #userName required>
+              </mat-form-field>
+            </div>
+            <div class="formGroup">
+              <mat-form-field>
+                  <mat-label>Password</mat-label>
+                  <input matInput id="password" type="password" #userPassword required>
+              </mat-form-field>
+            </div>
+            <!-- Calling SignIn Api from AuthService -->
+            <div class="formGroup">
+              <button mat-raised-button color="primary" (click)="authService.SignIn(userName.value, userPassword.value)">Sign In</button>
+            </div>
+            <div class="forgotPassword">
+              <button mat-raised-button color="warn" (click)="router.navigate(['/forgot-password'])">Forgot Password</button>
+            </div>
+        </form>
       </div>
       <div class="redirectToLogin">
         <span>Don't have an account? <button mat-raised-button color="accent" routerLink="/register-user">Sign Up!</button></span>
