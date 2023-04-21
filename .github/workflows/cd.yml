@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: cd ./theshadowbook-frontend
+      - working-directory: ./theshadowbook-frontend
       - run: npm ci --force
       - run: npm run build -- --configuration production
       - run: npm test
@@ -32,7 +32,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.REMOTE_TARGET }}
-      - run: cd ./../theshadowbook-backend
+      - working-directory: ./theshadowbook-backend
       - name: ssh deploy-be
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
