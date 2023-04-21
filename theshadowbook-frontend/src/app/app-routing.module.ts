@@ -19,9 +19,9 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent },
   { path: 'update-email', component: UpdateEmailComponent},
-  { path: 'crystals', component: CrystalsComponent},
-  { path: 'crystals/:name', component: CrystalComponent},
-  { path: 'crystal-editor/:id', component: CrystalEditorComponent}
+  { path: 'crystals', component: CrystalsComponent, canActivate: [AuthGuard] },
+  { path: 'crystals/:name', component: CrystalComponent, canActivate: [AuthGuard] },
+  { path: 'crystal-editor/:id', component: CrystalEditorComponent, canActivate: [AuthGuard] }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

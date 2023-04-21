@@ -370,7 +370,6 @@ app.put('/api/crystals/:id', checkAdmin, async (req, res) => {
 
 app.post('/api/crystals', checkAdmin, async (req, res) => {
   try {
-
     const result = await sequelize.transaction(async (t) => {
       let crystal = await models.Crystal.create(
         { crystal: req.body.crystal.crystal },
