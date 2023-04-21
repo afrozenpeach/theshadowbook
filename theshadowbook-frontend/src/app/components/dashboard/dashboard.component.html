@@ -11,7 +11,7 @@
         <mat-form-field>
             <mat-label>Sun Sign</mat-label>
             <mat-select formControlName="sunSign">
-                <mat-option *ngFor="let z of zodiac.zodiac" [value]="z.id">
+                <mat-option *ngFor="let z of zodiac.zodiacs" [value]="z.id">
                     {{ z.sign }}
                 </mat-option>
             </mat-select>
@@ -20,7 +20,7 @@
         <mat-form-field>
             <mat-label>Moon Sign</mat-label>
             <mat-select formControlName="moonSign">
-                <mat-option *ngFor="let z of zodiac.zodiac" [value]="z.id">
+                <mat-option *ngFor="let z of zodiac.zodiacs" [value]="z.id">
                     {{ z.sign }}
                 </mat-option>
             </mat-select>
@@ -29,7 +29,7 @@
         <mat-form-field>
             <mat-label>Rising Sign</mat-label>
             <mat-select formControlName="risingSign">
-                <mat-option *ngFor="let z of zodiac.zodiac" [value]="z.id">
+                <mat-option *ngFor="let z of zodiac.zodiacs" [value]="z.id">
                     {{ z.sign }}
                 </mat-option>
             </mat-select>
