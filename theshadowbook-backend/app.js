@@ -34,10 +34,34 @@ function checkAuth(req, res, next) {
       .then(() => {
         next()
       }).catch(() => {
-        res.status(403).send('Unauthorized')
+        res.status(403).send('Unauthorized: Invalid token')
       });
   } else {
-    res.status(403).send('Unauthorized')
+    res.status(403).send('Unauthorized: No token')
+  }
+}
+
+function checkAdmin(req, res, next) {
+  if (req.headers.authorization) {
+    let authToken = req.headers.authorization.substring(7);
+    admin.auth().verifyIdToken(authToken)
+      .then(async (decodedToken)=> {
+        let user = await models.User.findOne({
+          where: {
+            firebaseId: decodedToken.uid
+          }
+        });
+
+        if (user.isAdmin) {
+          next()
+        } else {
+          res.status(403).send('Unauthorized: User not an admin');
+        }
+      }).catch(() => {
+        res.status(403).send('Unauthorized: Invalid token');
+      });
+  } else {
+    res.status(403).send('Unauthorized: No token');
   }
 }
 
@@ -87,18 +111,6 @@ app.put('/api/user/email', async (req, res) => {
   })
 });
 
-app.get('/api/zodiac', async (req, res) => {
-  let zodiac = await models.Zodiac.findAll({
-    order: [
-      ['sign', 'ASC']
-    ]
-  });
-
-  res.json({
-    zodiac: zodiac
-  });
-});
-
 app.get('/api/user/checkName/:name/:id', async (req, res) => {
   let users = await models.User.findAll({
     attributes: ['name', 'firebaseid'],
@@ -120,23 +132,240 @@ app.get('/api/user/checkName/:name/:id', async (req, res) => {
 });
 
 app.get('/api/crystals', async (req, res) => {
-  let crystals = await models.Crystal.findAll();
+  let crystals = await models.Crystal.findAll({
+    include: [
+      {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
+      {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
+      {as: "CrystalDomains", model: sequelize.model('CrystalDomain')},
+      {as: "CrystalElements", model: sequelize.model('CrystalElement')},
+      {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
+      {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
+    ]
+  });
 
   res.json({
-    crystals: crystals
+    crystals: crystals.map((c) => c.dataValues)
+  });
+});
+
+app.get('/api/cleansings', async (req, res) => {
+  let cleansings = await models.Cleansing.findAll({
+    order: [['cleansing', 'ASC']]
+  });
+
+  res.json({
+    cleansings: cleansings.map((c) => c.dataValues)
+  });
+});
+
+app.get('/api/chakras', async (req, res) => {
+  let chakras = await models.Chakra.findAll({
+    order: [['chakra', 'ASC']]
+  });
+
+  res.json({
+    chakras: chakras.map((c) => c.dataValues)
+  });
+});
+
+app.get('/api/domains', async (req, res) => {
+  let domains = await models.Domain.findAll({
+    order: [['domain', 'ASC']]
+  });
+
+  res.json({
+    domains: domains.map((d) => d.dataValues)
+  });
+});
+
+app.get('/api/elements', async (req, res) => {
+  let elements = await models.Element.findAll({
+    order: [['element', 'ASC']]
+  });
+
+  res.json({
+    elements: elements.map((e) => e.dataValues)
+  });
+});
+
+app.get('/api/moonPhases', async (req, res) => {
+  let moonPhases = await models.MoonPhase.findAll({
+    order: [['moonPhase', 'ASC']]
+  });
+
+  res.json({
+    moonPhases: moonPhases.map((m) => m.dataValues)
+  });
+});
+
+app.get('/api/zodiac', async (req, res) => {
+  let zodiacs = await models.Zodiac.findAll({
+    order: [['sign', 'ASC']]
+  });
+
+  res.json({
+    zodiacs: zodiacs.map((z) => z.dataValues)
   });
 });
 
 app.get('/api/crystals/:name', async (req, res) => {
-  let crystal = await models.Crystal.findAll({
+  let queryString = {
     where: {
       crystal: req.params.name
     }
+  };
+
+  if (parseInt(req.params.name) !== NaN) {
+    queryString = {
+      where: {
+        id: req.params.name
+      }
+    };
+  }
+
+  let crystal = await models.Crystal.findOne({
+    queryString,
+    include: [
+      {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
+      {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
+      {as: "CrystalDomains", model: sequelize.model('CrystalDomain')},
+      {as: "CrystalElements", model: sequelize.model('CrystalElement')},
+      {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
+      {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
+    ],
+    order: [['crystal', 'ASC']]
   });
 
   res.json({
-    crystal: crystal[0]
+    crystal: crystal.dataValues
   });
 });
+
+app.put('/api/crystals/:id', checkAdmin, async (req, res) => {
+  try {
+
+    const result = await sequelize.transaction(async (t) => {
+      console.log(req.body.crystal);
+
+      await models.Crystal.update(
+        { crystal: req.body.crystal.crystal },
+        {
+          where: { id: req.body.crystal.id },
+          transaction: t
+        },
+      );
+
+      await models.CrystalChakra.destroy(
+        {
+          where: { crystalId: req.body.crystal.id },
+          transaction: t
+        }
+      );
+
+      for (let c of req.body.crystal.chakras) {
+        await models.CrystalChakra.create(
+          {
+            crystalId: req.body.crystal.id,
+            chakraId: c
+          },
+          { transaction: t }
+        );
+      }
+
+      await models.CrystalCleansing.destroy(
+        {
+          where: { crystalId: req.body.crystal.id },
+          transaction: t
+        }
+      );
+
+      for (let c of req.body.crystal.cleansings) {
+        await models.CrystalCleansing.create(
+          {
+            crystalId: req.body.crystal.id,
+            cleansingId: c
+          },
+          { transaction: t }
+        );
+      }
+
+      await models.CrystalDomain.destroy(
+        {
+          where: { crystalId: req.body.crystal.id },
+          transaction: t
+        }
+      );
+
+      for (let d of req.body.crystal.domains) {
+        await models.CrystalDomain.create(
+          {
+            crystalId: req.body.crystal.id,
+            domainId: d
+          },
+          { transaction: t }
+        );
+      }
+
+      await models.CrystalElement.destroy(
+        {
+          where: { crystalId: req.body.crystal.id },
+          transaction: t
+        }
+      );
+
+      for (let e of req.body.crystal.elements) {
+        await models.CrystalElement.create(
+          {
+            crystalId: req.body.crystal.id,
+            elementId: e
+          },
+          { transaction: t }
+        );
+      }
+
+      await models.CrystalMoonPhase.destroy(
+        {
+          where: { crystalId: req.body.crystal.id },
+          transaction: t
+        }
+      );
+
+      for (let m of req.body.crystal.moonPhases) {
+        await models.CrystalMoonPhase.create(
+          {
+            crystalId: req.body.crystal.id,
+            moonPhaseId: m
+          },
+          { transaction: t }
+        );
+      }
+
+      await models.CrystalZodiac.destroy(
+        {
+          where: { crystalId: req.body.crystal.id },
+          transaction: t
+        }
+      );
+
+      for (let z of req.body.crystal.zodiacs) {
+        await models.CrystalZodiac.create(
+          {
+            crystalId: req.body.crystal.id,
+            zodiacId: z
+          },
+          { transaction: t }
+        );
+      }
+
+      return true;
+    });
+
+    if (result) {
+      res.json({success: true});
+    }
+  } catch (error) {
+    res.json({success: false});
+  }
+})
 
 module.exports = app;

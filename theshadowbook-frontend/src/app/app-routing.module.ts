@@ -9,6 +9,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { UpdateEmailComponent } from './components/update-email/update-email.component';
 import { CrystalsComponent } from './components/crystals/crystals.component';
 import { CrystalComponent } from './components/crystal/crystal.component';
+import { CrystalEditorComponent } from './components/crystal-editor/crystal-editor.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'verify-email-address', component: VerifyEmailComponent },
   { path: 'update-email', component: UpdateEmailComponent},
   { path: 'crystals', component: CrystalsComponent},
-  { path: 'crystals/:name', component: CrystalComponent}
+  { path: 'crystals/:name', component: CrystalComponent},
+  { path: 'crystal-editor/:id', component: CrystalEditorComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -1,0 +1,58 @@
+<!-- Show user data when logged in -->
+<div *ngIf="crystal">
+    <form [formGroup]="crystalForm" (ngSubmit)="save()">
+        <input type="hidden" formControlName="id">
+
+        <mat-form-field>
+            <mat-label>Crystal Name</mat-label>
+            <input matInput id="crystal" formControlName="crystal">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Chakras</mat-label>
+            <mat-select formControlName="chakras" multiple>
+                <mat-option *ngFor="let c of chakras" [value]="c.id">{{c.chakra}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Cleansings</mat-label>
+            <mat-select formControlName="cleansings" multiple>
+                <mat-option *ngFor="let c of cleansings" [value]="c.id">{{c.cleansing}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Domains</mat-label>
+            <mat-select formControlName="domains" multiple>
+                <mat-option *ngFor="let d of domains" [value]="d.id">{{d.domain}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Elements</mat-label>
+            <mat-select formControlName="elements" multiple>
+                <mat-option *ngFor="let e of elements" [value]="e.id">{{e.element}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Moon Phases</mat-label>
+            <mat-select formControlName="moonPhases" multiple>
+                <mat-option *ngFor="let m of moonPhases" [value]="m.id">{{m.moonPhase}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Zodiacs</mat-label>
+            <mat-select formControlName="zodiacs" multiple>
+                <mat-option *ngFor="let z of zodiacs" [value]="z.id">{{z.sign}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div *ngIf="this.crystalForm.controls['crystal'].errors?.['invalid']">That crystal is already taken!</div>
+
+        <button mat-raised-button color="accent" (click)="router.navigate(['/crystals/' + crystal.name])">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!crystalForm.valid">Save</button>
+    </form>
+</div>

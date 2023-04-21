@@ -30,7 +30,7 @@ export class DashboardComponent {
   }
 
   ngOnInit(): void {
-    this.backendService.getZodiac().subscribe(zodiacData => {
+    this.backendService.getZodiacs().subscribe(zodiacData => {
       this.zodiac = zodiacData;
 
       this.backendService.getUser().subscribe(userData => {

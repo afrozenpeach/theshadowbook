@@ -7,6 +7,9 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { BackendService } from './backend.service';
+import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
+import { map } from 'rxjs/internal/operators/map';
+import { Observable } from 'rxjs/internal/Observable';
 @Injectable({
   providedIn: 'root',
 })
@@ -131,5 +134,9 @@ export class AuthService {
       localStorage.removeItem('user');
       this.router.navigate(['sign-in']);
     });
+  }
+  //Is Admin
+  get IsAdmin(): Observable<boolean> {
+    return this.backendService.getUser().pipe(map(u => {return u.user.isAdmin ? true : false}));
   }
 }

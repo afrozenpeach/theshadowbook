@@ -66,10 +66,10 @@ export class BackendService {
     });
   }
 
-  getZodiac() {
+  getZodiacs() {
     let user = JSON.parse(localStorage.getItem('user') ?? '');
 
-    return this.http.get('/api/zodiac', {
+    return this.http.get<any>('/api/zodiac', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
@@ -103,6 +103,72 @@ export class BackendService {
     let user = JSON.parse(localStorage.getItem('user') ?? '');
 
     return this.http.get<any>('/api/crystals/' + name, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
+
+  updateCrystal(crystal: any) {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.put<any>('/api/crystals/' + crystal.id, {crystal}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
+
+  getChakras() {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.get<any>('/api/chakras', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
+
+  getCleansings() {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.get<any>('/api/cleansings', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
+
+  getDomains() {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.get<any>('/api/domains', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
+
+  getElements() {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.get<any>('/api/elements', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
+
+  getMoonPhases() {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.get<any>('/api/moonPhases', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${user.stsTokenManager.accessToken}`

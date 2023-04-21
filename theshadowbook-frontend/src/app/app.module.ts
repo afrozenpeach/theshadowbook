@@ -15,7 +15,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateEmailComponent } from './components/update-email/update-email.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
@@ -23,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CrystalsComponent } from './components/crystals/crystals.component';
 import { CrystalComponent } from './components/crystal/crystal.component';
+import { CrystalEditorComponent } from './components/crystal-editor/crystal-editor.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CrystalComponent } from './components/crystal/crystal.component';
     VerifyEmailComponent,
     UpdateEmailComponent,
     CrystalsComponent,
-    CrystalComponent
+    CrystalComponent,
+    CrystalEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +50,8 @@ import { CrystalComponent } from './components/crystal/crystal.component';
     BrowserAnimationsModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    FormsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
