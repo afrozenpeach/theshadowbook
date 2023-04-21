@@ -210,21 +210,17 @@ app.get('/api/zodiac', async (req, res) => {
 
 app.get('/api/crystals/:name', async (req, res) => {
   let queryString = {
-    where: {
       crystal: req.params.name
-    }
   };
 
-  if (parseInt(req.params.name) !== NaN) {
+  if (parseInt(req.params.name)) {
     queryString = {
-      where: {
         id: req.params.name
-      }
     };
   }
 
   let crystal = await models.Crystal.findOne({
-    queryString,
+    where: queryString,
     include: [
       {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
       {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
@@ -236,9 +232,15 @@ app.get('/api/crystals/:name', async (req, res) => {
     order: [['crystal', 'ASC']]
   });
 
-  res.json({
-    crystal: crystal.dataValues
-  });
+  if (crystal) {
+    res.json({
+      crystal: crystal.dataValues
+    });
+  } else {
+    res.json({
+      crystal: null
+    })
+  }
 });
 
 app.put('/api/crystals/:id', checkAdmin, async (req, res) => {
@@ -366,6 +368,6 @@ app.put('/api/crystals/:id', checkAdmin, async (req, res) => {
   } catch (error) {
     res.json({success: false});
   }
-})
+});
 
 module.exports = app;

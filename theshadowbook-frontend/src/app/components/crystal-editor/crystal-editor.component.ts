@@ -100,7 +100,7 @@ export class CrystalEditorComponent {
   save() {
     this.backendService.updateCrystal(this.crystalForm.value).subscribe((success) => {
       if (success) {
-        this.router.navigate(['/crystals/' + this.crystal.name]);
+        this.router.navigate(['/crystals/' + this.crystalForm.controls['crystal'].value]);
       }
     });
   }

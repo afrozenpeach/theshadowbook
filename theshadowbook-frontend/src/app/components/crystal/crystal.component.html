@@ -1,5 +1,35 @@
 <h1>{{crystal.crystal}}</h1>
 
+<div id="chakras">
+    <h2>Chakras</h2>
+    <p *ngFor="let c of crystal.CrystalChakras">{{getChakraName(c.chakraId)}}</p>
+</div>
+
+<div id="cleansings">
+    <h2>Cleansings</h2>
+    <p *ngFor="let c of crystal.CrystalCleansings">{{getCleansingName(c.cleansingId)}}</p>
+</div>
+
+<div id="domains">
+    <h2>Domains</h2>
+    <p *ngFor="let c of crystal.CrystalDomains">{{getDomainName(c.domainId)}}</p>
+</div>
+
+<div id="elements">
+    <h2>Elements</h2>
+    <p *ngFor="let c of crystal.CrystalElements">{{getElementName(c.elementId)}}</p>
+</div>
+
+<div id="moonPhases">
+    <h2>Moon Phases</h2>
+    <p *ngFor="let c of crystal.CrystalMoonPhases">{{getMoonPhaseName(c.moonPhaseId)}}</p>
+</div>
+
+<div id="zodiacs">
+    <h2>Zodiacs</h2>
+    <p *ngFor="let c of crystal.CrystalZodiacs">{{getZodiacName(c.zodiacId)}}</p>
+</div>
+
 <div *ngIf="isAdmin">
     <button mat-raised-button color="primary" (click)="router.navigate(['/crystal-editor/' + crystal.id])">Edit Crystal</button>
 </div>
