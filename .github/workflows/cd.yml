@@ -41,3 +41,10 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.REMOTE_TARGET_BE }}
+      - name: ssh configuration
+        uses: appleboy/ssh-action@master
+        with:
+          script: cp -R ~/theshadowbook-config ~/node/theshadowbook-backend/config && cd ~/node/theshadowbook-backend && npm install && pm2 restart bin/www
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
