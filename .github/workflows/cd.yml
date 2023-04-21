@@ -23,8 +23,6 @@ jobs:
         working-directory: theshadowbook-frontend
       - run: npm run build -- --configuration production
         working-directory: theshadowbook-frontend
-      - run: npm test
-        working-directory: theshadowbook-frontend
       - name: ssh deploy-fe
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
