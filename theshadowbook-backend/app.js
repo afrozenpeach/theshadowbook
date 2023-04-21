@@ -108,7 +108,9 @@ app.put('/api/user', async (req, res) => {
     where: {
       id: req.body.id
     }
-  })
+  });
+
+  res.json({success: true});
 });
 
 app.put('/api/user/email', async (req, res) => {
@@ -118,7 +120,9 @@ app.put('/api/user/email', async (req, res) => {
     where: {
       id: req.body.id
     }
-  })
+  });
+
+  res.json({success: true});
 });
 
 app.get('/api/user/checkName/:name/:id', async (req, res) => {
