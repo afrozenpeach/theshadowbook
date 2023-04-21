@@ -121,6 +121,17 @@ export class BackendService {
     });
   }
 
+  createCrystal(crystal: any) {
+    let user = JSON.parse(localStorage.getItem('user') ?? '');
+
+    return this.http.post<any>('/api/crystals/' + crystal.id, {crystal}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
+      }
+    });
+  }
+
   getChakras() {
     let user = JSON.parse(localStorage.getItem('user') ?? '');
 

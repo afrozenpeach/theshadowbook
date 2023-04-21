@@ -23,7 +23,7 @@ export class CrystalEditorComponent {
   isAdmin: boolean = false;
 
   crystalForm = new FormGroup({
-    id: new FormControl('', Validators.required),
+    id: new FormControl(''),
     crystal: new FormControl('', Validators.required),
     chakras: new FormControl([]),
     cleansings: new FormControl([]),
@@ -98,10 +98,22 @@ export class CrystalEditorComponent {
   }
 
   save() {
-    this.backendService.updateCrystal(this.crystalForm.value).subscribe((success) => {
-      if (success) {
-        this.router.navigate(['/crystals/' + this.crystalForm.controls['crystal'].value]);
-      }
-    });
+    if (this.id === 'new') {
+      this.backendService.createCrystal(this.crystalForm.value).subscribe((success) => {
+        if (success.success) {
+          this.router.navigate(['/crystals/' + this.crystalForm.controls['crystal'].value]);
+        } else {
+          alert(success.error.errors[0].message);
+        }
+      });
+    } else {
+      this.backendService.updateCrystal(this.crystalForm.value).subscribe((success) => {
+        if (success.success) {
+          this.router.navigate(['/crystals/' + this.crystalForm.controls['crystal'].value]);
+        } else {
+          alert(success.error.errors[0].message);
+        }
+      });
+    }
   }
 }

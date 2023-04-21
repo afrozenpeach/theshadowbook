@@ -247,8 +247,6 @@ app.put('/api/crystals/:id', checkAdmin, async (req, res) => {
   try {
 
     const result = await sequelize.transaction(async (t) => {
-      console.log(req.body.crystal);
-
       await models.Crystal.update(
         { crystal: req.body.crystal.crystal },
         {
@@ -367,6 +365,90 @@ app.put('/api/crystals/:id', checkAdmin, async (req, res) => {
     }
   } catch (error) {
     res.json({success: false});
+  }
+});
+
+app.post('/api/crystals', checkAdmin, async (req, res) => {
+  try {
+
+    const result = await sequelize.transaction(async (t) => {
+      let crystal = await models.Crystal.create(
+        { crystal: req.body.crystal.crystal },
+        {
+          transaction: t
+        },
+      );
+
+      for (let c of req.body.crystal.chakras) {
+        await models.CrystalChakra.create(
+          {
+            crystalId: crystal.id,
+            chakraId: c
+          },
+          { transaction: t }
+        );
+      }
+
+      for (let c of req.body.crystal.cleansings) {
+        await models.CrystalCleansing.create(
+          {
+            crystalId: crystal.id,
+            cleansingId: c
+          },
+          { transaction: t }
+        );
+      }
+
+      for (let d of req.body.crystal.domains) {
+        await models.CrystalDomain.create(
+          {
+            crystalId: crystal.id,
+            domainId: d
+          },
+          { transaction: t }
+        );
+      }
+
+      for (let e of req.body.crystal.elements) {
+        await models.CrystalElement.create(
+          {
+            crystalId: crystal.id,
+            elementId: e
+          },
+          { transaction: t }
+        );
+      }
+
+      for (let m of req.body.crystal.moonPhases) {
+        await models.CrystalMoonPhase.create(
+          {
+            crystalId: crystal.id,
+            moonPhaseId: m
+          },
+          { transaction: t }
+        );
+      }
+
+      for (let z of req.body.crystal.zodiacs) {
+        await models.CrystalZodiac.create(
+          {
+            crystalId: crystal.id,
+            zodiacId: z
+          },
+          { transaction: t }
+        );
+      }
+
+      return true;
+    });
+
+    if (result) {
+      res.json({success: true});
+    } else {
+      res.json({success: false});
+    }
+  } catch (error) {
+    res.json({success: false, error: error});
   }
 });
 

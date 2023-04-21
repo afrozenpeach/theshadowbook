@@ -52,7 +52,8 @@
 
         <div *ngIf="this.crystalForm.controls['crystal'].errors?.['invalid']">That crystal is already taken!</div>
 
-        <button mat-raised-button color="accent" (click)="router.navigate(['/crystals/' + crystal.name])">Cancel</button>
+        <button *ngIf="this.crystal.name" mat-raised-button color="accent" type="button" (click)="router.navigate(['/crystals/' + crystal.name])">Cancel</button>
+        <button *ngIf="!this.crystal.name" mat-raised-button color="accent" type="button" (click)="router.navigate(['/crystals'])">Cancel</button>
         <button mat-raised-button color="primary" type="submit" [disabled]="!crystalForm.valid">Save</button>
     </form>
 </div>
