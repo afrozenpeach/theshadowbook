@@ -22,7 +22,6 @@ export class AdminGuard {
     }
 
     return this.backendService.getUser().pipe(map(u => {
-      console.log(u);
       return u.isAdmin;
     }));
   }
