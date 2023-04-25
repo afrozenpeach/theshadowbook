@@ -14,7 +14,7 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateEmailComponent } from './components/update-email/update-email.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,6 +25,7 @@ import { CrystalsComponent } from './components/crystals/crystals.component';
 import { CrystalComponent } from './components/crystal/crystal.component';
 import { CrystalEditorComponent } from './components/crystal-editor/crystal-editor.component';
 import { FourOhFourComponent } from './components/four-oh-four/four-oh-four.component';
+import { ErrorInterceptor } from './helpers/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,10 @@ import { FourOhFourComponent } from './components/four-oh-four/four-oh-four.comp
     MatButtonModule,
     FormsModule
   ],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
