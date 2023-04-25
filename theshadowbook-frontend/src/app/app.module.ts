@@ -27,6 +27,11 @@ import { CrystalComponent } from './components/crystal/crystal.component';
 import { CrystalEditorComponent } from './components/crystal-editor/crystal-editor.component';
 import { FourOhFourComponent } from './components/four-oh-four/four-oh-four.component';
 import { AuthInterceptor } from './helpers/auth.interceptor';
+import { YourCrystalsComponent } from './components/your-crystals/your-crystals.component';
+import { YourDecksComponent } from './components/your-decks/your-decks.component';
+import { DecksComponent } from './components/decks/decks.component';
+import { DeckComponent } from './components/deck/deck.component';
+import { DeckEditorComponent } from './components/deck-editor/deck-editor.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +45,12 @@ import { AuthInterceptor } from './helpers/auth.interceptor';
     CrystalsComponent,
     CrystalComponent,
     CrystalEditorComponent,
-    FourOhFourComponent
+    FourOhFourComponent,
+    YourCrystalsComponent,
+    YourDecksComponent,
+    DecksComponent,
+    DeckComponent,
+    DeckEditorComponent
   ],
   imports: [
     BrowserModule,

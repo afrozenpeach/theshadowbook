@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Subject } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -107,5 +107,16 @@ export class BackendService {
 
   getMoonPhases() {
     return this.http.get<any>('/api/moonPhases');
+  }
+
+  addCrystalToCollection(id: number, userId: number) {
+    return this.http.post<any>('/api/collection/crystals', {
+      id: id,
+      userId: userId
+    });
+  }
+
+  getUserCrystals(userId: number) {
+    return this.http.get<any>('/api/collection/crystals/' + userId);
   }
 }

@@ -11,6 +11,9 @@ import { BackendService } from 'src/app/services/backend.service';
 export class CrystalsComponent {
   crystals: any = [];
   isAdmin: boolean = false;
+  isLoggedIn: boolean = false;
+  user: any;
+  userCrystals: any = [];
 
   constructor(
     private backendService: BackendService,
@@ -22,10 +25,32 @@ export class CrystalsComponent {
   ngOnInit() {
     this.backendService.getCrystals().subscribe(crystals => {
       this.crystals = crystals.crystals;
+
+      this.backendService.getUser().subscribe(u => {
+        this.user = u.user;
+
+        this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
+          uc.crystals.map((i: { crystal: number; crystalCount: number; }) => {
+            this.userCrystals[i.crystal] = i.crystalCount;
+          });
+        });
+      });
     });
 
     this.authService.IsAdmin.subscribe(isAdmin => {
       this.isAdmin = isAdmin;
-    })
+    });
+
+    this.isLoggedIn = this.authService.isLoggedIn;
+  }
+
+  addToCollection(id: number) {
+    this.backendService.addCrystalToCollection(id, this.user.id).subscribe(s => {
+      if (this.userCrystals[id] > 0) {
+        this.userCrystals[id] = this.userCrystals[id] + 1;
+      } else {
+        this.userCrystals[id] = 1;
+      }
+    });
   }
 }

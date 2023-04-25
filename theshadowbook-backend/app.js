@@ -465,4 +465,30 @@ app.post('/api/crystals', checkAdmin, async (req, res) => {
   }
 });
 
+app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
+  try {
+    const crystal = await models.UserCrystal.create({
+      owner: req.body.userId,
+      crystal: req.body.id
+    })
+
+    res.json({success: true, crystal: crystal});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
+});
+
+app.get('/api/collection/crystals/:userId', async (req, res) => {
+  try {
+    const crystals = await models.UserCrystal.findAll({
+      attributes: ['crystal', [sequelize.fn('count', sequelize.col('id')), 'crystalCount']],
+      group: ['crystal']
+    })
+
+    res.json({success: true, crystals: crystals});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
+})
+
 module.exports = app;
