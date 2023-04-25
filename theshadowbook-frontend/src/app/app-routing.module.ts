@@ -12,6 +12,11 @@ import { CrystalComponent } from './components/crystal/crystal.component';
 import { CrystalEditorComponent } from './components/crystal-editor/crystal-editor.component';
 import { AdminGuard } from './guard/admin.guard';
 import { FourOhFourComponent } from './components/four-oh-four/four-oh-four.component';
+import { YourCrystalsComponent } from './components/your-crystals/your-crystals.component';
+import { YourDecksComponent } from './components/your-decks/your-decks.component';
+import { DecksComponent } from './components/decks/decks.component';
+import { DeckEditorComponent } from './components/deck-editor/deck-editor.component';
+import { DeckComponent } from './components/deck/deck.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -21,9 +26,14 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: 'verify-email-address', component: VerifyEmailComponent},
   { path: 'update-email', component: UpdateEmailComponent, canActivate: [AuthGuard] },
+  { path: 'your-crystals', component: YourCrystalsComponent, canActivate: [AuthGuard] },
+  { path: 'your-decks', component: YourDecksComponent, canActivate: [AuthGuard] },
   { path: 'crystals', component: CrystalsComponent},
   { path: 'crystals/:name', component: CrystalComponent },
   { path: 'crystal-editor/:id', component: CrystalEditorComponent, canActivate: [AdminGuard] },
+  { path: 'decks', component: DecksComponent},
+  { path: 'decks/:name', component: DeckComponent },
+  { path: 'deck-editor/:id', component: DeckEditorComponent, canActivate: [AdminGuard] },
   { path: '**', pathMatch: 'full', component: FourOhFourComponent },
 ];
 @NgModule({
