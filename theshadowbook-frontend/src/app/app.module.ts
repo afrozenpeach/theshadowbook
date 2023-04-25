@@ -21,11 +21,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CrystalsComponent } from './components/crystals/crystals.component';
 import { CrystalComponent } from './components/crystal/crystal.component';
 import { CrystalEditorComponent } from './components/crystal-editor/crystal-editor.component';
 import { FourOhFourComponent } from './components/four-oh-four/four-oh-four.component';
-import { ErrorInterceptor } from './helpers/error.interceptor';
+import { AuthInterceptor } from './helpers/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -54,11 +55,12 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

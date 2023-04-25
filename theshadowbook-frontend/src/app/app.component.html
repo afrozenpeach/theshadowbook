@@ -1,5 +1,11 @@
-<a href="/crystals">Crystal DB</a> | <a href="/dashboard">Dashboard</a>
+<a routerLink="/crystals">Crystal DB</a> | <a routerLink="/dashboard">Dashboard</a>
 
 <br/><br/><br/><br/>
 
-<router-outlet></router-outlet>
+<div *ngIf="loggedIn === null" class="logged-wrapper">
+    <div class="spinner-wrapper">
+        <mat-spinner class="spinner"></mat-spinner>
+    </div>
+</div>
+
+<router-outlet *ngIf="loggedIn !== null"></router-outlet>

@@ -2,4 +2,4 @@
     <button mat-raised-button color="primary" (click)="router.navigate(['/crystal-editor/new'])">Add Crystal</button>
 </div>
 
-<div *ngFor="let c of crystals"><a href="/crystals/{{c.crystal}}">{{c.crystal}}</a></div>
+<div *ngFor="let c of crystals"><a routerLink="/crystals/{{c.crystal}}">{{c.crystal}}</a></div>

@@ -7,19 +7,14 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class BackendService {
-  constructor(private http: HttpClient, private angularFireAuth: AngularFireAuth) {
+  constructor(private http: HttpClient) {
   }
 
   getUser() {
     let user = JSON.parse(localStorage.getItem('user') ?? '');
 
     if (user) {
-      return this.http.get<any>('/api/user/' + user.uid, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-        }
-      });
+      return this.http.get<any>('/api/user/' + user.uid);
     } else {
       let result = new Subject<any>;
       result.next(null);
@@ -35,17 +30,10 @@ export class BackendService {
     return this.http.post('/api/user', {
       email: user.email,
       uid: user.uid
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
     });
   }
 
   updateUser(userData: any) {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
-
     return this.http.put('/api/user', {
       name: userData.name,
       profile: userData.profile,
@@ -53,25 +41,13 @@ export class BackendService {
       moonSign: userData.moonSign,
       risingSign: userData.risingSign,
       id: userData.id
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
     });
   }
 
   updateUserEmail(userData: any) {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
-
     return this.http.put('/api/user/email', {
       email: userData.email,
       id: userData.id
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
     });
   }
 
@@ -86,12 +62,7 @@ export class BackendService {
   isValidUserName(name: any) {
     let user = JSON.parse(localStorage.getItem('user') ?? '');
 
-    return this.http.get<any>('/api/user/checkName/' + name + '/' + user.uid, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
-    });
+    return this.http.get<any>('/api/user/checkName/' + name + '/' + user.uid);
   }
 
   getCrystals() {
@@ -111,79 +82,30 @@ export class BackendService {
   }
 
   updateCrystal(crystal: any) {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
-
-    return this.http.put<any>('/api/crystals/' + crystal.id, {crystal}, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
-    });
+    return this.http.put<any>('/api/crystals/' + crystal.id, {crystal});
   }
 
   createCrystal(crystal: any) {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
-
-    return this.http.post<any>('/api/crystals/' + crystal.id, {crystal}, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
-    });
+    return this.http.post<any>('/api/crystals/' + crystal.id, {crystal});
   }
 
   getChakras() {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
-
-    return this.http.get<any>('/api/chakras', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
-    });
+    return this.http.get<any>('/api/chakras');
   }
 
   getCleansings() {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
-
-    return this.http.get<any>('/api/cleansings', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
-    });
+    return this.http.get<any>('/api/cleansings');
   }
 
   getDomains() {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
-
-    return this.http.get<any>('/api/domains', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
-    });
+    return this.http.get<any>('/api/domains');
   }
 
   getElements() {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
-
-    return this.http.get<any>('/api/elements', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
-    });
+    return this.http.get<any>('/api/elements');
   }
 
   getMoonPhases() {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
-
-    return this.http.get<any>('/api/moonPhases', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.stsTokenManager.accessToken}`
-      }
-    });
+    return this.http.get<any>('/api/moonPhases');
   }
 }

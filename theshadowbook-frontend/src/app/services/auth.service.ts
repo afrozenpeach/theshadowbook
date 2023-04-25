@@ -7,7 +7,6 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { BackendService } from './backend.service';
-import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 import { map } from 'rxjs/internal/operators/map';
 import { Observable } from 'rxjs/internal/Observable';
 @Injectable({
@@ -28,10 +27,8 @@ export class AuthService {
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
       } else {
-        localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
+        localStorage.removeItem('user');
       }
     });
   }
@@ -135,7 +132,6 @@ export class AuthService {
   // Sign out
   SignOut() {
     return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
       this.router.navigate(['sign-in']);
     });
   }
