@@ -620,20 +620,10 @@ app.get('/api/collection/decks/:userId', async (req, res) => {
 });
 
 app.put('/api/collection/decks', checkAuth, async (req, res) => {
-  await models.UserCrystal.update({
+  await models.UserDeck.update({
     id: req.body.id,
     name: req.body.name,
-    primaryColor: req.body.primaryColor,
-    secondaryColor: req.body.secondaryColor,
-    teriaryColor: req.body.teriaryColor,
-    aura: req.body.aura,
-    sizeX: req.body.sizeX,
-    sizeY: req.body.sizeY,
-    sizeZ: req.body.sizeZ,
-    weight: req.body.weight,
-    karat: req.body.karat,
-    status: req.body.status,
-    shape: req.body.shape
+    status: req.body.status
   }, {
     where: {
       id: req.body.id
