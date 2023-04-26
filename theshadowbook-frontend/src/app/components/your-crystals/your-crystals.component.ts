@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Observable, zip } from 'rxjs';
 import { BackendService } from 'src/app/services/backend.service';
 
 @Component({
@@ -128,8 +128,15 @@ export class YourCrystalsComponent {
   }
 
   saveAllUserCrystals() {
+    this.loading = true;
+    let subscriptions: Observable<any>[] = [];
+
     this.userCrystals.map((uc: { id: number; }) => {
-      this.saveUserCrystal(uc.id);
-    })
+      subscriptions.push(this.backendService.saveUserCrystal(this.crystalForm[uc.id].value));
+    });
+
+    zip(...subscriptions).subscribe(() => {
+      this.loading = false;
+    });
   }
 }
