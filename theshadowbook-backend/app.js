@@ -484,7 +484,7 @@ app.get('/api/collection/crystals/:userId', async (req, res) => {
   try {
     const crystals = await models.UserCrystal.findAll({
       where: {
-        userId: req.params.userId
+        owner: req.params.userId
       }
     });
 
