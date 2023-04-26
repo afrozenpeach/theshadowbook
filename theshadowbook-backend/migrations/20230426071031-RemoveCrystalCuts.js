@@ -10,17 +10,14 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
 
-    return queryInterface.sequelize.transaction(t => {
-      return queryInterface.removeConstraint('UserCrystal', 'UserCrystal-Cut',
-        { transaction: t }
-      ).then(() => {
-        queryInterface.removeIndex('UserCrystal', 'UserCrystal-Cut_idx', {transaction: t})
+    return queryInterface.removeConstraint('UserCrystal', 'UserCrystal-Cut')
+      .then(() => {
+        queryInterface.removeIndex('UserCrystal', 'UserCrystal-Cut_idx')
       }).then(() => {
-        queryInterface.dropTable('Cut', { transaction: t });
+        queryInterface.dropTable('Cut');
       }).then(() => {
-        queryInterface.removeColumn('UserCrystal', 'cut', { transaction: t });
+        queryInterface.removeColumn('UserCrystal', 'cut');
       });
-    });
   },
 
   async down (queryInterface, Sequelize) {
