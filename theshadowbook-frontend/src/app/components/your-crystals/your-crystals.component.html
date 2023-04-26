@@ -17,8 +17,6 @@
 
             <div class="individualCrystal" *ngFor="let cot of getUserCrystalsOfType(c.id)">
                 <form *ngIf="crystalForm[cot.id]" [formGroup]="crystalForm[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
-                    <input type="hidden" value="{{cot.id}}">
-
                     <mat-form-field>
                         <mat-label>Name</mat-label>
                         <input matInput id="name" formControlName="name">

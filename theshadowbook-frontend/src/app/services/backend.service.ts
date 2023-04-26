@@ -177,4 +177,16 @@ export class BackendService {
   createDeck(deck: any) {
     return this.http.post<any>('/api/decks/' + deck.id, {deck});
   }
+
+  saveUserDeck(deck: any) {
+    return this.http.put<any>('/api/collection/decks', {
+      id: deck.id,
+      name: deck.name,
+      status: deck.status
+    });
+  }
+
+  deleteUserDeck(id: number) {
+    return this.http.delete<any>('/api/collections/decks/' + id);
+  }
 }

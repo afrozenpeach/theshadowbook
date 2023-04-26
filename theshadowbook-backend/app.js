@@ -1150,4 +1150,37 @@ app.put('/api/decks/:id', checkAdmin, async (req, res) => {
   }
 });
 
+app.delete('/api/collection/decks/:id', checkAuth, async (req, res) => {
+  let idToken = req.headers.authorization.substring(7);
+  admin.auth().verifyIdToken(idToken).then(async d => {
+    let userDeck = await models.UserDeck.findOne({
+      where: {
+        id: req.params.id
+      }
+    });
+
+    let user = await models.User.findOne({
+      where: {
+        firebaseId: d.uid
+      }
+    });
+
+    if (userDeck.owner === user.id) {
+      try {
+        await models.UserDeck.destroy({
+          where: {
+            id: req.params.id
+          }
+        });
+
+        res.json({succes: true});
+      } catch (error) {
+        res.json({success: false, error: error});
+      }
+    } else {
+      res.status(403).send('Unauthorized: UID does not match token.');
+    }
+  });
+});
+
 module.exports = app;
