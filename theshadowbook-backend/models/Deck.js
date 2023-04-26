@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     type: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },
     publisher: {
       type: DataTypes.STRING(45),

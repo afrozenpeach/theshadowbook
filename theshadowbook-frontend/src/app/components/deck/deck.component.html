@@ -1,1 +1,31 @@
-<p>deck works!</p>
+<h1>{{deck.name}}</h1>
+
+<div id="deckType">
+    <span class="label">Deck Type:</span><span class="value">{{getDeckTypeName(deck.type)}}</span>
+</div>
+
+<div id="artist">
+    <span class="label">Artist:</span><span class="value">{{deck.artist}}</span>
+</div>
+
+<div id="author">
+    <span class="label">Author:</span><span class="value">{{deck.author}}</span>
+</div>
+
+<div id="publisher">
+    <span class="label">Publisher:</span><span class="value">{{deck.publisher}}</span>
+</div>
+
+<div id="cards">
+    <div *ngFor="let c of deck.DeckCards">
+        <h2>{{c.name}}</h2>
+
+        <p *ngIf="c.description"><span class="label">Description: </span>{{c.description}}</p>
+        <p *ngIf="c.meaning"><span class="label">Meaning: </span>{{c.meaning}}</p>
+        <p *ngIf="c.reversalMeaning"><span class="label">Reversal: </span>{{c.reversalMeaning}}</p>
+    </div>
+</div>
+
+<div *ngIf="isAdmin">
+    <button mat-raised-button color="primary" (click)="router.navigate(['/deck-editor/' + deck.id])">Edit Deck</button>
+</div>

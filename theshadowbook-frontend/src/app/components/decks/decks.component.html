@@ -1,1 +1,12 @@
-<p>decks works!</p>
+<div *ngIf="isAdmin">
+    <button mat-raised-button color="primary" (click)="router.navigate(['/deck-editor/new'])">Add Deck</button>
+</div>
+
+<div class="deckLine" *ngFor="let d of decks">
+    <a routerLink="/decks/{{d.name}}">{{d.name}}</a>
+
+    <span *ngIf="userDecks[d.id]">({{userDecks[d.id]}})</span>
+
+    <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(d.id, 1)">Add to collection</button>
+    <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(d.id, 2)">Add to wish list</button>
+</div>

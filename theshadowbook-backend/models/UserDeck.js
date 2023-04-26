@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    userId: {
+    owner: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    deckId: {
+    deck: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
@@ -60,14 +60,14 @@ module.exports = function(sequelize, DataTypes) {
         name: "UserDeck-Deck_idx",
         using: "BTREE",
         fields: [
-          { name: "deckId" },
+          { name: "deck" },
         ]
       },
       {
         name: "UserDeck-User_idx",
         using: "BTREE",
         fields: [
-          { name: "userId" },
+          { name: "owner" },
         ]
       },
       {

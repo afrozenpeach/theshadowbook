@@ -1,5 +1,5 @@
 var DataTypes = require("sequelize").DataTypes;
-var _Cards = require("./Cards");
+var _Card = require("./Card");
 var _Chakra = require("./Chakra");
 var _Cleansing = require("./Cleansing");
 var _Color = require("./Color");
@@ -25,7 +25,7 @@ var _Zodiac = require("./Zodiac");
 var _Shape = require("./Shape");
 
 function initModels(sequelize) {
-  var Cards = _Cards(sequelize, DataTypes);
+  var Card = _Card(sequelize, DataTypes);
   var Chakra = _Chakra(sequelize, DataTypes);
   var Cleansing = _Cleansing(sequelize, DataTypes);
   var Color = _Color(sequelize, DataTypes);
@@ -76,11 +76,11 @@ function initModels(sequelize) {
   Crystal.hasMany(CrystalZodiac, { as: "CrystalZodiacs", foreignKey: "crystalId"});
   UserCrystal.belongsTo(Crystal, { as: "crystal_Crystal", foreignKey: "crystal"});
   Crystal.hasMany(UserCrystal, { as: "UserCrystals", foreignKey: "crystal"});
-  Cards.belongsTo(Deck, { as: "deck", foreignKey: "deckId"});
-  Deck.hasMany(Cards, { as: "Cards", foreignKey: "deckId"});
-  UserDeck.belongsTo(Deck, { as: "deck", foreignKey: "deckId"});
-  Deck.hasMany(UserDeck, { as: "UserDecks", foreignKey: "deckId"});
-  Deck.belongsTo(DeckType, { as: "id_DeckType", foreignKey: "id"});
+  Card.belongsTo(Deck, { as: "CardDeck", foreignKey: "deck"});
+  Deck.hasMany(Card, { as: "DeckCards", foreignKey: "deck"});
+  UserDeck.belongsTo(Deck, { as: "UserDeck", foreignKey: "deck"});
+  Deck.hasMany(UserDeck, { as: "UserDecks", foreignKey: "deck"});
+  Deck.belongsTo(DeckType, { as: "DeckType", foreignKey: "id"});
   DeckType.hasOne(Deck, { as: "Deck", foreignKey: "id"});
   CrystalDomain.belongsTo(Domain, { as: "domain", foreignKey: "domainId"});
   Domain.hasMany(CrystalDomain, { as: "CrystalDomains", foreignKey: "domainId"});
@@ -96,8 +96,8 @@ function initModels(sequelize) {
   User.hasMany(UserCoven, { as: "UserCovens", foreignKey: "userId"});
   UserCrystal.belongsTo(User, { as: "owner_User", foreignKey: "owner"});
   User.hasMany(UserCrystal, { as: "UserCrystals", foreignKey: "owner"});
-  UserDeck.belongsTo(User, { as: "user", foreignKey: "userId"});
-  User.hasMany(UserDeck, { as: "UserDecks", foreignKey: "userId"});
+  UserDeck.belongsTo(User, { as: "owner_User", foreignKey: "owner"});
+  User.hasMany(UserDeck, { as: "UserDecks", foreignKey: "owner"});
   CrystalZodiac.belongsTo(Zodiac, { as: "zodiac", foreignKey: "zodiacId"});
   Zodiac.hasMany(CrystalZodiac, { as: "CrystalZodiacs", foreignKey: "zodiacId"});
   User.belongsTo(Zodiac, { as: "moonSign_Zodiac", foreignKey: "moonSign"});
@@ -110,7 +110,7 @@ function initModels(sequelize) {
   Shape.hasMany(UserCrystal, { as: "UserCrystals", foreignKey: "shape"});
 
   return {
-    Cards,
+    Card,
     Chakra,
     Cleansing,
     Color,

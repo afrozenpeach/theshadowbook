@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Cards', {
+  return sequelize.define('Card', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    deckId: {
+    deck: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -22,10 +22,18 @@ module.exports = function(sequelize, DataTypes) {
     description: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    meaning: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    reversalMeaning: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'Cards',
+    tableName: 'Card',
     timestamps: false,
     indexes: [
       {
@@ -48,7 +56,7 @@ module.exports = function(sequelize, DataTypes) {
         name: "Cards-Deck_idx",
         using: "BTREE",
         fields: [
-          { name: "deckId" },
+          { name: "deck" },
         ]
       },
     ]

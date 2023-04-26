@@ -51,11 +51,7 @@ export class BackendService {
   }
 
   getZodiacs() {
-    return this.http.get<any>('/api/zodiac', {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    return this.http.get<any>('/api/zodiac');
   }
 
   isValidUserName(name: any) {
@@ -65,19 +61,11 @@ export class BackendService {
   }
 
   getCrystals() {
-    return this.http.get<any>('/api/crystals', {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    return this.http.get<any>('/api/crystals');
   }
 
   getCrystal(name: String) {
-    return this.http.get<any>('/api/crystals/' + name, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    return this.http.get<any>('/api/crystals/' + name);
   }
 
   updateCrystal(crystal: any) {
@@ -156,5 +144,37 @@ export class BackendService {
 
   getShapes() {
     return this.http.get<any>('/api/shapes');
+  }
+
+  getDecks() {
+    return this.http.get<any>('/api/decks');
+  }
+
+  getUserDecks(userId: number) {
+    return this.http.get<any>('/api/collection/decks/' + userId);
+  }
+
+  addDeckToCollection(id: number, userId: number, status: number) {
+    return this.http.post<any>('/api/collection/decks', {
+      id: id,
+      userId: userId,
+      status: status
+    });
+  }
+
+  getDeckTypes() {
+    return this.http.get<any>('/api/deckTypes');
+  }
+
+  getDeck(name: String) {
+    return this.http.get<any>('/api/decks/' + name);
+  }
+
+  updateDeck(deck: any) {
+    return this.http.put<any>('/api/decks/' + deck.id, {deck});
+  }
+
+  createDeck(deck: any) {
+    return this.http.post<any>('/api/decks/' + deck.id, {deck});
   }
 }

@@ -1,1 +1,39 @@
-<p>deck-editor works!</p>
+<!-- Show user data when logged in -->
+<div *ngIf="deck">
+    <form [formGroup]="deckForm" (ngSubmit)="save()">
+        <input type="hidden" formControlName="id">
+
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput id="name" formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type">
+                <mat-option *ngFor="let t of deckTypes" [value]="t.id">{{t.type}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Artist</mat-label>
+            <input matInput id="artist" formControlName="artist">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Author</mat-label>
+            <input matInput id="author" formControlName="author">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Publisher</mat-label>
+            <input matInput id="publisher" formControlName="publisher">
+        </mat-form-field>
+
+        <div *ngIf="this.deckForm.controls['name'].errors?.['invalid']">That deck is already taken!</div>
+
+        <button *ngIf="this.deck.name" mat-raised-button color="accent" type="button" (click)="router.navigate(['/decks/' + deck.name])">Cancel</button>
+        <button *ngIf="!this.deck.name" mat-raised-button color="accent" type="button" (click)="router.navigate(['/decks'])">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!deckForm.valid">Save</button>
+    </form>
+</div>
