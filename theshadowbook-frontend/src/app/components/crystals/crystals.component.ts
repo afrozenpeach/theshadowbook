@@ -48,8 +48,8 @@ export class CrystalsComponent {
     this.isLoggedIn = this.authService.isLoggedIn;
   }
 
-  addToCollection(id: number) {
-    this.backendService.addCrystalToCollection(id, this.user.id).subscribe(s => {
+  addToCollection(id: number, status: number) {
+    this.backendService.addCrystalToCollection(id, this.user.id, status).subscribe(s => {
       if (this.userCrystals[id] > 0) {
         this.userCrystals[id] = this.userCrystals[id] + 1;
       } else {

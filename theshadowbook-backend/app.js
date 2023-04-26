@@ -471,7 +471,7 @@ app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
     const crystal = await models.UserCrystal.create({
       owner: req.body.userId,
       crystal: req.body.id,
-      status: 1
+      status: req.body.status
     });
 
     res.json({success: true, crystal: crystal});

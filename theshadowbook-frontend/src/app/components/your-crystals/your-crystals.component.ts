@@ -97,9 +97,9 @@ export class YourCrystalsComponent {
     return !this.crystalForm[id].valid;
   }
 
-  addUserCrystal() {
+  addUserCrystal(status: number) {
     if (this.addCrystalForm.controls['crystal'].value) {
-      this.backendService.addCrystalToCollection(this.addCrystalForm.controls['crystal'].value, this.user.id).subscribe(s => {
+      this.backendService.addCrystalToCollection(this.addCrystalForm.controls['crystal'].value, this.user.id, status).subscribe(s => {
         this.crystalForm[s.crystal.id] = new FormGroup({
           id: new FormControl(s.crystal.id),
           name: new FormControl(''),

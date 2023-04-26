@@ -1,4 +1,4 @@
-<form [formGroup]="addCrystalForm" (ngSubmit)="addUserCrystal()">
+<form [formGroup]="addCrystalForm" (ngSubmit)="addUserCrystal(1)">
     <mat-form-field appearance="fill">
         <mat-label>Crystal</mat-label>
         <mat-select formControlName="crystal">
@@ -6,7 +6,8 @@
         </mat-select>
     </mat-form-field>
 
-    <button mat-raised-button color="accent" type="submit" [disabled]="">Add to your collection</button>
+    <button mat-raised-button color="accent" type="submit">Add to your collection</button>
+    <button mat-raised-button color="accent" type="button" (click)="addUserCrystal(2)">Add to your wish list</button>
 </form>
 
 <div *ngFor="let c of this.crystals">

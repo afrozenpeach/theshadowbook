@@ -108,10 +108,11 @@ export class BackendService {
     return this.http.get<any>('/api/moonPhases');
   }
 
-  addCrystalToCollection(id: number, userId: number) {
+  addCrystalToCollection(id: number, userId: number, status: number) {
     return this.http.post<any>('/api/collection/crystals', {
       id: id,
-      userId: userId
+      userId: userId,
+      status: status
     });
   }
 
