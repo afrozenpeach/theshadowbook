@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -119,4 +118,33 @@ export class BackendService {
   getUserCrystals(userId: number) {
     return this.http.get<any>('/api/collection/crystals/' + userId);
   }
+
+  getCuts() {
+    return this.http.get<any>('/api/cuts');
+  }
+
+  getStatuses() {
+    return this.http.get<any>('/api/statuses');
+  }
+
+  getColors() {
+    return this.http.get<any>('/api/colors');
+  }
+
+  saveUserCrystal(crystal: any) {
+    return this.http.put<any>('/api/collection/crystals', {
+      id: crystal.id,
+      name: crystal.name,
+      primaryColor: crystal.primaryColor,
+      secondaryColor: crystal.secondaryColor,
+      tertiaryColor: crystal.tertiaryColor,
+      aura: crystal.aura,
+      sizeX: crystal.sizeX,
+      sizeY: crystal.sizeY,
+      sizeZ: crystal.sizeZ,
+      weight: crystal.weight,
+      karat: crystal.karat,
+      status: crystal.status
+    });
+  };
 }

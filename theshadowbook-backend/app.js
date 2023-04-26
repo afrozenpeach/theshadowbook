@@ -12,6 +12,7 @@ const { name, user, password, options } = configure(config)
 const sequelize = new Sequelize(name, user, password, options);
 const { Op } = require("sequelize");
 var initModels = require("./models/init-models");
+const { get } = require('http');
 var models = initModels(sequelize);
 
 admin.initializeApp({
@@ -469,8 +470,9 @@ app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
   try {
     const crystal = await models.UserCrystal.create({
       owner: req.body.userId,
-      crystal: req.body.id
-    })
+      crystal: req.body.id,
+      status: 1
+    });
 
     res.json({success: true, crystal: crystal});
   } catch (error) {
@@ -480,15 +482,65 @@ app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
 
 app.get('/api/collection/crystals/:userId', async (req, res) => {
   try {
-    const crystals = await models.UserCrystal.findAll({
-      attributes: ['crystal', [sequelize.fn('count', sequelize.col('id')), 'crystalCount']],
-      group: ['crystal']
-    })
+    const crystals = await models.UserCrystal.findAll();
 
     res.json({success: true, crystals: crystals});
   } catch (error) {
     res.json({success: false, error: error});
   }
-})
+});
+
+app.put('/api/collection/crystals', checkAuth, async (req, res) => {
+  await models.UserCrystal.update({
+    id: req.body.id,
+    name: req.body.name,
+    primaryColor: req.body.primaryColor,
+    secondaryColor: req.body.secondaryColor,
+    teriaryColor: req.body.teriaryColor,
+    aura: req.body.aura,
+    sizeX: req.body.sizeX,
+    sizeY: req.body.sizeY,
+    sizeZ: req.body.sizeZ,
+    weight: req.body.weight,
+    karat: req.body.karat,
+    status: req.body.status
+  }, {
+    where: {
+      id: req.body.id
+    }
+  });
+
+  res.json({success: true});
+});
+
+app.get('/api/cuts', async (req, res) => {
+  try {
+    const cuts = await models.Cut.findAll();
+
+    res.json ({succes: true, cuts: cuts});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
+});
+
+app.get('/api/colors', async (req, res) => {
+  try {
+    const colors = await models.Color.findAll();
+
+    res.json({success: true, colors: colors});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
+});
+
+app.get('/api/statuses', async (req, res) => {
+  try {
+    const statuses = await models.Status.findAll();
+
+    res.json({success: true, statuses: statuses});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
+});
 
 module.exports = app;

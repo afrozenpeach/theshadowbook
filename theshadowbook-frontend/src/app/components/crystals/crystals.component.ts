@@ -30,8 +30,12 @@ export class CrystalsComponent {
         this.user = u.user;
 
         this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
-          uc.crystals.map((i: { crystal: number; crystalCount: number; }) => {
-            this.userCrystals[i.crystal] = i.crystalCount;
+          uc.crystals.map((i: { crystal: number; }) => {
+            if (this.userCrystals[i.crystal] > 0) {
+              this.userCrystals[i.crystal] = this.userCrystals[i.crystal] + 1;
+            } else {
+              this.userCrystals[i.crystal] = 1;
+            }
           });
         });
       });
