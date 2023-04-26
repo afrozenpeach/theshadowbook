@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     crystal: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'Crystal',
         key: 'id'
@@ -88,6 +88,14 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
       references: {
         model: 'Status',
+        key: 'id'
+      }
+    },
+    shape: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'CrystalShape',
         key: 'id'
       }
     }
@@ -161,6 +169,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "status" },
+        ]
+      },
+      {
+        name: "UserCrystal-Shape_idx",
+        using: "BTREE",
+        fields: [
+          { name: "shape" },
         ]
       },
     ]

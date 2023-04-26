@@ -23,6 +23,13 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
+                    <mat-label>Shape</mat-label>
+                    <mat-select formControlName="shape">
+                        <mat-option *ngFor="let s of shapes" [value]="s.id">{{s.shape}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
                     <mat-label>Primary Color</mat-label>
                     <mat-select formControlName="primaryColor">
                         <mat-option *ngFor="let c of colors" [value]="c.id">{{c.color}}</mat-option>

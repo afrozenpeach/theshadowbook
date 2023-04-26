@@ -15,6 +15,7 @@ export class YourCrystalsComponent {
   cuts: any = [];
   colors: any = [];
   statuses: any = [];
+  shapes: any = [];
 
   crystalForm: FormGroup[] = [];
   addCrystalForm: FormGroup = new FormGroup({
@@ -44,6 +45,9 @@ export class YourCrystalsComponent {
               this.backendService.getStatuses().subscribe(s => {
                 this.statuses = s.statuses;
 
+                this.backendService.getShapes().subscribe(s => {
+                  this.shapes = s.shapes;
+                })
               });
             });
           });
@@ -62,7 +66,8 @@ export class YourCrystalsComponent {
               karat: new FormControl(userCrystal.karat),
               cut: new FormControl(userCrystal.cut),
               aura: new FormControl(userCrystal.aura),
-              status: new FormControl(userCrystal.status)
+              status: new FormControl(userCrystal.status),
+              shape: new FormControl(userCrystal.shape)
             });
           }
         });
@@ -108,7 +113,8 @@ export class YourCrystalsComponent {
           karat: new FormControl(''),
           cut: new FormControl(''),
           aura: new FormControl(''),
-          status: new FormControl(s.crystal.status)
+          status: new FormControl(s.crystal.status),
+          shape: new FormControl(s.crystal.shape)
         });
         this.userCrystals.push(s.crystal);
       });

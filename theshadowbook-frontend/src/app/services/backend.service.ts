@@ -144,11 +144,16 @@ export class BackendService {
       sizeZ: crystal.sizeZ,
       weight: crystal.weight,
       karat: crystal.karat,
-      status: crystal.status
+      status: crystal.status,
+      shape: crystal.shape
     });
   };
 
   deleteUserCrystal(id: number) {
     return this.http.delete<any>('/api/collection/crystals/' + id);
+  }
+
+  getShapes() {
+    return this.http.get<any>('/api/shapes');
   }
 }

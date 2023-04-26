@@ -507,7 +507,8 @@ app.put('/api/collection/crystals', checkAuth, async (req, res) => {
     sizeZ: req.body.sizeZ,
     weight: req.body.weight,
     karat: req.body.karat,
-    status: req.body.status
+    status: req.body.status,
+    shape: req.body.shape
   }, {
     where: {
       id: req.body.id
@@ -562,6 +563,18 @@ app.delete('/api/collection/crystals/:id', checkAuth, async (req, res) => {
     });
 
     res.json({succes: true});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
+});
+
+app.get('/api/shapes', async (req, res) => {
+  try {
+    const shapes = await models.Shape.findAll({
+      order: [['shape', 'ASC']]
+    });
+
+    res.json({success: true, shapes: shapes});
   } catch (error) {
     res.json({success: false, error: error});
   }

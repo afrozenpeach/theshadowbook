@@ -23,6 +23,7 @@ var _UserCoven = require("./UserCoven");
 var _UserCrystal = require("./UserCrystal");
 var _UserDeck = require("./UserDeck");
 var _Zodiac = require("./Zodiac");
+var _Shape = require("./Shape");
 
 function initModels(sequelize) {
   var Cards = _Cards(sequelize, DataTypes);
@@ -49,6 +50,7 @@ function initModels(sequelize) {
   var UserCrystal = _UserCrystal(sequelize, DataTypes);
   var UserDeck = _UserDeck(sequelize, DataTypes);
   var Zodiac = _Zodiac(sequelize, DataTypes);
+  var Shape = _Shape(sequelize, DataTypes);
 
   CrystalChakra.belongsTo(Chakra, { as: "chakra", foreignKey: "chakraId"});
   Chakra.hasMany(CrystalChakra, { as: "CrystalChakras", foreignKey: "chakraId"});
@@ -108,6 +110,8 @@ function initModels(sequelize) {
   Zodiac.hasMany(User, { as: "risingSign_Users", foreignKey: "risingSign"});
   User.belongsTo(Zodiac, { as: "sunSign_Zodiac", foreignKey: "sunSign"});
   Zodiac.hasMany(User, { as: "sunSign_Users", foreignKey: "sunSign"});
+  UserCrystal.belongsTo(Shape, { as: "UserShape", foreignKey: "shape"});
+  Shape.hasMany(UserCrystal, { as: "UserCrystals", foreignKey: "shape"});
 
   return {
     Cards,
@@ -134,6 +138,7 @@ function initModels(sequelize) {
     UserCrystal,
     UserDeck,
     Zodiac,
+    Shape
   };
 }
 module.exports = initModels;
