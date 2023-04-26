@@ -11,7 +11,6 @@ var _CrystalDomain = require("./CrystalDomain");
 var _CrystalElement = require("./CrystalElement");
 var _CrystalMoonPhase = require("./CrystalMoonPhase");
 var _CrystalZodiac = require("./CrystalZodiac");
-var _Cut = require("./Cut");
 var _Deck = require("./Deck");
 var _DeckType = require("./DeckType");
 var _Domain = require("./Domain");
@@ -38,7 +37,6 @@ function initModels(sequelize) {
   var CrystalElement = _CrystalElement(sequelize, DataTypes);
   var CrystalMoonPhase = _CrystalMoonPhase(sequelize, DataTypes);
   var CrystalZodiac = _CrystalZodiac(sequelize, DataTypes);
-  var Cut = _Cut(sequelize, DataTypes);
   var Deck = _Deck(sequelize, DataTypes);
   var DeckType = _DeckType(sequelize, DataTypes);
   var Domain = _Domain(sequelize, DataTypes);
@@ -78,8 +76,6 @@ function initModels(sequelize) {
   Crystal.hasMany(CrystalZodiac, { as: "CrystalZodiacs", foreignKey: "crystalId"});
   UserCrystal.belongsTo(Crystal, { as: "crystal_Crystal", foreignKey: "crystal"});
   Crystal.hasMany(UserCrystal, { as: "UserCrystals", foreignKey: "crystal"});
-  UserCrystal.belongsTo(Cut, { as: "cut_Cut", foreignKey: "cut"});
-  Cut.hasMany(UserCrystal, { as: "UserCrystals", foreignKey: "cut"});
   Cards.belongsTo(Deck, { as: "deck", foreignKey: "deckId"});
   Deck.hasMany(Cards, { as: "Cards", foreignKey: "deckId"});
   UserDeck.belongsTo(Deck, { as: "deck", foreignKey: "deckId"});
@@ -126,7 +122,6 @@ function initModels(sequelize) {
     CrystalElement,
     CrystalMoonPhase,
     CrystalZodiac,
-    Cut,
     Deck,
     DeckType,
     Domain,

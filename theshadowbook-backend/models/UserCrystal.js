@@ -71,14 +71,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    cut: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'Cut',
-        key: 'id'
-      }
-    },
     aura: {
       type: DataTypes.INTEGER,
       allowNull: true
@@ -134,13 +126,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "crystal" },
-        ]
-      },
-      {
-        name: "UserCrystal-Cut_idx",
-        using: "BTREE",
-        fields: [
-          { name: "cut" },
         ]
       },
       {

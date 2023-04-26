@@ -13,7 +13,6 @@ export class YourCrystalsComponent {
   user: any;
   crystals: any = [];
   userCrystals: any = [];
-  cuts: any = [];
   colors: any = [];
   statuses: any = [];
   shapes: any = [];
@@ -39,20 +38,16 @@ export class YourCrystalsComponent {
         this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
           this.userCrystals = uc.crystals;
 
-          this.backendService.getCuts().subscribe(c => {
-            this.cuts = c.cuts;
+          this.backendService.getColors().subscribe(c => {
+            this.colors = c.colors;
 
-            this.backendService.getColors().subscribe(c => {
-              this.colors = c.colors;
+            this.backendService.getStatuses().subscribe(s => {
+              this.statuses = s.statuses;
 
-              this.backendService.getStatuses().subscribe(s => {
-                this.statuses = s.statuses;
-
-                this.backendService.getShapes().subscribe(s => {
-                  this.shapes = s.shapes;
-                  this.loading = false;
-                })
-              });
+              this.backendService.getShapes().subscribe(s => {
+                this.shapes = s.shapes;
+                this.loading = false;
+              })
             });
           });
 
@@ -107,9 +102,9 @@ export class YourCrystalsComponent {
         this.crystalForm[s.crystal.id] = new FormGroup({
           id: new FormControl(s.crystal.id),
           name: new FormControl(''),
-          primaryColor: new FormControl(''),
-          secondaryColor: new FormControl(''),
-          tertiaryColor: new FormControl(''),
+          primaryColor: new FormControl(null),
+          secondaryColor: new FormControl(null),
+          tertiaryColor: new FormControl(null),
           sizeX: new FormControl(''),
           sizeY: new FormControl(''),
           sizeZ: new FormControl(''),
