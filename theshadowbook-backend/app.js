@@ -549,7 +549,9 @@ app.delete('/api/collection/crystals/:id', checkAuth, async (req, res) => {
       where: {
         id: req.params.id
       }
-    })
+    });
+
+    res.json({succes: true});
   } catch (error) {
     res.json({success: false, error: error});
   }

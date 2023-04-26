@@ -1,3 +1,14 @@
+<form [formGroup]="addCrystalForm" (ngSubmit)="addUserCrystal()">
+    <mat-form-field appearance="fill">
+        <mat-label>Crystal</mat-label>
+        <mat-select formControlName="crystal">
+            <mat-option *ngFor="let c of crystals" [value]="c.id">{{c.crystal}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" type="submit" [disabled]="">Add to your collection</button>
+</form>
+
 <div *ngFor="let c of this.crystals">
     <div *ngIf="getUserCrystalsOfType(c.id).length">
         {{c.crystal}}

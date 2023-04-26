@@ -17,6 +17,9 @@ export class YourCrystalsComponent {
   statuses: any = [];
 
   crystalForm: FormGroup[] = [];
+  addCrystalForm: FormGroup = new FormGroup({
+    crystal: new FormControl('')
+  });
 
   constructor(private backendService: BackendService) {
 
@@ -87,5 +90,30 @@ export class YourCrystalsComponent {
 
   saveDisabled(id: number) {
     return !this.crystalForm[id].valid;
+  }
+
+  addUserCrystal() {
+    if (this.addCrystalForm.controls['crystal'].value) {
+      this.backendService.addCrystalToCollection(this.addCrystalForm.controls['crystal'].value, this.user.id).subscribe(s => {
+        this.crystalForm[s.crystal.id] = new FormGroup({
+          id: new FormControl(s.crystal.id),
+          name: new FormControl(''),
+          primaryColor: new FormControl(''),
+          secondaryColor: new FormControl(''),
+          tertiaryColor: new FormControl(''),
+          sizeX: new FormControl(''),
+          sizeY: new FormControl(''),
+          sizeZ: new FormControl(''),
+          weight: new FormControl(''),
+          karat: new FormControl(''),
+          cut: new FormControl(''),
+          aura: new FormControl(''),
+          status: new FormControl(s.crystal.status)
+        });
+        this.userCrystals.push(s.crystal);
+      });
+    } else {
+      alert('Select a crystal using the dropdown first.');
+    }
   }
 }
