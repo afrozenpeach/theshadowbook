@@ -482,7 +482,11 @@ app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
 
 app.get('/api/collection/crystals/:userId', async (req, res) => {
   try {
-    const crystals = await models.UserCrystal.findAll();
+    const crystals = await models.UserCrystal.findAll({
+      where: {
+        userId: req.params.userId
+      }
+    });
 
     res.json({success: true, crystals: crystals});
   } catch (error) {
