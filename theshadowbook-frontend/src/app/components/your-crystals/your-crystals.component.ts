@@ -22,6 +22,8 @@ export class YourCrystalsComponent {
     crystal: new FormControl('')
   });
 
+  loading = true;
+
   constructor(private backendService: BackendService) {
 
   }
@@ -47,6 +49,7 @@ export class YourCrystalsComponent {
 
                 this.backendService.getShapes().subscribe(s => {
                   this.shapes = s.shapes;
+                  this.loading = false;
                 })
               });
             });

@@ -10,6 +10,12 @@
     <button mat-raised-button color="accent" type="button" (click)="addUserCrystal(2)">Add to your wish list</button>
 </form>
 
+<div *ngIf="loading" class="logged-wrapper">
+    <div class="spinner-wrapper">
+        <mat-spinner class="spinner"></mat-spinner>
+    </div>
+</div>
+
 <div *ngFor="let c of this.crystals">
     <div *ngIf="getUserCrystalsOfType(c.id).length">
         {{c.crystal}}
