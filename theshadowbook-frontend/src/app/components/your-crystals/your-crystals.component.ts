@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { BackendService } from 'src/app/services/backend.service';
 
 @Component({
@@ -124,5 +125,11 @@ export class YourCrystalsComponent {
     } else {
       alert('Select a crystal using the dropdown first.');
     }
+  }
+
+  saveAllUserCrystals() {
+    this.userCrystals.map((uc: { id: number; }) => {
+      this.saveUserCrystal(uc.id);
+    })
   }
 }

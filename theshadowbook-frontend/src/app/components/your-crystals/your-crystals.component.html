@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<div *ngFor="let c of this.crystals">
+<div id="crystalsDiv" *ngFor="let c of this.crystals">
     <div *ngIf="getUserCrystalsOfType(c.id).length">
         {{c.crystal}}
 
@@ -103,3 +103,5 @@
         </div>
     </div>
 </div>
+
+<button id="saveAllButton" mat-raised-button color="primary" type="button" (click)="saveAllUserCrystals()">Save All</button>

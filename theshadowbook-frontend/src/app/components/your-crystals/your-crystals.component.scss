@@ -11,3 +11,13 @@
 .individualCrystal:nth-of-type(odd) {
     background-color: lightgrey;
 }
+
+#saveAllButton {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+}
+
+#crystalsDiv {
+    width: 80%;
+}
