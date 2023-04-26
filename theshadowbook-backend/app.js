@@ -54,7 +54,7 @@ function checkAdmin(req, res, next) {
         });
 
         if (user.isAdmin) {
-          next()
+          next();
         } else {
           res.status(403).send('Unauthorized: User not an admin');
         }
@@ -69,61 +69,101 @@ function checkAdmin(req, res, next) {
 app.use('/api/user', checkAuth)
 
 app.get('/api/user/:uid', async (req, res) => {
-  let users = await models.User.findAll({
-    where: {
-      firebaseId: req.params.uid
-    }
-  });
+  let idToken = req.headers.authorization.substring(7);
+  admin.auth().verifyIdToken(idToken).then(async d => {
+    if (req.params.uid === d.uid) {
+      let users = await models.User.findAll({
+        where: {
+          firebaseId: req.params.uid
+        }
+      });
 
-  res.json({
-    user: users[0]
+      res.json({
+        user: users[0]
+      });
+    } else {
+      res.status(403).send('Unauthorized: UID does not match token.');
+    }
   });
 });
 
 app.post('/api/user', async (req, res) => {
-  await models.User.create({
-    email: req.body.email,
-    firebaseId: req.body.uid
-  })
+  let idToken = req.headers.authorization.substring(7);
+  admin.auth().verifyIdToken(idToken).then(async d => {
+    if (req.body.uid === d.uid) {
+      await models.User.create({
+        email: req.body.email,
+        firebaseId: req.body.uid
+      })
 
-  let user = await models.User.findOne({
-    where: {
-      firebaseId: req.body.uid
+      let user = await models.User.findOne({
+        where: {
+          firebaseId: req.body.uid
+        }
+      });
+
+      res.json({
+        user: user
+      });
+    } else {
+      res.status(403).send('Unauthorized: UID does not match token.');
     }
   });
-
-  res.json({
-    user: user
-  })
 });
 
 app.put('/api/user', async (req, res) => {
-  await models.User.update({
-    name: req.body.name,
-    email: req.body.email,
-    profile: req.body.profile,
-    sunSign: req.body.sunSign,
-    moonSign: req.body.moonSign,
-    risingSign: req.body.risingSign
-  }, {
-    where: {
-      id: req.body.id
+  let idToken = req.headers.authorization.substring(7);
+  admin.auth().verifyIdToken(idToken).then(async d => {
+    let user = await models.User.findOne({
+      where: {
+        firebaseId: d.uid
+      }
+    });
+
+    if (user.id === req.body.id) {
+      await models.User.update({
+        name: req.body.name,
+        email: req.body.email,
+        profile: req.body.profile,
+        sunSign: req.body.sunSign,
+        moonSign: req.body.moonSign,
+        risingSign: req.body.risingSign
+      }, {
+        where: {
+          id: req.body.id
+        }
+      });
+
+      res.json({success: true});
+    } else {
+      res.status(403).send('Unauthorized: UID does not match token.');
     }
   });
-
-  res.json({success: true});
 });
 
 app.put('/api/user/email', async (req, res) => {
-  await models.User.update({
-    email: req.body.email
-  }, {
-    where: {
-      id: req.body.id
+  let idToken = req.headers.authorization.substring(7);
+  admin.auth().verifyIdToken(idToken).then(async d => {
+    let user = await models.User.findOne({
+      where: {
+        firebaseId: d.uid
+      }
+    });
+
+    if (user.id === req.body.id) {
+      await models.User.update({
+        email: req.body.email
+      }, {
+        where: {
+          id: req.body.id
+        }
+      });
+
+      res.json({success: true});
+    } else {
+      res.status(403).send('Unauthorized: UID does not match token.');
     }
   });
-
-  res.json({success: true});
 });
 
 app.get('/api/user/checkName/:name/:id', async (req, res) => {
@@ -466,17 +506,30 @@ app.post('/api/crystals', checkAdmin, async (req, res) => {
 });
 
 app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
-  try {
-    const crystal = await models.UserCrystal.create({
-      owner: req.body.userId,
-      crystal: req.body.id,
-      status: req.body.status
+  let idToken = req.headers.authorization.substring(7);
+  admin.auth().verifyIdToken(idToken).then(async d => {
+    let user = await models.User.findOne({
+      where: {
+        firebaseId: d.uid
+      }
     });
 
-    res.json({success: true, crystal: crystal});
-  } catch (error) {
-    res.json({success: false, error: error});
-  }
+    if (user.id === req.body.userId) {
+      try {
+        const crystal = await models.UserCrystal.create({
+          owner: req.body.userId,
+          crystal: req.body.id,
+          status: req.body.status
+        });
+
+        res.json({success: true, crystal: crystal});
+      } catch (error) {
+        res.json({success: false, error: error});
+      }
+    } else {
+      res.status(403).send('Unauthorized: UID does not match token.');
+    }
+  });
 });
 
 app.get('/api/collection/crystals/:userId', async (req, res) => {
@@ -494,27 +547,46 @@ app.get('/api/collection/crystals/:userId', async (req, res) => {
 });
 
 app.put('/api/collection/crystals', checkAuth, async (req, res) => {
-  await models.UserCrystal.update({
-    id: req.body.id,
-    name: req.body.name,
-    primaryColor: req.body.primaryColor,
-    secondaryColor: req.body.secondaryColor,
-    teriaryColor: req.body.teriaryColor,
-    aura: req.body.aura,
-    sizeX: req.body.sizeX,
-    sizeY: req.body.sizeY,
-    sizeZ: req.body.sizeZ,
-    weight: req.body.weight,
-    karat: req.body.karat,
-    status: req.body.status,
-    shape: req.body.shape
-  }, {
-    where: {
-      id: req.body.id
+  let idToken = req.headers.authorization.substring(7);
+  admin.auth().verifyIdToken(idToken).then(async d => {
+    let userCrystal = await models.UserCrystal.findOne({
+      where: {
+        id: req.body.id
+      }
+    });
+
+    let user = await models.User.findOne({
+      where: {
+        firebaseId: d.uid
+      }
+    });
+
+    if (userCrystal.owner === user.id) {
+      await models.UserCrystal.update({
+        id: req.body.id,
+        name: req.body.name,
+        primaryColor: req.body.primaryColor,
+        secondaryColor: req.body.secondaryColor,
+        teriaryColor: req.body.teriaryColor,
+        aura: req.body.aura,
+        sizeX: req.body.sizeX,
+        sizeY: req.body.sizeY,
+        sizeZ: req.body.sizeZ,
+        weight: req.body.weight,
+        karat: req.body.karat,
+        status: req.body.status,
+        shape: req.body.shape
+      }, {
+        where: {
+          id: req.body.id
+        }
+      });
+
+      res.json({success: true});
+    } else {
+      res.status(403).send('Unauthorized: UID does not match token.');
     }
   });
-
-  res.json({success: true});
 });
 
 app.get('/api/cuts', async (req, res) => {
@@ -554,17 +626,36 @@ app.get('/api/statuses', async (req, res) => {
 });
 
 app.delete('/api/collection/crystals/:id', checkAuth, async (req, res) => {
-  try {
-    await models.UserCrystal.destroy({
+  let idToken = req.headers.authorization.substring(7);
+  admin.auth().verifyIdToken(idToken).then(async d => {
+    let userCrystal = await models.UserCrystal.findOne({
       where: {
-        id: req.params.id
+        id: req.body.id
       }
     });
 
-    res.json({succes: true});
-  } catch (error) {
-    res.json({success: false, error: error});
-  }
+    let user = await models.User.findOne({
+      where: {
+        firebaseId: d.uid
+      }
+    });
+
+    if (userCrystal.owner === user.id) {
+      try {
+        await models.UserCrystal.destroy({
+          where: {
+            id: req.params.id
+          }
+        });
+
+        res.json({succes: true});
+      } catch (error) {
+        res.json({success: false, error: error});
+      }
+    } else {
+      res.status(403).send('Unauthorized: UID does not match token.');
+    }
+  });
 });
 
 app.get('/api/shapes', async (req, res) => {
@@ -592,17 +683,36 @@ app.get('/api/decks', async (req, res) => {
 });
 
 app.post('/api/collection/decks/', checkAuth, async (req, res) => {
-  try {
-    const deck = await models.UserDeck.create({
-      owner: req.body.userId,
-      deck: req.body.id,
-      status: req.body.status
+  let idToken = req.headers.authorization.substring(7);
+  admin.auth().verifyIdToken(idToken).then(async d => {
+    let userDeck = await models.UserDeck.findOne({
+      where: {
+        id: req.body.id
+      }
     });
 
-    res.json({success: true, deck: deck});
-  } catch (error) {
-    res.json({success: false, error: error});
-  }
+    let user = await models.User.findOne({
+      where: {
+        firebaseId: d.uid
+      }
+    });
+
+    if (userDeck.owner === user.id) {
+      try {
+        const deck = await models.UserDeck.create({
+          owner: req.body.userId,
+          deck: req.body.id,
+          status: req.body.status
+        });
+
+        res.json({success: true, deck: deck});
+      } catch (error) {
+        res.json({success: false, error: error});
+      }
+    } else {
+      res.status(403).send('Unauthorized: UID does not match token.');
+    }
+  });
 });
 
 app.get('/api/collection/decks/:userId', async (req, res) => {
@@ -620,17 +730,36 @@ app.get('/api/collection/decks/:userId', async (req, res) => {
 });
 
 app.put('/api/collection/decks', checkAuth, async (req, res) => {
-  await models.UserDeck.update({
-    id: req.body.id,
-    name: req.body.name,
-    status: req.body.status
-  }, {
-    where: {
-      id: req.body.id
+  let idToken = req.headers.authorization.substring(7);
+  admin.auth().verifyIdToken(idToken).then(async d => {
+    let userDeck = await models.UserDeck.findOne({
+      where: {
+        id: req.body.id
+      }
+    });
+
+    let user = await models.User.findOne({
+      where: {
+        firebaseId: d.uid
+      }
+    });
+
+    if (userDeck.owner === user.id) {
+      await models.UserDeck.update({
+        id: req.body.id,
+        name: req.body.name,
+        status: req.body.status
+      }, {
+        where: {
+          id: req.body.id
+        }
+      });
+
+      res.json({success: true});
+    } else {
+      res.status(403).send('Unauthorized: UID does not match token.');
     }
   });
-
-  res.json({success: true});
 });
 
 app.get('/api/deckTypes', async (req, res) => {
