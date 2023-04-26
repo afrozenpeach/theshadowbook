@@ -147,4 +147,8 @@ export class BackendService {
       status: crystal.status
     });
   };
+
+  deleteUserCrystal(id: number) {
+    return this.http.delete<any>('/api/collection/crystals/' + id);
+  }
 }

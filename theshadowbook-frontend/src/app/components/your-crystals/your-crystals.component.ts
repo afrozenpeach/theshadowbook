@@ -71,10 +71,18 @@ export class YourCrystalsComponent {
     return this.userCrystals.filter((uc: {crystal: number;}) => uc.crystal === id);
   }
 
-  save(id: number) {
-    return this.backendService.saveUserCrystal(this.crystalForm[id].value).subscribe(s => {
+  saveUserCrystal(id: number) {
+    this.backendService.saveUserCrystal(this.crystalForm[id].value).subscribe(s => {
 
     });
+  }
+
+  deleteUserCrystal(id: number) {
+    if (confirm('Are you sure you want to delete this crystal?')) {
+      this.backendService.deleteUserCrystal(id).subscribe(s => {
+
+      });
+    }
   }
 
   saveDisabled(id: number) {

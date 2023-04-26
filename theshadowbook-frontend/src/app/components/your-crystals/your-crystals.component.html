@@ -3,7 +3,7 @@
         {{c.crystal}}
 
         <div class="individualCrystal" *ngFor="let cot of getUserCrystalsOfType(c.id)">
-            <form *ngIf="crystalForm[cot.id]" [formGroup]="crystalForm[cot.id]" (ngSubmit)="save(cot.id)">
+            <form *ngIf="crystalForm[cot.id]" [formGroup]="crystalForm[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
                 <input type="hidden" value="{{cot.id}}">
 
                 <mat-form-field>
@@ -73,6 +73,7 @@
                 </mat-form-field>
 
                 <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(cot.id)">Save</button>
+                <button mat-raised-button color="accent" type="button" (click)="deleteUserCrystal(cot.id)">Delete</button>
             </form>
         </div>
     </div>

@@ -543,4 +543,16 @@ app.get('/api/statuses', async (req, res) => {
   }
 });
 
+app.delete('/api/collection/crystals/:id', checkAuth, async (req, res) => {
+  try {
+    await models.UserCrystal.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
+});
+
 module.exports = app;
