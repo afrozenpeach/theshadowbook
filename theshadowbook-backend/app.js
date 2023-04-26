@@ -519,7 +519,9 @@ app.put('/api/collection/crystals', checkAuth, async (req, res) => {
 
 app.get('/api/cuts', async (req, res) => {
   try {
-    const cuts = await models.Cut.findAll();
+    const cuts = await models.Cut.findAll({
+      order: [['cut', 'ASC']]
+    });
 
     res.json ({succes: true, cuts: cuts});
   } catch (error) {
@@ -529,7 +531,9 @@ app.get('/api/cuts', async (req, res) => {
 
 app.get('/api/colors', async (req, res) => {
   try {
-    const colors = await models.Color.findAll();
+    const colors = await models.Color.findAll({
+      order: [['color', 'ASC']]
+    });
 
     res.json({success: true, colors: colors});
   } catch (error) {
@@ -539,7 +543,9 @@ app.get('/api/colors', async (req, res) => {
 
 app.get('/api/statuses', async (req, res) => {
   try {
-    const statuses = await models.Status.findAll();
+    const statuses = await models.Status.findAll({
+      order: [['status', 'ASC']]
+    });
 
     res.json({success: true, statuses: statuses});
   } catch (error) {
