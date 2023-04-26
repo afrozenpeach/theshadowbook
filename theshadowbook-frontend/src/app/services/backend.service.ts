@@ -187,6 +187,6 @@ export class BackendService {
   }
 
   deleteUserDeck(id: number) {
-    return this.http.delete<any>('/api/collections/decks/' + id);
+    return this.http.delete<any>('/api/collection/decks/' + id);
   }
 }
