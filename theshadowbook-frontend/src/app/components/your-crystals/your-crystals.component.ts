@@ -83,7 +83,7 @@ export class YourCrystalsComponent {
   deleteUserCrystal(id: number) {
     if (confirm('Are you sure you want to delete this crystal?')) {
       this.backendService.deleteUserCrystal(id).subscribe(s => {
-
+        this.userCrystals = this.userCrystals.filter((uc: { id: number; }) => uc.id != id);
       });
     }
   }
