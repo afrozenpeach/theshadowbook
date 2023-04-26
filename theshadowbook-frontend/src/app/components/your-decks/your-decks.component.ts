@@ -53,8 +53,8 @@ export class YourDecksComponent {
     });
   }
 
-  getUserDecksofType(id: number) {
-    return this.userDecks.filter((ud: {id: number;}) => ud.id === id);
+  getUserDecksOfType(id: number) {
+    return this.userDecks.filter((ud: {deck: number;}) => ud.deck === id);
   }
 
   saveUserDeck(id: number) {
@@ -77,12 +77,13 @@ export class YourDecksComponent {
 
   addUserDeck(status: number) {
     if (this.addDeckForm.controls['id'].value) {
-      this.backendService.addDeckToCollection(this.addDeckForm.controls['id'].value, this.user.id, status).subscribe((s: { deck: { id: number; }; crystal: { id: any; status: any; }; }) => {
+      this.backendService.addDeckToCollection(this.addDeckForm.controls['id'].value, this.user.id, status).subscribe(s => {
         this.deckForm[s.deck.id] = new FormGroup({
-          id: new FormControl(s.crystal.id),
+          id: new FormControl(s.deck.id),
           name: new FormControl(''),
-          status: new FormControl(s.crystal.status)
+          status: new FormControl(s.deck.status)
         });
+
         this.userDecks.push(s.deck);
       });
     } else {

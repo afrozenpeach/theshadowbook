@@ -12,10 +12,10 @@
     </form>
 
     <div id="decksDiv" *ngFor="let d of this.decks">
-        <div *ngIf="getUserDecksofType(d.id).length">
+        <div *ngIf="getUserDecksOfType(d.id).length">
             {{d.name}}
 
-            <div class="individualDeck" *ngFor="let dot of getUserDecksofType(d.id)">
+            <div class="individualDeck" *ngFor="let dot of getUserDecksOfType(d.id)">
                 <form *ngIf="deckForm[dot.id]" [formGroup]="deckForm[dot.id]" (ngSubmit)="saveUserDeck(dot.id)">
                     <mat-form-field>
                         <mat-label>Name</mat-label>
