@@ -10,7 +10,7 @@ export class BackendService {
   }
 
   getUser() {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
+    let user = JSON.parse(localStorage.getItem('user') ?? 'null');
 
     if (user) {
       return this.http.get<any>('/api/user/' + user.uid);
@@ -24,7 +24,7 @@ export class BackendService {
   }
 
   createUser() {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
+    let user = JSON.parse(localStorage.getItem('user') ?? 'null');
 
     return this.http.post('/api/user', {
       email: user.email,
@@ -55,7 +55,7 @@ export class BackendService {
   }
 
   isValidUserName(name: any) {
-    let user = JSON.parse(localStorage.getItem('user') ?? '');
+    let user = JSON.parse(localStorage.getItem('user') ?? 'null');
 
     return this.http.get<any>('/api/user/checkName/' + name + '/' + user.uid);
   }
@@ -116,7 +116,7 @@ export class BackendService {
     return this.http.get<any>('/api/statuses');
   }
 
-  getColors() {
+  getCrystalColors() {
     return this.http.get<any>('/api/colors');
   }
 
@@ -134,7 +134,8 @@ export class BackendService {
       weight: crystal.weight,
       karat: crystal.karat,
       status: crystal.status,
-      shape: crystal.shape
+      shape: crystal.shape,
+      subType: crystal.subType
     });
   };
 
@@ -142,7 +143,7 @@ export class BackendService {
     return this.http.delete<any>('/api/collection/crystals/' + id);
   }
 
-  getShapes() {
+  getCrystalShapes() {
     return this.http.get<any>('/api/shapes');
   }
 
@@ -188,5 +189,20 @@ export class BackendService {
 
   deleteUserDeck(id: number) {
     return this.http.delete<any>('/api/collection/decks/' + id);
+  }
+
+  getCrystalSubTypes() {
+    return this.http.get<any>('/api/crystalSubTypes');
+  }
+
+  addCrystalSubType(crystal: number, type: String) {
+    return this.http.post<any>('/api/crystalSubTypes', {
+      crystal: crystal,
+      type: type
+    });
+  }
+
+  deleteCrystalSubType(id: number) {
+    return this.http.delete<any>('/api/crystalSubTypes/' + id);
   }
 }

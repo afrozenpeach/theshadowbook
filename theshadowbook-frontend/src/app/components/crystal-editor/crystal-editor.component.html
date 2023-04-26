@@ -5,7 +5,7 @@
 
         <mat-form-field>
             <mat-label>Crystal Name</mat-label>
-            <input matInput id="crystal" formControlName="crystal">
+            <input matInput formControlName="crystal">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -56,4 +56,34 @@
         <button *ngIf="!this.crystal.name" mat-raised-button color="accent" type="button" (click)="router.navigate(['/crystals'])">Cancel</button>
         <button mat-raised-button color="primary" type="submit" [disabled]="!crystalForm.valid">Save</button>
     </form>
+</div>
+
+<div id="subTypes" *ngIf="id !== 'new'">
+    <div id="addNewSubType">
+        <form [formGroup]="addSubTypeForm" (ngSubmit)="addSubType()">
+            <input type="hidden" formControlName="crystal">
+
+            <mat-form-field>
+                <mat-label>Sub Type</mat-label>
+                <input matInput formControlName="type">
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit">Add Sub Type</button>
+        </form>
+    </div>
+
+    <div *ngFor="let s of subTypes">
+        <form [formGroup]="subTypeForm[s.id]" (ngSubmit)="saveSubType(s.id)">
+            <input type="hidden" formControlName="id">
+            <input type="hidden" formControlName="crystal">
+
+            <mat-form-field>
+                <mat-label>Sub Type</mat-label>
+                <input matInput formControlName="type">
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit">Save</button>
+            <button mat-raised-button color="accent" type="button" (click)="deleteSubType(s.id)">Delete</button>
+        </form>
+    </div>
 </div>

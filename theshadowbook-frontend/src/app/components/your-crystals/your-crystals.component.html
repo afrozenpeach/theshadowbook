@@ -19,7 +19,14 @@
                 <form *ngIf="crystalForm[cot.id]" [formGroup]="crystalForm[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
                     <mat-form-field>
                         <mat-label>Name</mat-label>
-                        <input matInput id="name" formControlName="name">
+                        <input matInput formControlName="name">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>SubType</mat-label>
+                        <mat-select formControlName="subType">
+                            <mat-option *ngFor="let s of getSubTypesOfType(c.id)" [value]="s.id">{{s.type}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
 
                     <mat-form-field appearance="fill">
@@ -60,27 +67,27 @@
 
                     <mat-form-field>
                         <mat-label>Size X (mm)</mat-label>
-                        <input matInput id="sizeX" formControlName="sizeX">
+                        <input matInput formControlName="sizeX">
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Size Y (mm)</mat-label>
-                        <input matInput id="sizeY" formControlName="sizeY">
+                        <input matInput formControlName="sizeY">
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Size Z (mm)</mat-label>
-                        <input matInput id="sizeZ" formControlName="sizeZ">
+                        <input matInput formControlName="sizeZ">
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Weight (g)</mat-label>
-                        <input matInput id="sizeZ" formControlName="sizeZ">
+                        <input matInput formControlName="sizeZ">
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>karat</mat-label>
-                        <input matInput id="sizeZ" formControlName="sizeZ">
+                        <input matInput formControlName="karat">
                     </mat-form-field>
 
                     <mat-form-field appearance="fill">
@@ -88,6 +95,11 @@
                         <mat-select formControlName="status">
                             <mat-option *ngFor="let s of statuses" [value]="s.id">{{s.status}}</mat-option>
                         </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Notes</mat-label>
+                        <textarea matInput formControlName="notes"></textarea>
                     </mat-form-field>
 
                     <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(cot.id)">Save</button>

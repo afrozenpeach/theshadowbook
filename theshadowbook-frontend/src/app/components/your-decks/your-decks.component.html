@@ -19,7 +19,7 @@
                 <form *ngIf="deckForm[dot.id]" [formGroup]="deckForm[dot.id]" (ngSubmit)="saveUserDeck(dot.id)">
                     <mat-form-field>
                         <mat-label>Name</mat-label>
-                        <input matInput id="name" formControlName="name">
+                        <input matInput formControlName="name">
                     </mat-form-field>
 
                     <mat-form-field appearance="fill">
@@ -27,6 +27,11 @@
                         <mat-select formControlName="status">
                             <mat-option *ngFor="let s of statuses" [value]="s.id">{{s.status}}</mat-option>
                         </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Notes</mat-label>
+                        <textarea matInput formControlName="notes"></textarea>
                     </mat-form-field>
 
                     <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(dot.id)">Save</button>

@@ -81,7 +81,8 @@ export class YourDecksComponent {
         this.deckForm[s.deck.id] = new FormGroup({
           id: new FormControl(s.deck.id),
           name: new FormControl(''),
-          status: new FormControl(s.deck.status)
+          status: new FormControl(s.deck.status),
+          notes: new FormControl('')
         });
 
         this.userDecks.push(s.deck);

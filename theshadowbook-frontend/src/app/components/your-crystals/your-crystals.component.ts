@@ -16,6 +16,7 @@ export class YourCrystalsComponent {
   colors: any = [];
   statuses: any = [];
   shapes: any = [];
+  subTypes: any = [];
 
   crystalForm: FormGroup[] = [];
   addCrystalForm: FormGroup = new FormGroup({
@@ -38,16 +39,20 @@ export class YourCrystalsComponent {
         this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
           this.userCrystals = uc.crystals;
 
-          this.backendService.getColors().subscribe(c => {
+          this.backendService.getCrystalColors().subscribe(c => {
             this.colors = c.colors;
 
             this.backendService.getStatuses().subscribe(s => {
               this.statuses = s.statuses;
 
-              this.backendService.getShapes().subscribe(s => {
+              this.backendService.getCrystalShapes().subscribe(s => {
                 this.shapes = s.shapes;
-                this.loading = false;
-              })
+
+                this.backendService.getCrystalSubTypes().subscribe(s => {
+                  this.subTypes = s.crystalSubTypes
+                  this.loading = false;
+                });
+              });
             });
           });
 
@@ -66,7 +71,9 @@ export class YourCrystalsComponent {
               cut: new FormControl(userCrystal.cut),
               aura: new FormControl(userCrystal.aura),
               status: new FormControl(userCrystal.status),
-              shape: new FormControl(userCrystal.shape)
+              shape: new FormControl(userCrystal.shape),
+              notes: new FormControl(userCrystal.notes),
+              subType: new FormControl(userCrystal.subType)
             });
           }
         });
@@ -76,6 +83,10 @@ export class YourCrystalsComponent {
 
   getUserCrystalsOfType(id: number) {
     return this.userCrystals.filter((uc: {crystal: number;}) => uc.crystal === id);
+  }
+
+  getSubTypesOfType(id: number) {
+    return this.subTypes.filter((s: { crystal: number; }) => s.crystal === id);
   }
 
   saveUserCrystal(id: number) {
@@ -113,7 +124,8 @@ export class YourCrystalsComponent {
           cut: new FormControl(''),
           aura: new FormControl(''),
           status: new FormControl(s.crystal.status),
-          shape: new FormControl(s.crystal.shape)
+          shape: new FormControl(s.crystal.shape),
+          subType: new FormControl(s.crystal.subType)
         });
         this.userCrystals.push(s.crystal);
       });

@@ -283,6 +283,7 @@ app.get('/api/crystals/:name', async (req, res) => {
       {as: "CrystalElements", model: sequelize.model('CrystalElement')},
       {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
       {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
+      {as: "CrystalSubTypes", model: sequelize.model('CrystalSubType')}
     ],
     order: [['crystal', 'ASC']]
   });
@@ -492,6 +493,15 @@ app.post('/api/crystals', checkAdmin, async (req, res) => {
         );
       }
 
+      for (let s of req.body.crystal.subtypes) {
+        await models.CrystalSubType.create({
+            crystal: s.crystal,
+            type: s.type
+          },
+          { transaction: t }
+        );
+      }
+
       return true;
     });
 
@@ -575,7 +585,9 @@ app.put('/api/collection/crystals', checkAuth, async (req, res) => {
         weight: req.body.weight,
         karat: req.body.karat,
         status: req.body.status,
-        shape: req.body.shape
+        shape: req.body.shape,
+        notes: req.body.notes,
+        subType: req.body.subType
       }, {
         where: {
           id: req.body.id
@@ -748,7 +760,8 @@ app.put('/api/collection/decks', checkAuth, async (req, res) => {
       await models.UserDeck.update({
         id: req.body.id,
         name: req.body.name,
-        status: req.body.status
+        status: req.body.status,
+        notes: req.body.notes
       }, {
         where: {
           id: req.body.id
@@ -1181,6 +1194,33 @@ app.delete('/api/collection/decks/:id', checkAuth, async (req, res) => {
       res.status(403).send('Unauthorized: UID does not match token.');
     }
   });
+});
+
+app.get('/api/crystalSubTypes', async (req, res) => {
+  const crystalSubTypes = await models.CrystalSubType.findAll({
+    order: [['crystal', 'ASC'], ['type', 'ASC']]
+  });
+
+  res.json({success: true, crystalSubTypes: crystalSubTypes});
+});
+
+app.post('/api/crystalSubTypes', checkAdmin, async (req, res) => {
+  const crystalSubType = await models.CrystalSubType.create({
+    crystal: req.body.crystal,
+    type: req.body.type
+  });
+
+  res.json({succes: true, crystalSubType: crystalSubType});
+});
+
+app.delete('/api/crystalSubTypes/:id', checkAdmin, async (req, res) => {
+  await models.CrystalSubType.destroy({
+    where: {
+      id: req.params.id
+    }
+  });
+
+  res.json({success: true});
 });
 
 module.exports = app;

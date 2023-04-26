@@ -34,6 +34,10 @@ module.exports = function(sequelize, DataTypes) {
         model: 'Status',
         key: 'id'
       }
+    },
+    notes: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,

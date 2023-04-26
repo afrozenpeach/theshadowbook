@@ -1,20 +1,23 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Cut', {
+  return sequelize.define('CrystalSubType', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    cut: {
+    crystal: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    type: {
       type: DataTypes.STRING(45),
-      allowNull: false,
-      unique: "cut_UNIQUE"
+      allowNull: false
     }
   }, {
     sequelize,
-    tableName: 'Cut',
+    tableName: 'CrystalSubType',
     timestamps: false,
     indexes: [
       {
@@ -34,11 +37,12 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "cut_UNIQUE",
+        name: "crystalId_typeId",
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "cut" },
+          { name: "crystal" },
+          { name: "type" },
         ]
       },
     ]

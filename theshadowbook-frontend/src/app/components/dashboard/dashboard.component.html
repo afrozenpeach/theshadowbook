@@ -3,7 +3,7 @@
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <mat-form-field>
             <mat-label>User Name</mat-label>
-            <input matInput id="name" formControlName="name">
+            <input matInput formControlName="name">
         </mat-form-field>
 
         <div *ngIf="this.userForm.controls['name'].errors?.['invalid']">That user name is already taken!</div>

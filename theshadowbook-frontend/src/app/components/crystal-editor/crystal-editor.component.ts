@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { BackendService } from 'src/app/services/backend.service';
@@ -18,6 +18,7 @@ export class CrystalEditorComponent {
   elements: any = [];
   moonPhases: any = [];
   zodiacs: any = [];
+  subTypes: any = [];
 
   crystal: any = {};
   isAdmin: boolean = false;
@@ -31,6 +32,13 @@ export class CrystalEditorComponent {
     elements: new FormControl([]),
     moonPhases: new FormControl([]),
     zodiacs: new FormControl([])
+  });
+
+  subTypeForm: FormGroup[] = [];
+
+  addSubTypeForm = new FormGroup({
+    crystal: new FormControl(''),
+    type: new FormControl('', Validators.required)
   })
 
   constructor(
@@ -71,6 +79,15 @@ export class CrystalEditorComponent {
                       if (this.id != null && this.id !== 'new') {
                         this.backendService.getCrystal(this.id).subscribe((crystal) => {
                           this.crystal = crystal.crystal;
+                          this.subTypes = this.crystal.CrystalSubTypes;
+
+                          this.crystal.CrystalSubTypes.map((s: any) => {
+                            this.subTypeForm[s.id] = new FormGroup({
+                              id: new FormControl(s.id),
+                              crystal: new FormControl(s.crystal),
+                              type: new FormControl(s.type)
+                            });
+                          });
 
                           this.crystalForm.patchValue({
                             id: this.crystal.id,
@@ -81,6 +98,10 @@ export class CrystalEditorComponent {
                             elements: this.crystal.CrystalElements.map((e: { elementId: any; }) => e.elementId),
                             moonPhases: this.crystal.CrystalMoonPhases.map((m: { moonPhaseId: any; }) => m.moonPhaseId),
                             zodiacs: this.crystal.CrystalZodiacs.map((z: { zodiacId: any; }) => z.zodiacId)
+                          });
+
+                          this.addSubTypeForm.patchValue({
+                            crystal: this.crystal.id
                           });
                         });
                       }
@@ -115,5 +136,21 @@ export class CrystalEditorComponent {
         }
       });
     }
+  }
+
+  saveSubType(id: number) {
+    return false;
+  }
+
+  addSubType() {
+    this.backendService.addCrystalSubType(parseInt(this.addSubTypeForm.controls['crystal'].value ?? ''), this.addSubTypeForm.controls['type'].value ?? '').subscribe(s => {
+      this.subTypes.push(s.crystalSubTypes);
+    });
+  }
+
+  deleteSubType(id: number) {
+    this.backendService.deleteCrystalSubType(id).subscribe(s => {
+
+    });
   }
 }

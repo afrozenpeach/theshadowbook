@@ -90,6 +90,14 @@ module.exports = function(sequelize, DataTypes) {
         model: 'CrystalShape',
         key: 'id'
       }
+    },
+    notes: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    subType: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
@@ -161,6 +169,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "shape" },
+        ]
+      },
+      {
+        name: "UserCrystal-Type_idx",
+        using: "BTREE",
+        fields: [
+          { name: "subType" },
         ]
       },
     ]

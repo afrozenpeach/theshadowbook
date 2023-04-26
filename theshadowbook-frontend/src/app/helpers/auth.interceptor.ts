@@ -23,7 +23,6 @@ export class AuthInterceptor implements HttpInterceptor {
                 };
 
                 return next.handle(authReq).pipe(catchError(err => {
-                    console.log(err);
                     if ([401, 403].includes(err.status) && this.authService.isLoggedIn) {
                         // auto logout if 401 or 403 response returned from api
                         this.authService.SignOut();
