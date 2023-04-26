@@ -17,17 +17,18 @@ export class AdminGuard {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if(this.authService.isLoggedIn !== true) {
-      this.router.navigate(['/sign-in']);
-    }
-
-    return this.backendService.getUser().pipe(map(u => {
-      if (u.isAdmin) {
-        return u.isAdmin;
-      } else {
+      if(this.authService.isLoggedIn !== true) {
         this.router.navigate(['/sign-in']);
         return false;
       }
-    }));
+
+      return this.backendService.getUser().pipe(map(u => {
+        if (u.user.isAdmin) {
+          return u.user.isAdmin;
+        } else {
+          this.router.navigate(['/sign-in']);
+          return false;
+        }
+      }));
   }
 }
