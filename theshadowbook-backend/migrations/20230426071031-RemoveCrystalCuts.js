@@ -14,7 +14,7 @@ module.exports = {
       return queryInterface.removeConstraint('UserCrystal', 'UserCrystal-Cut',
         { transaction: t }
       ).then(() => {
-        queryInterface.removeIndex('UserCrystal', 'UserCrystal-Cut_idx')
+        queryInterface.removeIndex('UserCrystal', 'UserCrystal-Cut_idx', {transaction: t})
       }).then(() => {
         queryInterface.dropTable('Cut', { transaction: t });
       }).then(() => {
