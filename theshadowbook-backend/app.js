@@ -630,7 +630,7 @@ app.delete('/api/collection/crystals/:id', checkAuth, async (req, res) => {
   admin.auth().verifyIdToken(idToken).then(async d => {
     let userCrystal = await models.UserCrystal.findOne({
       where: {
-        id: req.body.id
+        id: req.params.id
       }
     });
 
