@@ -52,7 +52,7 @@ export class DashboardComponent {
         } else {
           //Sync email addresses between firebase and mysql
           this.angularFireAuth.user.subscribe(user => {
-            if (user?.email !== this.userData.user.email) {
+            if (user && user?.email !== this.userData.user.email) {
               this.backendService.updateUserEmail({
                 id: this.userData.user.id,
                 email: user?.email
