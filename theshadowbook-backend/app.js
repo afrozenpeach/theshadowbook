@@ -308,15 +308,6 @@ app.get('/api/crystals/:name/:subType', async (req, res) => {
 
   let crystal = await models.Crystal.findOne({
     where: crystalQueryString,
-    include: [
-      {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
-      {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
-      {as: "CrystalDomains", model: sequelize.model('CrystalDomain')},
-      {as: "CrystalElements", model: sequelize.model('CrystalElement')},
-      {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
-      {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
-      {as: "CrystalSubTypes", model: sequelize.model('CrystalSubType')}
-    ],
     order: [['crystal', 'ASC']]
   });
 
@@ -333,21 +324,57 @@ app.get('/api/crystals/:name/:subType', async (req, res) => {
 
   let crystalSubType = await models.CrystalSubType.findOne({
     where: subTypeQueryString,
-    include: [
-      {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
-      {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
-      {as: "CrystalDomains", model: sequelize.model('CrystalDomain')},
-      {as: "CrystalElements", model: sequelize.model('CrystalElement')},
-      {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
-      {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
-      {as: "Crystal", model: sequelize.model('Crystal')}
-    ],
     order: [['crystal', 'ASC']]
+  });
+
+  let returnValue = crystalSubType.dataValues;
+  returnValue.Crystal = crystal.dataValues;
+
+  returnValue.CrystalChakras = await models.CrystalChakra.findAll({
+    where: {
+      crystalId: crystalSubType.id,
+      subType: null
+    }
+  });
+
+  returnValue.CrystalCleansings = await models.CrystalCleansing.findAll({
+    where: {
+      crystalId: crystalSubType.id,
+      subType: null
+    }
+  });
+
+  returnValue.CrystalDomains = await models.CrystalDomain.findAll({
+    where: {
+      crystalId: crystalSubType.id,
+      subType: null
+    }
+  });
+
+  returnValue.CrystalElements = await models.CrystalElement.findAll({
+    where: {
+      crystalId: crystalSubType.id,
+      subType: null
+    }
+  });
+
+  returnValue.CrystalMoonPhases = await models.CrystalMoonPhase.findAll({
+    where: {
+      crystalId: crystalSubType.id,
+      subType: null
+    }
+  });
+
+  returnValue.CrystalZodiacs = await models.CrystalZodiac.findAll({
+    where: {
+      crystalId: crystal.id,
+      subType: null
+    }
   });
 
   if (crystalSubType) {
     res.json({
-      crystal: crystalSubType.dataValues
+      crystal: returnValue
     });
   } else {
     res.json({
@@ -370,20 +397,58 @@ app.get('/api/crystals/:name', async (req, res) => {
   let crystal = await models.Crystal.findOne({
     where: queryString,
     include: [
-      {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
-      {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
-      {as: "CrystalDomains", model: sequelize.model('CrystalDomain')},
-      {as: "CrystalElements", model: sequelize.model('CrystalElement')},
-      {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
-      {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
       {as: "CrystalSubTypes", model: sequelize.model('CrystalSubType')}
     ],
     order: [['crystal', 'ASC']]
   });
 
+  let returnValue = crystal.dataValues;
+
+  returnValue.CrystalChakras = await models.CrystalChakra.findAll({
+    where: {
+      crystalId: crystal.id,
+      subType: null
+    }
+  });
+
+  returnValue.CrystalCleansings = await models.CrystalCleansing.findAll({
+    where: {
+      crystalId: crystal.id,
+      subType: null
+    }
+  });
+
+  returnValue.CrystalDomains = await models.CrystalDomain.findAll({
+    where: {
+      crystalId: crystal.id,
+      subType: null
+    }
+  });
+
+  returnValue.CrystalElements = await models.CrystalElement.findAll({
+    where: {
+      crystalId: crystal.id,
+      subType: null
+    }
+  });
+
+  returnValue.CrystalMoonPhases = await models.CrystalMoonPhase.findAll({
+    where: {
+      crystalId: crystal.id,
+      subType: null
+    }
+  });
+
+  returnValue.CrystalZodiacs = await models.CrystalZodiac.findAll({
+    where: {
+      crystalId: crystal.id,
+      subType: null
+    }
+  });
+
   if (crystal) {
     res.json({
-      crystal: crystal.dataValues
+      crystal: returnValue
     });
   } else {
     res.json({

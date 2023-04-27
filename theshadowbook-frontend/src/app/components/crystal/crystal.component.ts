@@ -97,4 +97,12 @@ export class CrystalComponent {
   getZodiacName(id: any) {
     return this.zodiacs.filter((f: { id: any; }) => f.id === id)[0].sign;
   }
+
+  edit() {
+    if (this.subType) {
+      this.router.navigate(['/crystal-editor/' + this.crystal.Crystal.id + '/' + this.crystal.id])
+    } else {
+      this.router.navigate(['/crystal-editor/' + this.crystal.id]);
+    }
+  }
 }

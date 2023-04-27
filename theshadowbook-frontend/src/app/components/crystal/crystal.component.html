@@ -1,4 +1,4 @@
-<h1>{{subType ? crystal.type : crystal.crystal}} {{subType ? crystal.Crystal.crystal : ''}}</h1>
+<h1 *ngIf="subType">{{subType ? crystal.type : crystal.crystal}} {{subType ? crystal.Crystal?.crystal : ''}}</h1>
 
 <div id="chakras">
     <h2>Chakras</h2>
@@ -36,5 +36,5 @@
 </div>
 
 <div *ngIf="isAdmin">
-    <button mat-raised-button color="primary" (click)="router.navigate(['/crystal-editor/' + crystal.id])">Edit Crystal</button>
+    <button mat-raised-button color="primary" (click)="edit()">Edit Crystal</button>
 </div>
