@@ -211,9 +211,9 @@ app.get('/api/crystals', async (req, res) => {
   }
 });
 
-app.get('/api/cleansings', async (req, res) => {
+app.get('/api/crystalCleansings', async (req, res) => {
   try {
-    let cleansings = await models.Cleansing.findAll({
+    let cleansings = await models.CrystalCleansing.findAll({
       order: [['cleansing', 'ASC']]
     });
 
@@ -225,9 +225,9 @@ app.get('/api/cleansings', async (req, res) => {
   }
 });
 
-app.get('/api/chakras', async (req, res) => {
+app.get('/api/crystalChakras', async (req, res) => {
   try {
-    let chakras = await models.Chakra.findAll({
+    let chakras = await models.CrystalChakra.findAll({
       order: [['chakra', 'ASC']]
     });
 
@@ -253,9 +253,9 @@ app.get('/api/domains', async (req, res) => {
   }
 });
 
-app.get('/api/elements', async (req, res) => {
+app.get('/api/cyrstalElements', async (req, res) => {
   try {
-    let elements = await models.Element.findAll({
+    let elements = await models.CrystalElement.findAll({
       order: [['element', 'ASC']]
     });
 
@@ -267,9 +267,9 @@ app.get('/api/elements', async (req, res) => {
   }
 });
 
-app.get('/api/moonPhases', async (req, res) => {
+app.get('/api/crystalMoonPhases', async (req, res) => {
   try {
-    let moonPhases = await models.MoonPhase.findAll({
+    let moonPhases = await models.CrystalMoonPhase.findAll({
       order: [['moonPhase', 'ASC']]
     });
 
@@ -633,21 +633,9 @@ app.put('/api/collection/crystals', checkAuth, async (req, res) => {
   });
 });
 
-app.get('/api/cuts', async (req, res) => {
+app.get('/api/crystalColors', async (req, res) => {
   try {
-    const cuts = await models.Cut.findAll({
-      order: [['cut', 'ASC']]
-    });
-
-    res.json ({succes: true, cuts: cuts});
-  } catch (error) {
-    res.json({success: false, error: error});
-  }
-});
-
-app.get('/api/colors', async (req, res) => {
-  try {
-    const colors = await models.Color.findAll({
+    const colors = await models.CrystalColor.findAll({
       order: [['color', 'ASC']]
     });
 
@@ -702,9 +690,9 @@ app.delete('/api/collection/crystals/:id', checkAuth, async (req, res) => {
   });
 });
 
-app.get('/api/shapes', async (req, res) => {
+app.get('/api/crystalShapes', async (req, res) => {
   try {
-    const shapes = await models.Shape.findAll({
+    const shapes = await models.CrystalShape.findAll({
       order: [['shape', 'ASC']]
     });
 

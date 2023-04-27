@@ -77,23 +77,23 @@ export class BackendService {
   }
 
   getChakras() {
-    return this.http.get<any>('/api/chakras');
+    return this.http.get<any>('/api/crystalChakras');
   }
 
   getCleansings() {
-    return this.http.get<any>('/api/cleansings');
+    return this.http.get<any>('/api/crystalCleansings');
   }
 
   getDomains() {
-    return this.http.get<any>('/api/domains');
+    return this.http.get<any>('/api/crystalDomains');
   }
 
   getElements() {
-    return this.http.get<any>('/api/elements');
+    return this.http.get<any>('/api/crystalElements');
   }
 
   getMoonPhases() {
-    return this.http.get<any>('/api/moonPhases');
+    return this.http.get<any>('/api/crystalMoonPhases');
   }
 
   addCrystalToCollection(id: number, userId: number, status: number) {
@@ -106,10 +106,6 @@ export class BackendService {
 
   getUserCrystals(userId: number) {
     return this.http.get<any>('/api/collection/crystals/' + userId);
-  }
-
-  getCuts() {
-    return this.http.get<any>('/api/cuts');
   }
 
   getStatuses() {
@@ -144,7 +140,7 @@ export class BackendService {
   }
 
   getCrystalShapes() {
-    return this.http.get<any>('/api/shapes');
+    return this.http.get<any>('/api/crystalShapes');
   }
 
   getDecks() {
