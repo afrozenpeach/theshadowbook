@@ -39,13 +39,13 @@ export class YourCrystalsComponent {
         this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
           this.userCrystals = uc.crystals;
 
-          this.backendService.getCrystalColors().subscribe(c => {
+          this.backendService.getColors().subscribe(c => {
             this.colors = c.colors;
 
             this.backendService.getStatuses().subscribe(s => {
               this.statuses = s.statuses;
 
-              this.backendService.getCrystalShapes().subscribe(s => {
+              this.backendService.getShapes().subscribe(s => {
                 this.shapes = s.shapes;
 
                 this.backendService.getCrystalSubTypes().subscribe(s => {

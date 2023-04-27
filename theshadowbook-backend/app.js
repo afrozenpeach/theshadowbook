@@ -211,9 +211,9 @@ app.get('/api/crystals', async (req, res) => {
   }
 });
 
-app.get('/api/crystalCleansings', async (req, res) => {
+app.get('/api/cleansings', async (req, res) => {
   try {
-    let cleansings = await models.CrystalCleansing.findAll({
+    let cleansings = await models.Cleansing.findAll({
       order: [['cleansing', 'ASC']]
     });
 
@@ -225,9 +225,9 @@ app.get('/api/crystalCleansings', async (req, res) => {
   }
 });
 
-app.get('/api/crystalChakras', async (req, res) => {
+app.get('/api/chakras', async (req, res) => {
   try {
-    let chakras = await models.CrystalChakra.findAll({
+    let chakras = await models.Chakra.findAll({
       order: [['chakra', 'ASC']]
     });
 
@@ -253,9 +253,9 @@ app.get('/api/domains', async (req, res) => {
   }
 });
 
-app.get('/api/cyrstalElements', async (req, res) => {
+app.get('/api/elements', async (req, res) => {
   try {
-    let elements = await models.CrystalElement.findAll({
+    let elements = await models.Element.findAll({
       order: [['element', 'ASC']]
     });
 
@@ -267,9 +267,9 @@ app.get('/api/cyrstalElements', async (req, res) => {
   }
 });
 
-app.get('/api/crystalMoonPhases', async (req, res) => {
+app.get('/api/moonPhases', async (req, res) => {
   try {
-    let moonPhases = await models.CrystalMoonPhase.findAll({
+    let moonPhases = await models.MoonPhase.findAll({
       order: [['moonPhase', 'ASC']]
     });
 
@@ -633,9 +633,9 @@ app.put('/api/collection/crystals', checkAuth, async (req, res) => {
   });
 });
 
-app.get('/api/crystalColors', async (req, res) => {
+app.get('/api/colors', async (req, res) => {
   try {
-    const colors = await models.CrystalColor.findAll({
+    const colors = await models.Color.findAll({
       order: [['color', 'ASC']]
     });
 
