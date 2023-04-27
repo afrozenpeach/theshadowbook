@@ -22,7 +22,7 @@
                         <input matInput formControlName="name">
                     </mat-form-field>
 
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" *ngIf="getSubTypesOfType(c.id).length > 0">
                         <mat-label>SubType</mat-label>
                         <mat-select formControlName="subType">
                             <mat-option *ngFor="let s of getSubTypesOfType(c.id)" [value]="s.id">{{s.type}}</mat-option>
