@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'CrystalColor',
+    tableName: 'Color',
     timestamps: false,
     indexes: [
       {
