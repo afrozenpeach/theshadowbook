@@ -113,7 +113,7 @@ export class BackendService {
   }
 
   getCrystalColors() {
-    return this.http.get<any>('/api/colors');
+    return this.http.get<any>('/api/crystalColors');
   }
 
   saveUserCrystal(crystal: any) {
