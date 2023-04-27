@@ -180,7 +180,8 @@ export class BackendService {
     return this.http.put<any>('/api/collection/decks', {
       id: deck.id,
       name: deck.name,
-      status: deck.status
+      status: deck.status,
+      notes: deck.notes
     });
   }
 
