@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { AuthService } from "../services/auth.service";
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { BackendService } from '../services/backend.service';
 @Injectable({
   providedIn: 'root'
@@ -22,13 +22,17 @@ export class AdminGuard {
         return false;
       }
 
-      return this.backendService.getUser().pipe(map(u => {
-        if (u.user.isAdmin) {
-          return u.user.isAdmin;
-        } else {
-          this.router.navigate(['/sign-in']);
-          return false;
-        }
+      return this.authService.afAuth.authState.pipe(mergeMap(user => {
+        return combineLatest([of(user), this.backendService.getUser().pipe(map(u => {
+          if (u.user.isAdmin) {
+            return u.user.isAdmin;
+          } else {
+            return false;
+          }
+        }))])
+      }),
+      map(([resultA, resultB]) => {
+          return resultB;
       }));
   }
 }
