@@ -131,6 +131,7 @@ export class BackendService {
       karat: crystal.karat,
       status: crystal.status,
       shape: crystal.shape,
+      notes: crystal.notes,
       subType: crystal.subType
     });
   };
