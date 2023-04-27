@@ -1,4 +1,4 @@
-<h1>{{crystal.crystal}}</h1>
+<h1>{{subType ? crystal.type : crystal.crystal}} {{subType ? crystal.Crystal.crystal : ''}}</h1>
 
 <div id="chakras">
     <h2>Chakras</h2>
@@ -28,6 +28,11 @@
 <div id="zodiacs">
     <h2>Zodiacs</h2>
     <p *ngFor="let c of crystal.CrystalZodiacs">{{getZodiacName(c.zodiacId)}}</p>
+</div>
+
+<div id="subTypes" *ngIf="crystal.CrystalSubTypes">
+    <h2>Subtypes</h2>
+    <p *ngFor="let c of crystal.CrystalSubTypes"><a routerLink="/crystals/{{crystal.crystal}}/{{c.type}}">{{c.type}} {{crystal.crystal}}</a></p>
 </div>
 
 <div *ngIf="isAdmin">

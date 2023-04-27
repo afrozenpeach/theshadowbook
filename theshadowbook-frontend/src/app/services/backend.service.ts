@@ -64,12 +64,20 @@ export class BackendService {
     return this.http.get<any>('/api/crystals');
   }
 
-  getCrystal(name: String) {
-    return this.http.get<any>('/api/crystals/' + name);
+  getCrystal(name: String, subType: String|null = null) {
+    if (subType === null) {
+      return this.http.get<any>('/api/crystals/' + name);
+    } else {
+      return this.http.get<any>('/api/crystals/' + name + '/' + subType);
+    }
   }
 
   updateCrystal(crystal: any) {
     return this.http.put<any>('/api/crystals/' + crystal.id, {crystal});
+  }
+
+  updateCrystalSubType(subType: any, crystal: number) {
+    return this.http.put<any>('/api/crystalSubTypes/' + subType.id, {subType, crystal});
   }
 
   createCrystal(crystal: any) {

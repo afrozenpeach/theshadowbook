@@ -10,6 +10,7 @@ import { BackendService } from 'src/app/services/backend.service';
 })
 export class CrystalComponent {
   name: String|null = '';
+  subType: String|null = '';
 
   chakras: any = [];
   cleansings: any = [];
@@ -51,11 +52,14 @@ export class CrystalComponent {
 
                 this.route.paramMap.subscribe((params: ParamMap) => {
                   this.name = params.get('name');
+                  this.subType = params.get('subType');
 
                   if (this.name != null) {
-                    this.backendService.getCrystal(this.name).subscribe((crystal) => {
+                    this.backendService.getCrystal(this.name, this.subType).subscribe((crystal) => {
                       this.crystal = crystal.crystal;
                     });
+                  } else {
+                    this.router.navigate(['/crystals']);
                   }
                 });
               });

@@ -33,21 +33,22 @@ export class YourDecksComponent {
       this.backendService.getDecks().subscribe(d => {
         this.decks = d.decks;
 
-        this.backendService.getUserDecks(this.user.id).subscribe(ud => {
-          this.userDecks = ud.decks;
+        this.backendService.getStatuses().subscribe(s => {
+          this.statuses = s.statuses;
 
-          this.backendService.getStatuses().subscribe(s => {
-            this.statuses = s.statuses;
+          this.backendService.getUserDecks(this.user.id).subscribe(ud => {
+            this.userDecks = ud.decks;
             this.loading = false;
-          });
 
-          for (let userDeck of this.userDecks) {
-            this.deckForm[userDeck.id] = new FormGroup({
-              id: new FormControl(userDeck.id),
-              name: new FormControl(userDeck.name),
-              status: new FormControl(userDeck.status)
-            });
-          }
+            for (let userDeck of this.userDecks) {
+              this.deckForm[userDeck.id] = new FormGroup({
+                id: new FormControl(userDeck.id),
+                name: new FormControl(userDeck.name),
+                status: new FormControl(userDeck.status),
+                notes: new FormControl(userDeck.notes)
+              });
+            }
+          });
         });
       });
     });

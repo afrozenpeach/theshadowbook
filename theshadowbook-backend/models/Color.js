@@ -1,20 +1,19 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('CrystalShape', {
+  return sequelize.define('Color', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    shape: {
+    color: {
       type: DataTypes.STRING(45),
-      allowNull: false,
-      unique: "shape_UNIQUE"
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'CrystalShape',
+    tableName: 'CrystalColor',
     timestamps: false,
     indexes: [
       {
@@ -31,14 +30,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
-        ]
-      },
-      {
-        name: "shape_UNIQUE",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "shape" },
         ]
       },
     ]

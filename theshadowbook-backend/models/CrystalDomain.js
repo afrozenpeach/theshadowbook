@@ -22,6 +22,14 @@ module.exports = function(sequelize, DataTypes) {
         model: 'Domain',
         key: 'id'
       }
+    },
+    subType: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'CrystalSubType',
+        key: 'id'
+      }
     }
   }, {
     sequelize,
@@ -60,6 +68,14 @@ module.exports = function(sequelize, DataTypes) {
           { name: "domainId" },
         ]
       },
+      {
+        name: "CrystalSubType-idx",
+        using: "BTREE",
+        fields: [
+          { name: 'crystalId' },
+          { name: 'subType' }
+        ]
+      }
     ]
   });
 };

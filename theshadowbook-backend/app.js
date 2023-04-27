@@ -295,6 +295,67 @@ app.get('/api/zodiac', async (req, res) => {
   }
 });
 
+app.get('/api/crystals/:name/:subType', async (req, res) => {
+  let crystalQueryString = {
+    crystal: req.params.name
+  }
+
+  if (parseInt(req.params.name)) {
+    crystalQueryString = {
+        id: req.params.name
+    };
+  }
+
+  let crystal = await models.Crystal.findOne({
+    where: crystalQueryString,
+    include: [
+      {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
+      {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
+      {as: "CrystalDomains", model: sequelize.model('CrystalDomain')},
+      {as: "CrystalElements", model: sequelize.model('CrystalElement')},
+      {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
+      {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
+      {as: "CrystalSubTypes", model: sequelize.model('CrystalSubType')}
+    ],
+    order: [['crystal', 'ASC']]
+  });
+
+  let subTypeQueryString = {
+      crystal: crystal.id,
+      type: req.params.subType
+  };
+
+  if (parseInt(req.params.subType)) {
+    subTypeQueryString = {
+        id: req.params.subType
+    };
+  }
+
+  let crystalSubType = await models.CrystalSubType.findOne({
+    where: subTypeQueryString,
+    include: [
+      {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
+      {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
+      {as: "CrystalDomains", model: sequelize.model('CrystalDomain')},
+      {as: "CrystalElements", model: sequelize.model('CrystalElement')},
+      {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
+      {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
+      {as: "Crystal", model: sequelize.model('Crystal')}
+    ],
+    order: [['crystal', 'ASC']]
+  });
+
+  if (crystalSubType) {
+    res.json({
+      crystal: crystalSubType.dataValues
+    });
+  } else {
+    res.json({
+      crystal: null
+    })
+  }
+});
+
 app.get('/api/crystals/:name', async (req, res) => {
   let queryString = {
       crystal: req.params.name
@@ -690,7 +751,7 @@ app.delete('/api/collection/crystals/:id', checkAuth, async (req, res) => {
   });
 });
 
-app.get('/api/crystalShapes', async (req, res) => {
+app.get('/api/shapes', async (req, res) => {
   try {
     const shapes = await models.CrystalShape.findAll({
       order: [['shape', 'ASC']]
@@ -1262,6 +1323,136 @@ app.delete('/api/crystalSubTypes/:id', checkAdmin, async (req, res) => {
     });
 
     res.json({success: true});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
+});
+
+app.put('/api/crystalSubTypes/:id', checkAdmin, async (req, res) => {
+  try {
+    const result = await sequelize.transaction(async (t) => {
+      await models.CrystalSubType.update(
+        { type: req.body.subType.type },
+        {
+          where: { id: req.body.subType.id },
+          transaction: t
+        },
+      );
+
+      await models.CrystalChakra.destroy(
+        {
+          where: { subType: req.body.subType.id },
+          transaction: t
+        }
+      );
+
+      for (let c of req.body.subType.chakras) {
+        await models.CrystalChakra.create(
+          {
+            crystalId: req.body.crystal,
+            subType: req.body.subType.id,
+            chakraId: c
+          },
+          { transaction: t }
+        );
+      }
+
+      await models.CrystalCleansing.destroy(
+        {
+          where: { subType: req.body.subType.id },
+          transaction: t
+        }
+      );
+
+      for (let c of req.body.subType.cleansings) {
+        await models.CrystalCleansing.create(
+          {
+            crystalId: req.body.crystal,
+            subType: req.body.subType.id,
+            cleansingId: c
+          },
+          { transaction: t }
+        );
+      }
+
+      await models.CrystalDomain.destroy(
+        {
+          where: { subType: req.body.subType.id },
+          transaction: t
+        }
+      );
+
+      for (let d of req.body.subType.domains) {
+        await models.CrystalDomain.create(
+          {
+            crystalId: req.body.crystal,
+            subType: req.body.subType.id,
+            domainId: d
+          },
+          { transaction: t }
+        );
+      }
+
+      await models.CrystalElement.destroy(
+        {
+          where: { subType: req.body.subType.id },
+          transaction: t
+        }
+      );
+
+      for (let e of req.body.subType.elements) {
+        await models.CrystalElement.create(
+          {
+            crystalId: req.body.crystal,
+            subType: req.body.subType.id,
+            elementId: e
+          },
+          { transaction: t }
+        );
+      }
+
+      await models.CrystalMoonPhase.destroy(
+        {
+          where: { subType: req.body.subType.id },
+          transaction: t
+        }
+      );
+
+      for (let m of req.body.subType.moonPhases) {
+        await models.CrystalMoonPhase.create(
+          {
+            crystalId: req.body.crystal,
+            subType: req.body.subType.id,
+            moonPhaseId: m
+          },
+          { transaction: t }
+        );
+      }
+
+      await models.CrystalZodiac.destroy(
+        {
+          where: { subType: req.body.subType.id },
+          transaction: t
+        }
+      );
+
+      for (let z of req.body.subType.zodiacs) {
+        await models.CrystalZodiac.create(
+          {
+            crystalId: req.body.crystal,
+            subType: req.body.subType.id,
+            zodiacId: z
+          },
+          { transaction: t }
+        );
+      }
+
+      return true;
+    });
+
+    if (result) {
+      res.json({success: true});
+    }
   } catch (error) {
     res.json({success: false, error: error});
   }
