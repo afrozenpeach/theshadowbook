@@ -585,26 +585,11 @@ app.post('/api/crystals', checkAdmin, async (req, res) => {
           { transaction: t }
         );
       }
-
-      for (let s of req.body.crystal.subtypes) {
-        await models.CrystalSubType.create({
-            crystal: s.crystal,
-            type: s.type
-          },
-          { transaction: t }
-        );
-      }
-
-      return true;
     });
 
-    if (result) {
-      res.json({success: true});
-    } else {
-      res.json({success: false});
-    }
+    res.json({success: true});
   } catch (error) {
-    res.json({success: false, error: error});
+    res.status('500').json({success: false, error: error});
   }
 });
 
