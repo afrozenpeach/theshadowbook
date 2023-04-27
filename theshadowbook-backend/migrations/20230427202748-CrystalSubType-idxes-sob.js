@@ -90,7 +90,7 @@ module.exports = {
       await queryInterface.addIndex('CrystalElement', ['crystalId', 'elementId', 'subType'], {
         unique: true
       }, { transaction: t })
-      await queryInterface.addIndex('CrystalMoonPHase', ['crystalId', 'moonPhaseId', 'subType'], {
+      await queryInterface.addIndex('CrystalMoonPhase', ['crystalId', 'moonPhaseId', 'subType'], {
         unique: true
       }, { transaction: t })
       await queryInterface.addIndex('CrystalZodiac', ['crystalId', 'zodiacId', 'subType'], {
