@@ -753,7 +753,7 @@ app.delete('/api/collection/crystals/:id', checkAuth, async (req, res) => {
 
 app.get('/api/shapes', async (req, res) => {
   try {
-    const shapes = await models.CrystalShape.findAll({
+    const shapes = await models.Shape.findAll({
       order: [['shape', 'ASC']]
     });
 
