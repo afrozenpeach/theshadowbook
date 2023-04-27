@@ -167,100 +167,132 @@ app.put('/api/user/email', async (req, res) => {
 });
 
 app.get('/api/user/checkName/:name/:id', async (req, res) => {
-  let users = await models.User.findAll({
-    attributes: ['name', 'firebaseid'],
-    where: {
-      [Op.and]: [
-        { name: req.params.name },
-        {
-          firebaseid: {
-            [Op.ne]: req.params.id
+  try {
+    let users = await models.User.findAll({
+      attributes: ['name', 'firebaseid'],
+      where: {
+        [Op.and]: [
+          { name: req.params.name },
+          {
+            firebaseid: {
+              [Op.ne]: req.params.id
+            }
           }
-        }
-      ]
-    }
-  });
+        ]
+      }
+    });
 
-  res.json({
-    isValid: users.length === 0
-  });
+    res.json({
+      isValid: users.length === 0
+    });
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.get('/api/crystals', async (req, res) => {
-  let crystals = await models.Crystal.findAll({
-    include: [
-      {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
-      {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
-      {as: "CrystalDomains", model: sequelize.model('CrystalDomain')},
-      {as: "CrystalElements", model: sequelize.model('CrystalElement')},
-      {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
-      {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
-    ]
-  });
+  try {
+    let crystals = await models.Crystal.findAll({
+      include: [
+        {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
+        {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
+        {as: "CrystalDomains", model: sequelize.model('CrystalDomain')},
+        {as: "CrystalElements", model: sequelize.model('CrystalElement')},
+        {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
+        {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
+      ]
+    });
 
-  res.json({
-    crystals: crystals.map((c) => c.dataValues)
-  });
+    res.json({
+      crystals: crystals.map((c) => c.dataValues)
+    });
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.get('/api/cleansings', async (req, res) => {
-  let cleansings = await models.Cleansing.findAll({
-    order: [['cleansing', 'ASC']]
-  });
+  try {
+    let cleansings = await models.Cleansing.findAll({
+      order: [['cleansing', 'ASC']]
+    });
 
-  res.json({
-    cleansings: cleansings.map((c) => c.dataValues)
-  });
+    res.json({
+      cleansings: cleansings.map((c) => c.dataValues)
+    });
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.get('/api/chakras', async (req, res) => {
-  let chakras = await models.Chakra.findAll({
-    order: [['chakra', 'ASC']]
-  });
+  try {
+    let chakras = await models.Chakra.findAll({
+      order: [['chakra', 'ASC']]
+    });
 
-  res.json({
-    chakras: chakras.map((c) => c.dataValues)
-  });
+    res.json({
+      chakras: chakras.map((c) => c.dataValues)
+    });
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.get('/api/domains', async (req, res) => {
-  let domains = await models.Domain.findAll({
-    order: [['domain', 'ASC']]
-  });
+  try {
+    let domains = await models.Domain.findAll({
+      order: [['domain', 'ASC']]
+    });
 
-  res.json({
-    domains: domains.map((d) => d.dataValues)
-  });
+    res.json({
+      domains: domains.map((d) => d.dataValues)
+    });
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.get('/api/elements', async (req, res) => {
-  let elements = await models.Element.findAll({
-    order: [['element', 'ASC']]
-  });
+  try {
+    let elements = await models.Element.findAll({
+      order: [['element', 'ASC']]
+    });
 
-  res.json({
-    elements: elements.map((e) => e.dataValues)
-  });
+    res.json({
+      elements: elements.map((e) => e.dataValues)
+    });
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.get('/api/moonPhases', async (req, res) => {
-  let moonPhases = await models.MoonPhase.findAll({
-    order: [['moonPhase', 'ASC']]
-  });
+  try {
+    let moonPhases = await models.MoonPhase.findAll({
+      order: [['moonPhase', 'ASC']]
+    });
 
-  res.json({
-    moonPhases: moonPhases.map((m) => m.dataValues)
-  });
+    res.json({
+      moonPhases: moonPhases.map((m) => m.dataValues)
+    });
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.get('/api/zodiac', async (req, res) => {
-  let zodiacs = await models.Zodiac.findAll({
-    order: [['sign', 'ASC']]
-  });
+  try {
+    let zodiacs = await models.Zodiac.findAll({
+      order: [['sign', 'ASC']]
+    });
 
-  res.json({
-    zodiacs: zodiacs.map((z) => z.dataValues)
-  });
+    res.json({
+      zodiacs: zodiacs.map((z) => z.dataValues)
+    });
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.get('/api/crystals/:name', async (req, res) => {
@@ -776,363 +808,375 @@ app.put('/api/collection/decks', checkAuth, async (req, res) => {
 });
 
 app.get('/api/deckTypes', async (req, res) => {
-  let deckTypes = await models.DeckType.findAll({
-    order: [['type', 'ASC']]
-  });
+  try {
+    let deckTypes = await models.DeckType.findAll({
+      order: [['type', 'ASC']]
+    });
 
-  res.json({success: true, deckTypes: deckTypes});
+    res.json({success: true, deckTypes: deckTypes});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.post('/api/decks', checkAdmin, async (req, res) => {
-  let deck = await models.Deck.create({
-    name: req.body.deck.name,
-    author: req.body.deck.author,
-    artist: req.body.deck.artist,
-    publisher: req.body.deck.publisher,
-    type: req.body.deck.type
-  });
+  try {
+    let deck = await models.Deck.create({
+      name: req.body.deck.name,
+      author: req.body.deck.author,
+      artist: req.body.deck.artist,
+      publisher: req.body.deck.publisher,
+      type: req.body.deck.type
+    });
 
-  if (req.body.deck.type === 1) {
-    await models.Card.bulkCreate([
-      {
-        deck: deck.id,
-        name: 'The Fool'
-      },
-      {
-        deck: deck.id,
-        name: 'The Magician'
-      },
-      {
-        deck: deck.id,
-        name: 'The High Priestess'
-      },
-      {
-        deck: deck.id,
-        name: 'The Empress'
-      },
-      {
-        deck: deck.id,
-        name: 'The Emperor'
-      },
-      {
-        deck: deck.id,
-        name: 'The Hierophant'
-      },
-      {
-        deck: deck.id,
-        name: 'The Lovers'
-      },
-      {
-        deck: deck.id,
-        name: 'The Chariot'
-      },
-      {
-        deck: deck.id,
-        name: 'Strength'
-      },
-      {
-        deck: deck.id,
-        name: 'The Hermit'
-      },
-      {
-        deck: deck.id,
-        name: 'The Wheel of Fortune'
-      },
-      {
-        deck: deck.id,
-        name: 'Justice'
-      },
-      {
-        deck: deck.id,
-        name: 'The Hanged Man'
-      },
-      {
-        deck: deck.id,
-        name: 'Death'
-      },
-      {
-        deck: deck.id,
-        name: 'Temperance'
-      },
-      {
-        deck: deck.id,
-        name: 'The Devil'
-      },
-      {
-        deck: deck.id,
-        name: 'The Tower'
-      },
-      {
-        deck: deck.id,
-        name: 'The Star'
-      },
-      {
-        deck: deck.id,
-        name: 'The Moon'
-      },
-      {
-        deck: deck.id,
-        name: 'The Sun'
-      },
-      {
-        deck: deck.id,
-        name: 'Judgment'
-      },
-      {
-        deck: deck.id,
-        name: 'The World'
-      },
-      {
-        deck: deck.id,
-        name: 'Ace of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Two of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Three of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Four of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Five of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Six of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Seven of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Eight of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Nine of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Ten of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Page of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Knight of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Queen of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'King of Wands'
-      },
-      {
-        deck: deck.id,
-        name: 'Ace of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Two of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Three of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Four of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Five of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Six of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Seven of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Eight of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Nine of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Ten of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Page of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Knight of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Queen of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'King of Cups'
-      },
-      {
-        deck: deck.id,
-        name: 'Ace of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Two of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Three of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Four of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Five of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Six of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Seven of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Eight of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Nine of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Ten of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Page of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Knight of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Queen of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'King of Swords'
-      },
-      {
-        deck: deck.id,
-        name: 'Ace of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Two of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Three of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Four of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Five of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Six of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Seven of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Eight of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Nine of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Ten of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Page of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Knight of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'Queen of Pentacles'
-      },
-      {
-        deck: deck.id,
-        name: 'King of Pentacles'
-      }
-    ]);
+    if (req.body.deck.type === 1) {
+      await models.Card.bulkCreate([
+        {
+          deck: deck.id,
+          name: 'The Fool'
+        },
+        {
+          deck: deck.id,
+          name: 'The Magician'
+        },
+        {
+          deck: deck.id,
+          name: 'The High Priestess'
+        },
+        {
+          deck: deck.id,
+          name: 'The Empress'
+        },
+        {
+          deck: deck.id,
+          name: 'The Emperor'
+        },
+        {
+          deck: deck.id,
+          name: 'The Hierophant'
+        },
+        {
+          deck: deck.id,
+          name: 'The Lovers'
+        },
+        {
+          deck: deck.id,
+          name: 'The Chariot'
+        },
+        {
+          deck: deck.id,
+          name: 'Strength'
+        },
+        {
+          deck: deck.id,
+          name: 'The Hermit'
+        },
+        {
+          deck: deck.id,
+          name: 'The Wheel of Fortune'
+        },
+        {
+          deck: deck.id,
+          name: 'Justice'
+        },
+        {
+          deck: deck.id,
+          name: 'The Hanged Man'
+        },
+        {
+          deck: deck.id,
+          name: 'Death'
+        },
+        {
+          deck: deck.id,
+          name: 'Temperance'
+        },
+        {
+          deck: deck.id,
+          name: 'The Devil'
+        },
+        {
+          deck: deck.id,
+          name: 'The Tower'
+        },
+        {
+          deck: deck.id,
+          name: 'The Star'
+        },
+        {
+          deck: deck.id,
+          name: 'The Moon'
+        },
+        {
+          deck: deck.id,
+          name: 'The Sun'
+        },
+        {
+          deck: deck.id,
+          name: 'Judgment'
+        },
+        {
+          deck: deck.id,
+          name: 'The World'
+        },
+        {
+          deck: deck.id,
+          name: 'Ace of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Two of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Three of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Four of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Five of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Six of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Seven of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Eight of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Nine of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Ten of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Page of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Knight of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Queen of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'King of Wands'
+        },
+        {
+          deck: deck.id,
+          name: 'Ace of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Two of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Three of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Four of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Five of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Six of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Seven of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Eight of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Nine of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Ten of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Page of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Knight of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Queen of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'King of Cups'
+        },
+        {
+          deck: deck.id,
+          name: 'Ace of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Two of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Three of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Four of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Five of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Six of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Seven of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Eight of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Nine of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Ten of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Page of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Knight of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Queen of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'King of Swords'
+        },
+        {
+          deck: deck.id,
+          name: 'Ace of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Two of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Three of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Four of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Five of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Six of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Seven of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Eight of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Nine of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Ten of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Page of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Knight of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'Queen of Pentacles'
+        },
+        {
+          deck: deck.id,
+          name: 'King of Pentacles'
+        }
+      ]);
+    }
+
+    res.json({success: true, deck: deck});
+  } catch (error) {
+    res.json({success: false, error: error});
   }
-
-  res.json({success: true, deck: deck});
 });
 
 app.get('/api/decks/:name', async (req, res) => {
-  let queryString = {
-    name: req.params.name
-  };
-
-  if (parseInt(req.params.name)) {
-    queryString = {
-        id: req.params.name
+  try {
+    let queryString = {
+      name: req.params.name
     };
+
+    if (parseInt(req.params.name)) {
+      queryString = {
+          id: req.params.name
+      };
+    }
+
+    let deck = await models.Deck.findOne({
+      where: queryString,
+      include: [
+        {as: "DeckType", model: sequelize.model('DeckType')},
+        {as: "DeckCards", model: sequelize.model('Card')}
+      ],
+      order: [['name', 'ASC']]
+    });
+
+    res.json({succes: true, deck: deck});
+  } catch (error) {
+    res.json({success: false, error: error});
   }
-
-  let deck = await models.Deck.findOne({
-    where: queryString,
-    include: [
-      {as: "DeckType", model: sequelize.model('DeckType')},
-      {as: "DeckCards", model: sequelize.model('Card')}
-    ],
-    order: [['name', 'ASC']]
-  });
-
-  res.json({succes: true, deck: deck});
 });
 
 app.put('/api/decks/:id', checkAdmin, async (req, res) => {
@@ -1197,30 +1241,42 @@ app.delete('/api/collection/decks/:id', checkAuth, async (req, res) => {
 });
 
 app.get('/api/crystalSubTypes', async (req, res) => {
-  const crystalSubTypes = await models.CrystalSubType.findAll({
-    order: [['crystal', 'ASC'], ['type', 'ASC']]
-  });
+  try {
+    const crystalSubTypes = await models.CrystalSubType.findAll({
+      order: [['crystal', 'ASC'], ['type', 'ASC']]
+    });
 
-  res.json({success: true, crystalSubTypes: crystalSubTypes});
+    res.json({success: true, crystalSubTypes: crystalSubTypes});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.post('/api/crystalSubTypes', checkAdmin, async (req, res) => {
-  const crystalSubType = await models.CrystalSubType.create({
-    crystal: req.body.crystal,
-    type: req.body.type
-  });
+  try {
+    const crystalSubType = await models.CrystalSubType.create({
+      crystal: req.body.crystal,
+      type: req.body.type
+    });
 
-  res.json({succes: true, crystalSubType: crystalSubType});
+    res.json({succes: true, crystalSubType: crystalSubType});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 app.delete('/api/crystalSubTypes/:id', checkAdmin, async (req, res) => {
-  await models.CrystalSubType.destroy({
-    where: {
-      id: req.params.id
-    }
-  });
+  try {
+    await models.CrystalSubType.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
 
-  res.json({success: true});
+    res.json({success: true});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
 });
 
 module.exports = app;
