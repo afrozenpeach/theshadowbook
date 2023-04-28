@@ -192,16 +192,7 @@ app.get('/api/user/checkName/:name/:id', async (req, res) => {
 
 app.get('/api/crystals', async (req, res) => {
   try {
-    let crystals = await models.Crystal.findAll({
-      include: [
-        {as: "CrystalChakras", model: sequelize.model('CrystalChakra')},
-        {as: "CrystalCleansings", model: sequelize.model('CrystalCleansing')},
-        {as: "CrystalDomains", model: sequelize.model('CrystalDomain')},
-        {as: "CrystalElements", model: sequelize.model('CrystalElement')},
-        {as: "CrystalMoonPhases", model: sequelize.model('CrystalMoonPhase')},
-        {as: "CrystalZodiacs", model: sequelize.model('CrystalZodiac')},
-      ]
-    });
+    let crystals = await models.Crystal.findAll();
 
     res.json({
       crystals: crystals.map((c) => c.dataValues)
