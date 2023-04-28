@@ -192,7 +192,11 @@ app.get('/api/user/checkName/:name/:id', async (req, res) => {
 
 app.get('/api/crystals', async (req, res) => {
   try {
-    let crystals = await models.Crystal.findAll();
+    let crystals = await models.Crystal.findAll({
+      include: [
+        {as: "CrystalSubTypes", model: sequelize.model('CrystalSubType')}
+      ]
+    });
 
     res.json({
       crystals: crystals.map((c) => c.dataValues)

@@ -9,4 +9,13 @@
 
     <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 1)">Add to collection</button>
     <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 2)">Add to wish list</button>
+
+    <div class="subCrystalLine" *ngFor="let s of c.CrystalSubTypes">
+        <a routerLink="/crystals/{{c.crystal}}/{{s.type}}">{{s.type}}</a>
+
+        <span *ngIf="userCrystals[c.id]">({{userCrystals[c.id]}})</span>
+
+        <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 1)">Add to collection</button>
+        <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 2)">Add to wish list</button>
+    </div>
 </div>
