@@ -323,43 +323,43 @@ app.get('/api/crystals/:name/:subType', async (req, res) => {
 
   returnValue.CrystalChakras = await models.CrystalChakra.findAll({
     where: {
-      crystalId: crystalSubType.id,
-      subType: null
+      crystalId: crystal.id,
+      subType: crystalSubType.id
     }
   });
 
   returnValue.CrystalCleansings = await models.CrystalCleansing.findAll({
     where: {
-      crystalId: crystalSubType.id,
-      subType: null
+      crystalId: crystal.id,
+      subType: crystalSubType.id
     }
   });
 
   returnValue.CrystalDomains = await models.CrystalDomain.findAll({
     where: {
-      crystalId: crystalSubType.id,
-      subType: null
+      crystalId: crystal.id,
+      subType: crystalSubType.id
     }
   });
 
   returnValue.CrystalElements = await models.CrystalElement.findAll({
     where: {
-      crystalId: crystalSubType.id,
-      subType: null
+      crystalId: crystal.id,
+      subType: crystalSubType.id
     }
   });
 
   returnValue.CrystalMoonPhases = await models.CrystalMoonPhase.findAll({
     where: {
-      crystalId: crystalSubType.id,
-      subType: null
+      crystalId: crystal.id,
+      subType: crystalSubType.id
     }
   });
 
   returnValue.CrystalZodiacs = await models.CrystalZodiac.findAll({
     where: {
       crystalId: crystal.id,
-      subType: null
+      subType: crystalSubType.id
     }
   });
 
