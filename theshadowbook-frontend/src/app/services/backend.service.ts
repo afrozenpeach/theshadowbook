@@ -108,7 +108,8 @@ export class BackendService {
     return this.http.post<any>('/api/collection/crystals', {
       id: id,
       userId: userId,
-      status: status
+      status: status,
+      subType: null
     });
   }
 

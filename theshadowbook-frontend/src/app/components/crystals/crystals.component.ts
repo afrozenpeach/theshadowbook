@@ -32,16 +32,18 @@ export class CrystalsComponent {
 
         this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
           uc.crystals.map((i: { crystal: number; subType: number; }) => {
-            if (this.userCrystals[i.crystal] > 0) {
-              this.userCrystals[i.crystal] = this.userCrystals[i.crystal] + 1;
+            if (!i.subType) {
+              if (this.userCrystals[i.crystal] > 0) {
+                this.userCrystals[i.crystal] = this.userCrystals[i.crystal] + 1;
+              } else {
+                this.userCrystals[i.crystal] = 1;
+              }
             } else {
-              this.userCrystals[i.crystal] = 1;
-            }
-
-            if (this.userCrystalSubTypes[i.subType] > 0) {
-              this.userCrystalSubTypes[i.subType] = this.userCrystalSubTypes[i.subType] + 1;
-            } else {
-              this.userCrystalSubTypes[i.subType] = 1;
+              if (this.userCrystalSubTypes[i.subType] > 0) {
+                this.userCrystalSubTypes[i.subType] = this.userCrystalSubTypes[i.subType] + 1;
+              } else {
+                this.userCrystalSubTypes[i.subType] = 1;
+              }
             }
           });
         });
