@@ -25,6 +25,7 @@
                     <mat-form-field appearance="fill" *ngIf="getSubTypesOfType(c.id).length > 0">
                         <mat-label>SubType</mat-label>
                         <mat-select formControlName="subType">
+                            <mat-option [value]="null">- None -</mat-option>
                             <mat-option *ngFor="let s of getSubTypesOfType(c.id)" [value]="s.id">{{s.type}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -46,6 +47,7 @@
                     <mat-form-field appearance="fill">
                         <mat-label>Secondary Color</mat-label>
                         <mat-select formControlName="secondaryColor">
+                            <mat-option [value]="null">- None -</mat-option>
                             <mat-option *ngFor="let c of colors" [value]="c.id">{{c.color}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -53,6 +55,7 @@
                     <mat-form-field appearance="fill">
                         <mat-label>Tertiary Color</mat-label>
                         <mat-select formControlName="tertiaryColor">
+                            <mat-option [value]="null">- None -</mat-option>
                             <mat-option *ngFor="let c of colors" [value]="c.id">{{c.color}}</mat-option>
                         </mat-select>
                     </mat-form-field>
