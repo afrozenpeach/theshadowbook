@@ -671,7 +671,7 @@ app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
           subType: req.body.subType
         });
 
-        res.json({success: true, crystal: crystal});
+        res.json({success: true, crystal: crystal.map(c => c.dataValues)});
       } catch (error) {
         res.json({success: false, error: error});
       }
@@ -689,7 +689,7 @@ app.get('/api/collection/crystals/:userId', async (req, res) => {
       }
     });
 
-    res.json({success: true, crystals: crystals});
+    res.json({success: true, crystals: crystals.map(c => c.dataValues)});
   } catch (error) {
     res.json({success: false, error: error});
   }
