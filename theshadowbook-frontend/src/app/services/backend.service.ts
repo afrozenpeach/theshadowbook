@@ -112,6 +112,15 @@ export class BackendService {
     });
   }
 
+  addCrystalSubTypeToCollection(id: number, crystalId: number, userId: number, status: number) {
+    return this.http.post<any>('/api/collection/crystals', {
+      id: crystalId,
+      userId: userId,
+      status: status,
+      subType: id
+    });
+  }
+
   getUserCrystals(userId: number) {
     return this.http.get<any>('/api/collection/crystals/' + userId);
   }
