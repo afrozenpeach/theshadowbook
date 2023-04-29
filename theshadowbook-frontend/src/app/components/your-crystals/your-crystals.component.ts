@@ -70,11 +70,11 @@ export class YourCrystalsComponent {
                   this.userCrystalsOfType[userCrystal.crystal] = [];
                 }
 
-                if (!this.userCrystalsOfType[userCrystal.crystal][userCrystal.subType ?? 'none']) {
-                  this.userCrystalsOfType[userCrystal.crystal][userCrystal.subType ?? 'none'] = [];
+                if (!this.userCrystalsOfType[userCrystal.crystal][userCrystal.subType ?? 0]) {
+                  this.userCrystalsOfType[userCrystal.crystal][userCrystal.subType ?? 0] = [];
                 }
 
-                this.userCrystalsOfType[userCrystal.crystal][userCrystal.subType ?? 'none'].push(userCrystal);
+                this.userCrystalsOfType[userCrystal.crystal][userCrystal.subType ?? 0].push(userCrystal);
               }
 
               this.userCrystals = uc.crystals;
@@ -82,7 +82,7 @@ export class YourCrystalsComponent {
               this.userCrystals.map((c: { id: string | number; }) => {
                 this.subTypesOfCrystal[c.id] = [];
                 this.subTypesOfCrystal[c.id].push({
-                  id: -1,
+                  id: 0,
                   crystal: c.id,
                   type: ''
                 });

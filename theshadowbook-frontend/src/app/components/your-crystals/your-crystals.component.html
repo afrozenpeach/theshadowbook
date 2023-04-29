@@ -16,10 +16,10 @@
             {{c.crystal}}
 
             <div *ngFor="let st of subTypesOfCrystal[c.id]">
-                <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id][st.id ?? -1]?.length">
-                    {{st.type}}
+                <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id][st.id ?? 0]?.length">
+                    <div *ngIf="st.type">{{st.type}}</div>
 
-                    <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id][st.id ?? 'none']">
+                    <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id][st.id ?? 0]">
                         <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
                             <mat-form-field>
                                 <mat-label>Name</mat-label>
