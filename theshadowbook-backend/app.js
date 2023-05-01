@@ -152,7 +152,8 @@ app.put('/api/user', async (req, res) => {
         profile: req.body.profile,
         sunSign: req.body.sunSign,
         moonSign: req.body.moonSign,
-        risingSign: req.body.risingSign
+        risingSign: req.body.risingSign,
+        isPublic: req.body.isPublic
       }, {
         where: {
           id: req.body.id
@@ -164,6 +165,26 @@ app.put('/api/user', async (req, res) => {
       res.status(403).send('Unauthorized: UID does not match token.');
     }
   });
+});
+
+app.get('/api/profile/:name', async (req, res) => {
+  try {
+    let user = await models.User.findOne({
+      where: {
+        name: {
+          [Op.like]: req.params.name
+        }
+      }
+    });
+
+    if (user?.isPublic) {
+      res.json({success: true, user: user});
+    } else {
+      res.status('404').json({});
+    }
+  } catch (error) {
+    res.status('503').json({success: false, error: error});
+  }
 });
 
 app.put('/api/user/email', async (req, res) => {
@@ -197,7 +218,11 @@ app.get('/api/user/checkName/:name/:id', async (req, res) => {
       attributes: ['name', 'firebaseid'],
       where: {
         [Op.and]: [
-          { name: req.params.name },
+          {
+            name: {
+              [Op.notLike]: req.params.name
+            }
+          },
           {
             firebaseid: {
               [Op.ne]: req.params.id

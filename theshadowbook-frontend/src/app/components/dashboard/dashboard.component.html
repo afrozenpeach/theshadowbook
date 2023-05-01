@@ -40,6 +40,14 @@
             <textarea matInput id="profile" formControlName="profile"></textarea>
         </mat-form-field>
 
+        <mat-form-field>
+            <mat-label>Is Public</mat-label>
+            <mat-select formControlName="isPublic">
+                <mat-option [value]="1">Yes</mat-option>
+                <mat-option [value]="0">No</mat-option>
+            </mat-select>
+        </mat-form-field>
+
         <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">Save</button>
     </form>
 

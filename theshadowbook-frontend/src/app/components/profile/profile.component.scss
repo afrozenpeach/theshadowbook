@@ -1,0 +1,18 @@
+.individualCrystal {
+    position: relative;
+    left: 50px;
+    padding: 10px;
+}
+
+.individualCrystal:nth-of-type(even) {
+    background-color: darkgrey;
+}
+
+.individualCrystal:nth-of-type(odd) {
+    background-color: lightgrey;
+}
+
+.crystalSubTypeGroup {
+    position: relative;
+    left: 25px;
+}

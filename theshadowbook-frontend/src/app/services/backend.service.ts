@@ -23,6 +23,10 @@ export class BackendService {
     }
   }
 
+  getProfile(userName: String) {
+    return this.http.get<any>('/api/profile/' + userName);
+  }
+
   createUser() {
     let user = JSON.parse(localStorage.getItem('user') ?? 'null');
 
@@ -39,6 +43,7 @@ export class BackendService {
       sunSign: userData.sunSign,
       moonSign: userData.moonSign,
       risingSign: userData.risingSign,
+      isPublic: userData.isPublic,
       id: userData.id
     });
   }
