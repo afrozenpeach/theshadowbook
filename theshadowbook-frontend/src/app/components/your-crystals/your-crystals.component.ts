@@ -106,8 +106,27 @@ export class YourCrystalsComponent {
 
   deleteUserCrystal(id: number) {
     if (confirm('Are you sure you want to delete this crystal?')) {
+      let userCrystal = this.userCrystals.filter((uc: { id: number; }) => uc.id === id)[0];
+
+      let crystal = this.crystals.filter((c: { id: any; }) => c.id === userCrystal.crystal)[0];
+      let parentCrystal = crystal.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === crystal.parentCrystal)[0].id : 0;
+      let parentParentCrystal = parentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentCrystal.parentCrystal)[0].id : 0;
+      let parentParentParentCrystal = parentParentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentParentCrystal.parentCrystal)[0].id : 0;
+
+      if (parentParentParentCrystal) {
+        this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals = this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals.filter((c: { id: any; }) => c.id !== userCrystal.id);
+      } else if (parentParentCrystal) {
+        this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals = this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals.filter((c: { id: any; }) => c.id !== userCrystal.id);
+      } else if (parentCrystal) {
+        this.userCrystalsOfType[parentCrystal].children[crystal.id].crystals = this.userCrystalsOfType[parentCrystal].children[crystal.id].crystals.filter((c: { id: any; }) => c.id !== userCrystal.id);
+      } else {
+        this.userCrystalsOfType[crystal.id].crystals = this.userCrystalsOfType[crystal.id].crystals.filter((c: { id: any; }) => c.id !== userCrystal.id);
+      }
+
+      this.userCrystals = this.userCrystals.filter((uc: { id: number; }) => uc.id != id);
+
       this.backendService.deleteUserCrystal(id).subscribe(s => {
-        this.userCrystals = this.userCrystals.filter((uc: { id: number; }) => uc.id != id);
+
       });
     }
   }
