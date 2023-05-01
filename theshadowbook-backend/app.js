@@ -769,20 +769,16 @@ app.post('/api/collection/decks/', checkAuth, async (req, res) => {
       }
     });
 
-    if (userDeck.owner === user.id) {
-      try {
-        const deck = await models.UserDeck.create({
-          owner: req.body.userId,
-          deck: req.body.id,
-          status: req.body.status
-        });
+    try {
+      const deck = await models.UserDeck.create({
+        owner: user.id,
+        deck: req.body.id,
+        status: req.body.status
+      });
 
-        res.json({success: true, deck: deck});
-      } catch (error) {
-        res.json({success: false, error: error});
-      }
-    } else {
-      res.status(403).send('Unauthorized: UID does not match token.');
+      res.json({success: true, deck: deck});
+    } catch (error) {
+      res.json({success: false, error: error});
     }
   });
 });
