@@ -28,7 +28,7 @@ export class CrystalEditorComponent {
   crystalForm = new FormGroup({
     id: new FormControl(''),
     crystal: new FormControl('', Validators.required),
-    parentCrystal: new FormControl(''),
+    parentCrystal: new FormControl(null),
     chakras: new FormControl([]),
     cleansings: new FormControl([]),
     domains: new FormControl([]),
