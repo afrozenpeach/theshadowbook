@@ -3,8 +3,6 @@
     <form [formGroup]="crystalForm" (ngSubmit)="save()">
         <input type="hidden" formControlName="id">
 
-        <h2 *ngIf="subTypeId && crystal.Crystal">{{crystal.Crystal.crystal}}</h2>
-
         <mat-form-field>
             <mat-label>Name</mat-label>
             <input matInput formControlName="crystal">
@@ -63,8 +61,6 @@
 <div id="subTypes" *ngIf="id !== 'new' && !subTypeId">
     <div id="addNewSubType">
         <form [formGroup]="addSubTypeForm" (ngSubmit)="addSubType()">
-            <input type="hidden" formControlName="crystal">
-
             <mat-form-field>
                 <mat-label>Sub Type</mat-label>
                 <input matInput formControlName="type">
@@ -75,9 +71,8 @@
     </div>
 
     <div *ngFor="let s of subTypes">
-        {{s.type}}
+        {{s.crystal}}
 
-        <button mat-raised-button color="primary" type="button" (click)="router.navigate(['/crystal-editor/' + crystal.id + '/' + s.id])">Edit</button>
-        <button mat-raised-button color="accent" type="button" (click)="deleteSubType(s.id)">Delete</button>
+        <button mat-raised-button color="primary" type="button" (click)="router.navigate(['/crystal-editor/' + s.id])">Edit</button>
     </div>
 </div>

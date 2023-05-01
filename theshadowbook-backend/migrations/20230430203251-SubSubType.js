@@ -27,7 +27,7 @@ module.exports = {
           field: 'id'
         }
       }, { transaction: t });
-      await queryInterface.sequelize.query("INSERT INTO theshadowbook.Crystal (crystal, parentCrystal, oldSubTypeId) SELECT cst.type + ' ' + c.crystal, cst.crystal, cst.id FROM theshadowbook.CrystalSubType cst JOIN theshadowbook.Crystal c ON cst.crystal = c.crystal");
+      await queryInterface.sequelize.query("INSERT INTO theshadowbook.Crystal (crystal, parentCrystal, oldSubTypeId) SELECT CONCAT(cst.type, ' ', c.crystal), cst.crystal, cst.id FROM theshadowbook.CrystalSubType cst JOIN theshadowbook.Crystal c ON cst.crystal = c.id");
       await queryInterface.sequelize.query("UPDATE theshadowbook.UserCrystal uc INNER JOIN theshadowbook.Crystal c ON uc.subType = c.oldSubTypeId SET uc.crystal = c.id");
       await queryInterface.sequelize.query("UPDATE theshadowbook.CrystalChakra cc INNER JOIN theshadowbook.Crystal c ON cc.subType = c.oldSubTypeId SET cc.crystalId = c.id");
       await queryInterface.sequelize.query("UPDATE theshadowbook.CrystalCleansing cc INNER JOIN theshadowbook.Crystal c ON cc.subType = c.oldSubTypeId SET cc.crystalId = c.id");
@@ -50,6 +50,7 @@ module.exports = {
       await queryInterface.removeConstraint('UserCrystal', 'UserCrystalSubType-CrystalSubType');
       await queryInterface.dropTable('CrystalSubType');
       await queryInterface.removeColumn('UserCrystal', 'subType');
+      await queryInterface.removeColumn('Crystal', 'oldSubTypeId');
     });
   },
 

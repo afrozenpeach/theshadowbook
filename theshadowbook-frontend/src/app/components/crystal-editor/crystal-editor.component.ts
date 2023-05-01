@@ -38,7 +38,7 @@ export class CrystalEditorComponent {
   subTypeForm: FormGroup[] = [];
 
   addSubTypeForm = new FormGroup({
-    crystal: new FormControl(''),
+    id: new FormControl(''),
     type: new FormControl('', Validators.required)
   })
 
@@ -75,53 +75,26 @@ export class CrystalEditorComponent {
                     this.zodiacs = zodiacs.zodiacs;
 
                     this.route.paramMap.subscribe((params: ParamMap) => {
-                      this.id = params.get('id') ?? params.get('crystalId');
+                      this.id = params.get('id');
 
                       if (this.id === null) {
                         this.router.navigate(['404']);
                       } else {
-                        this.subTypeId = params.get('subTypeId');
+                        if (this.id !== null && this.id !== 'new') {
+                          this.backendService.getCrystal(this.id).subscribe((crystal) => {
+                            this.crystal = crystal.crystal;
 
-                        if (this.subTypeId === null) {
-                          //Base crystal editor
-                          if (this.id !== null && this.id !== 'new') {
-                            this.backendService.getCrystal(this.id).subscribe((crystal) => {
-                              this.crystal = crystal.crystal;
-                              this.subTypes = this.crystal.CrystalSubTypes;
-
-                              this.crystal.CrystalSubTypes.map((s: any) => {
-                                this.subTypeForm[s.id] = new FormGroup({
-                                  id: new FormControl(s.id),
-                                  crystal: new FormControl(s.crystal),
-                                  type: new FormControl(s.type)
-                                });
-                              });
-
-                              this.crystalForm.patchValue({
-                                id: this.crystal.id,
-                                crystal: this.crystal.crystal,
-                                chakras: this.crystal.CrystalChakras.map((c: { chakraId: any; }) => c.chakraId),
-                                cleansings: this.crystal.CrystalCleansings.map((c: { cleansingId: any; }) => c.cleansingId),
-                                domains: this.crystal.CrystalDomains.map((d: { domainId: any; }) => d.domainId),
-                                elements: this.crystal.CrystalElements.map((e: { elementId: any; }) => e.elementId),
-                                moonPhases: this.crystal.CrystalMoonPhases.map((m: { moonPhaseId: any; }) => m.moonPhaseId),
-                                zodiacs: this.crystal.CrystalZodiacs.map((z: { zodiacId: any; }) => z.zodiacId)
-                              });
-
-                              this.addSubTypeForm.patchValue({
-                                crystal: this.crystal.id
+                            this.crystal.Children.map((s: any) => {
+                              this.subTypes.push(s);
+                              this.subTypeForm[s.id] = new FormGroup({
+                                id: new FormControl(s.id),
+                                type: new FormControl(s.type)
                               });
                             });
-                          }
-                        } else {
-                          //Subtype Editor
-                          this.backendService.getCrystal(this.id, this.subTypeId).subscribe((crystal) => {
-                            this.crystal = crystal.crystal;
-                            this.subTypes = [];
 
                             this.crystalForm.patchValue({
                               id: this.crystal.id,
-                              crystal: this.crystal.type,
+                              crystal: this.crystal.crystal,
                               chakras: this.crystal.CrystalChakras.map((c: { chakraId: any; }) => c.chakraId),
                               cleansings: this.crystal.CrystalCleansings.map((c: { cleansingId: any; }) => c.cleansingId),
                               domains: this.crystal.CrystalDomains.map((d: { domainId: any; }) => d.domainId),
@@ -154,7 +127,7 @@ export class CrystalEditorComponent {
           alert(success.error.errors[0].message);
         }
       });
-    } else if (this.subTypeId === null) {
+    } else {
       this.backendService.updateCrystal(this.crystalForm.value).subscribe((success) => {
         if (success.success) {
           this.router.navigate(['/crystals/' + this.crystalForm.controls['crystal'].value]);
@@ -162,53 +135,37 @@ export class CrystalEditorComponent {
           alert(success.error.errors[0].message);
         }
       });
-    } else {
-      this.backendService.updateCrystalSubType(this.crystalForm.value, this.crystal.Crystal.id).subscribe((success) => {
-        if (success.success) {
-          this.router.navigate(['/crystals/' + this.crystal.Crystal.crystal + '/' + this.crystal.type]);
-        } else {
-          alert(success.error.errors[0].message);
-        }
-      })
     }
   }
 
-  saveSubType(id: number) {
-    return false;
-  }
-
-  addSubType() {
-    this.backendService.addCrystalSubType(parseInt(this.addSubTypeForm.controls['crystal'].value ?? ''), this.addSubTypeForm.controls['type'].value ?? '').subscribe(s => {
-      this.subTypeForm[s.crystalSubType.id] = new FormGroup({
-        id: new FormControl(s.crystalSubType.id),
-        crystal: new FormControl(s.crystalSubType.crystal),
-        type: new FormControl(s.crystalSubType.type)
-      });
-
-      this.subTypes.push(s.crystalSubType);
-      this.addSubTypeForm.patchValue({
-        type: ''
-      });
-    });
-  }
-
-  deleteSubType(id: number) {
-    this.backendService.deleteCrystalSubType(id).subscribe(s => {
-      if (s.success) {
-        this.subTypes = this.subTypes.filter((f: { id: number; }) => f.id !== id);
-      } else {
-        alert('Unable to delete: ' + s.error);
-      }
-    });
-  }
-
   cancel() {
-    if (this.subTypeId) {
-      this.router.navigate(['/crystals/' + this.crystal.Crystal.crystal + '/' + this.crystal.type]);
-    } else if (this.id !== 'new') {
+    if (this.id !== 'new') {
       this.router.navigate(['/crystals/' + this.crystal.crystal]);
     } else {
       this.router.navigate(['/crystals']);
     }
+  }
+
+  addSubType() {
+    this.backendService.createCrystal({
+      crystal: this.addSubTypeForm.controls["type"].value,
+      parentCrystal: this.crystal.id,
+      chakras: [],
+      cleansings: [],
+      domains: [],
+      elements: [],
+      moonPhases: [],
+      zodiacs: []
+    }).subscribe(s => {
+      this.subTypeForm[this.crystal.id] = new FormGroup({
+        id: new FormControl(s.crystalId),
+        crystal: new FormControl(s.crystal.crystal)
+      });
+
+      this.subTypes.push(s.crystal);
+      this.addSubTypeForm.patchValue({
+        type: ''
+      });
+    });
   }
 }

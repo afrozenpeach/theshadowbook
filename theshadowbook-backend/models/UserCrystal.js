@@ -94,10 +94,6 @@ module.exports = function(sequelize, DataTypes) {
     notes: {
       type: DataTypes.TEXT,
       allowNull: true
-    },
-    subType: {
-      type: DataTypes.INTEGER,
-      allowNull: true
     }
   }, {
     sequelize,

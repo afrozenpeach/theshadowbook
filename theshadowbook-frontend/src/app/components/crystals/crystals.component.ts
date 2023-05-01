@@ -14,7 +14,6 @@ export class CrystalsComponent {
   isLoggedIn: boolean = false;
   user: any;
   userCrystals: any = [];
-  userCrystalSubTypes: any = [];
 
   constructor(
     private backendService: BackendService,
@@ -31,19 +30,11 @@ export class CrystalsComponent {
         this.user = u.user;
 
         this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
-          uc.crystals.map((i: { crystal: number; subType: number; }) => {
-            if (!i.subType) {
-              if (this.userCrystals[i.crystal] > 0) {
-                this.userCrystals[i.crystal] = this.userCrystals[i.crystal] + 1;
-              } else {
-                this.userCrystals[i.crystal] = 1;
-              }
+          uc.crystals.map((i: { crystal: number; }) => {
+            if (this.userCrystals[i.crystal] > 0) {
+              this.userCrystals[i.crystal] = this.userCrystals[i.crystal] + 1;
             } else {
-              if (this.userCrystalSubTypes[i.subType] > 0) {
-                this.userCrystalSubTypes[i.subType] = this.userCrystalSubTypes[i.subType] + 1;
-              } else {
-                this.userCrystalSubTypes[i.subType] = 1;
-              }
+              this.userCrystals[i.crystal] = 1;
             }
           });
         });
@@ -67,13 +58,7 @@ export class CrystalsComponent {
     });
   }
 
-  addToSubCollection(id: number, crystalId: number, status: number) {
-    this.backendService.addCrystalSubTypeToCollection(id, crystalId, this.user.id, status).subscribe(s => {
-      if (this.userCrystalSubTypes[id] > 0) {
-        this.userCrystalSubTypes[id] = this.userCrystalSubTypes[id] + 1;
-      } else {
-        this.userCrystalSubTypes[id] = 1;
-      }
-    });
+  getSubTypesofCrystal(id: number) {
+    return this.crystals.filter((c: { parentCrystal: number; }) => c.parentCrystal === id);
   }
 }

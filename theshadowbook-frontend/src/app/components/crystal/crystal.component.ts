@@ -52,10 +52,9 @@ export class CrystalComponent {
 
                 this.route.paramMap.subscribe((params: ParamMap) => {
                   this.name = params.get('name');
-                  this.subType = params.get('subType');
 
                   if (this.name != null) {
-                    this.backendService.getCrystal(this.name, this.subType).subscribe((crystal) => {
+                    this.backendService.getCrystal(this.name).subscribe((crystal) => {
                       this.crystal = crystal.crystal;
                     });
                   } else {

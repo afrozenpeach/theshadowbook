@@ -192,10 +192,11 @@ app.get('/api/user/checkName/:name/:id', async (req, res) => {
 
 app.get('/api/crystals', async (req, res) => {
   try {
-    let crystals = await models.Crystal.findAll();
-
+    let crystals = await models.Crystal.findAll({
+      order: [['crystal', 'ASC']]
+    });
     res.json({
-      crystals: crystals.dataValues
+      crystals: crystals.map(c => c.dataValues)
     });
   } catch (error) {
     res.json({success: false, error: error});
@@ -311,7 +312,7 @@ app.get('/api/crystals/:name', async (req, res) => {
     order: [['crystal', 'ASC']]
   });
 
-  returnValue.Children = children.dataValues;
+  returnValue.Children = children.map(c => c.dataValues) ?? [];
 
   for (let c in returnValue.Children) {
     let childrenChildren = await models.Crystal.findAll({
@@ -321,7 +322,7 @@ app.get('/api/crystals/:name', async (req, res) => {
       order: [['crystal', 'ASC']]
     });
 
-    c.Children = childrenChildren.dataValues;
+    c.Children = childrenChildren.map(c => c.dataValues) ?? [];
 
     for (let cc in c.Children) {
       let childrenChildrenChildren = await models.Crystal.findAll({
@@ -331,7 +332,7 @@ app.get('/api/crystals/:name', async (req, res) => {
         order: [['crystal', 'ASC']]
       });
 
-      c.Children = childrenChildrenChildren.dataValues;
+      cc.Children = childrenChildrenChildren.map(c => c.dataValues) ?? [];
     }
   }
 
@@ -507,9 +508,10 @@ app.put('/api/crystals/:id', checkAdmin, async (req, res) => {
 });
 
 app.post('/api/crystals', checkAdmin, async (req, res) => {
+  let crystal = null;
   try {
     const result = await sequelize.transaction(async (t) => {
-      let crystal = await models.Crystal.create(
+      crystal = await models.Crystal.create(
         {
             crystal: req.body.crystal.crystal,
             parentCrystal: req.body.crystal.parentCrystal
@@ -580,14 +582,14 @@ app.post('/api/crystals', checkAdmin, async (req, res) => {
       }
     });
 
-    res.json({success: true});
+    res.json({success: true, crystal: crystal});
   } catch (error) {
     res.status('500').json({success: false, error: error});
   }
 });
 
 app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
-  let idToken = req.headers.authorization.çstring(7);
+  let idToken = req.headers.authorization.substring(7);
   admin.auth().verifyIdToken(idToken).then(async d => {
     let user = await models.User.findOne({
       where: {

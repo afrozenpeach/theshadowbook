@@ -64,24 +64,16 @@ export class BackendService {
     return this.http.get<any>('/api/crystals');
   }
 
-  getCrystal(name: String, subType: String|null = null) {
-    if (subType === null) {
-      return this.http.get<any>('/api/crystals/' + name);
-    } else {
-      return this.http.get<any>('/api/crystals/' + name + '/' + subType);
-    }
+  getCrystal(name: String) {
+    return this.http.get<any>('/api/crystals/' + name);
   }
 
   updateCrystal(crystal: any) {
     return this.http.put<any>('/api/crystals/' + crystal.id, {crystal});
   }
 
-  updateCrystalSubType(subType: any, crystal: number) {
-    return this.http.put<any>('/api/crystalSubTypes/' + subType.id, {subType, crystal});
-  }
-
   createCrystal(crystal: any) {
-    return this.http.post<any>('/api/crystals/' + crystal.id, {crystal});
+    return this.http.post<any>('/api/crystals/', {crystal});
   }
 
   getChakras() {
@@ -108,17 +100,7 @@ export class BackendService {
     return this.http.post<any>('/api/collection/crystals', {
       id: id,
       userId: userId,
-      status: status,
-      subType: null
-    });
-  }
-
-  addCrystalSubTypeToCollection(id: number, crystalId: number, userId: number, status: number) {
-    return this.http.post<any>('/api/collection/crystals', {
-      id: crystalId,
-      userId: userId,
-      status: status,
-      subType: id
+      status: status
     });
   }
 
@@ -149,8 +131,7 @@ export class BackendService {
       karat: crystal.karat,
       status: crystal.status,
       shape: crystal.shape,
-      notes: crystal.notes,
-      subType: crystal.subType
+      notes: crystal.notes
     });
   };
 
@@ -205,20 +186,5 @@ export class BackendService {
 
   deleteUserDeck(id: number) {
     return this.http.delete<any>('/api/collection/decks/' + id);
-  }
-
-  getCrystalSubTypes() {
-    return this.http.get<any>('/api/crystalSubTypes');
-  }
-
-  addCrystalSubType(crystal: number, type: String) {
-    return this.http.post<any>('/api/crystalSubTypes', {
-      crystal: crystal,
-      type: type
-    });
-  }
-
-  deleteCrystalSubType(id: number) {
-    return this.http.delete<any>('/api/crystalSubTypes/' + id);
   }
 }

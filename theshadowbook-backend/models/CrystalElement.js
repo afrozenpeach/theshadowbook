@@ -22,14 +22,6 @@ module.exports = function(sequelize, DataTypes) {
         model: 'Element',
         key: 'id'
       }
-    },
-    subType: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'CrystalSubType',
-        key: 'id'
-      }
     }
   }, {
     sequelize,

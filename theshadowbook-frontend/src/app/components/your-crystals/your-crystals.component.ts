@@ -16,7 +16,6 @@ export class YourCrystalsComponent {
   colors: any = [];
   statuses: any = [];
   shapes: any = [];
-  subTypes: any = [];
 
   crystalForms: FormGroup[] = [];
   addCrystalForm: FormGroup = new FormGroup({
@@ -24,7 +23,6 @@ export class YourCrystalsComponent {
   });
 
   userCrystalsOfType: any = [];
-  subTypesOfCrystal: any = [];
 
   loading = true;
 
@@ -45,61 +43,117 @@ export class YourCrystalsComponent {
           this.backendService.getUser().subscribe(u => {
             this.user = u.user;
 
-            this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
-              for (let userCrystal of uc.crystals) {
-                this.crystalForms[userCrystal.id] = new FormGroup({
-                  id: new FormControl(userCrystal.id),
-                  name: new FormControl(userCrystal.name),
-                  primaryColor: new FormControl(userCrystal.primaryColor),
-                  secondaryColor: new FormControl(userCrystal.secondaryColor),
-                  tertiaryColor: new FormControl(userCrystal.tertiaryColor),
-                  sizeX: new FormControl(userCrystal.sizeX),
-                  sizeY: new FormControl(userCrystal.sizeY),
-                  sizeZ: new FormControl(userCrystal.sizeZ),
-                  weight: new FormControl(userCrystal.weight),
-                  karat: new FormControl(userCrystal.karat),
-                  cut: new FormControl(userCrystal.cut),
-                  aura: new FormControl(userCrystal.aura),
-                  status: new FormControl(userCrystal.status),
-                  shape: new FormControl(userCrystal.shape),
-                  notes: new FormControl(userCrystal.notes),
-                  subType: new FormControl(userCrystal.subType)
-                });
+            this.backendService.getCrystals().subscribe(c => {
+              this.crystals = c.crystals;
 
-                if (!this.userCrystalsOfType[userCrystal.crystal]) {
-                  this.userCrystalsOfType[userCrystal.crystal] = [];
+              this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
+                for (let userCrystal of uc.crystals) {
+                  this.crystalForms[userCrystal.id] = new FormGroup({
+                    id: new FormControl(userCrystal.id),
+                    name: new FormControl(userCrystal.name),
+                    primaryColor: new FormControl(userCrystal.primaryColor),
+                    secondaryColor: new FormControl(userCrystal.secondaryColor),
+                    tertiaryColor: new FormControl(userCrystal.tertiaryColor),
+                    sizeX: new FormControl(userCrystal.sizeX),
+                    sizeY: new FormControl(userCrystal.sizeY),
+                    sizeZ: new FormControl(userCrystal.sizeZ),
+                    weight: new FormControl(userCrystal.weight),
+                    karat: new FormControl(userCrystal.karat),
+                    cut: new FormControl(userCrystal.cut),
+                    aura: new FormControl(userCrystal.aura),
+                    status: new FormControl(userCrystal.status),
+                    shape: new FormControl(userCrystal.shape),
+                    notes: new FormControl(userCrystal.notes),
+                  });
+
+                  let crystal = this.crystals.filter((c: { id: any; }) => c.id === userCrystal.crystal)[0];
+                  let parentCrystal = crystal.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === crystal.parentCrystal)[0].id : 0;
+                  let parentParentCrystal = parentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentCrystal.parentCrystal)[0].id : 0;
+                  let parentParentParentCrystal = parentParentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentParentCrystal.parentCrystal)[0].id : 0;
+
+                  if (parentParentParentCrystal) {
+                    if (this.userCrystalsOfType[parentParentParentCrystal] === undefined) {
+                      this.userCrystalsOfType[parentParentParentCrystal] = {
+                        crystals: [],
+                        children: []
+                      };
+                    }
+
+                    if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal] === undefined) {
+                      this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal] = {
+                        crystals: [],
+                        children: []
+                      };
+                    }
+
+                    if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal] === undefined) {
+                      this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal] = {
+                        crystals: [],
+                        children: []
+                      };
+                    }
+
+                    if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id] === undefined) {
+                      this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id] = {
+                        crystals: [],
+                        children: []
+                      };
+                    }
+
+                    this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals.push(userCrystal);
+                  } else if (parentParentCrystal) {
+                    if (this.userCrystalsOfType[parentParentCrystal] === undefined) {
+                      this.userCrystalsOfType[parentParentCrystal] = {
+                        crystals: [],
+                        children: []
+                      };
+                    }
+
+                    if (this.userCrystalsOfType[parentParentCrystal].children[parentCrystal] === undefined) {
+                      this.userCrystalsOfType[parentParentCrystal].children[parentCrystal] = {
+                        crystals: [],
+                        children: []
+                      };
+                    }
+
+                    if (this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id] === undefined) {
+                      this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id] = {
+                        crystals: [],
+                        children: []
+                      };
+                    }
+
+                    this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals.push(userCrystal);
+                  } else if (parentCrystal) {
+                    if (this.userCrystalsOfType[parentCrystal] === undefined) {
+                      this.userCrystalsOfType[parentCrystal] = {
+                        crystals: [],
+                        children: []
+                      };
+                    }
+
+                    if (this.userCrystalsOfType[parentCrystal].children[crystal.id] === undefined) {
+                      this.userCrystalsOfType[parentCrystal].children[crystal.id] = {
+                        crystals: [],
+                        children: []
+                      };
+                    }
+
+                    this.userCrystalsOfType[parentCrystal].children[crystal.id].crystals.push(userCrystal);
+                  } else {
+                    if (this.userCrystalsOfType[crystal.id] === undefined) {
+                      this.userCrystalsOfType[crystal.id] = {
+                        crystals: [],
+                        children: []
+                      };
+                    }
+
+                    this.userCrystalsOfType[crystal.id].crystals.push(userCrystal);
+                  }
                 }
-
-                if (!this.userCrystalsOfType[userCrystal.crystal][userCrystal.subType ?? 0]) {
-                  this.userCrystalsOfType[userCrystal.crystal][userCrystal.subType ?? 0] = [];
-                }
-
-                this.userCrystalsOfType[userCrystal.crystal][userCrystal.subType ?? 0].push(userCrystal);
-              }
-
-              this.userCrystals = uc.crystals;
-
-              this.userCrystals.map((c: { id: string | number; }) => {
-                this.subTypesOfCrystal[c.id] = [];
-                this.subTypesOfCrystal[c.id].push({
-                  id: 0,
-                  crystal: c.id,
-                  type: ''
-                });
-              });
-
-              this.backendService.getCrystalSubTypes().subscribe(s => {
-                this.subTypes = s.crystalSubTypes
-
-                this.subTypes.map((st: {id: any; crystal: string | number; }) => {
-                  this.subTypesOfCrystal[st.crystal].push(st);
-                });
-
-                this.backendService.getCrystals().subscribe(c => {
-                  this.crystals = c.crystals;
-
-                  this.loading = false;
-                });
+                this.userCrystals = uc.crystals;
+                console.log(this.userCrystalsOfType);
+                this.loading = false;
               });
             });
           });
@@ -108,18 +162,22 @@ export class YourCrystalsComponent {
     });
   }
 
+  getCrystals() {
+    return this.crystals.filter((c: { parentCrystal: null; }) => c.parentCrystal === null);
+  }
+
+  getCrystal(id: number) {
+    return this.crystals.filter((c: { id: null; }) => c.id === id)[0];
+  }
+
   getUserCrystalsOfType(id: number) {
     return this.userCrystals.filter((uc: {crystal: number;}) => uc.crystal === id);
   }
 
   getSubTypesOfCrystal(id: number) {
-    let returnValue = this.subTypes.filter((s: { crystal: number; }) => s.crystal === id);
-    returnValue.unshift({id: null, crystal: id, type: ''});
+    let returnValue = this.crystals.filter((s: { parentCrystal: number; }) => s.parentCrystal === id);
+    returnValue.unshift({id: 0, crystal: id, type: ''});
     return returnValue;
-  }
-
-  getSubTypesOfType(id: number) {
-    return this.subTypes.filter((s: { crystal: number; }) => s.crystal === id);
   }
 
   saveUserCrystal(id: number) {
