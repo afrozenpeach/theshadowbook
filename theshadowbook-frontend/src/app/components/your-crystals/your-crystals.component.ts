@@ -66,93 +66,11 @@ export class YourCrystalsComponent {
                     notes: new FormControl(userCrystal.notes),
                   });
 
-                  let crystal = this.crystals.filter((c: { id: any; }) => c.id === userCrystal.crystal)[0];
-                  let parentCrystal = crystal.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === crystal.parentCrystal)[0].id : 0;
-                  let parentParentCrystal = parentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentCrystal.parentCrystal)[0].id : 0;
-                  let parentParentParentCrystal = parentParentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentParentCrystal.parentCrystal)[0].id : 0;
-
-                  if (parentParentParentCrystal) {
-                    if (this.userCrystalsOfType[parentParentParentCrystal] === undefined) {
-                      this.userCrystalsOfType[parentParentParentCrystal] = {
-                        crystals: [],
-                        children: []
-                      };
-                    }
-
-                    if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal] === undefined) {
-                      this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal] = {
-                        crystals: [],
-                        children: []
-                      };
-                    }
-
-                    if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal] === undefined) {
-                      this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal] = {
-                        crystals: [],
-                        children: []
-                      };
-                    }
-
-                    if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id] === undefined) {
-                      this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id] = {
-                        crystals: [],
-                        children: []
-                      };
-                    }
-
-                    this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals.push(userCrystal);
-                  } else if (parentParentCrystal) {
-                    if (this.userCrystalsOfType[parentParentCrystal] === undefined) {
-                      this.userCrystalsOfType[parentParentCrystal] = {
-                        crystals: [],
-                        children: []
-                      };
-                    }
-
-                    if (this.userCrystalsOfType[parentParentCrystal].children[parentCrystal] === undefined) {
-                      this.userCrystalsOfType[parentParentCrystal].children[parentCrystal] = {
-                        crystals: [],
-                        children: []
-                      };
-                    }
-
-                    if (this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id] === undefined) {
-                      this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id] = {
-                        crystals: [],
-                        children: []
-                      };
-                    }
-
-                    this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals.push(userCrystal);
-                  } else if (parentCrystal) {
-                    if (this.userCrystalsOfType[parentCrystal] === undefined) {
-                      this.userCrystalsOfType[parentCrystal] = {
-                        crystals: [],
-                        children: []
-                      };
-                    }
-
-                    if (this.userCrystalsOfType[parentCrystal].children[crystal.id] === undefined) {
-                      this.userCrystalsOfType[parentCrystal].children[crystal.id] = {
-                        crystals: [],
-                        children: []
-                      };
-                    }
-
-                    this.userCrystalsOfType[parentCrystal].children[crystal.id].crystals.push(userCrystal);
-                  } else {
-                    if (this.userCrystalsOfType[crystal.id] === undefined) {
-                      this.userCrystalsOfType[crystal.id] = {
-                        crystals: [],
-                        children: []
-                      };
-                    }
-
-                    this.userCrystalsOfType[crystal.id].crystals.push(userCrystal);
-                  }
+                  this.addUserCrystalOfType(userCrystal);
                 }
+
                 this.userCrystals = uc.crystals;
-                console.log(this.userCrystalsOfType);
+
                 this.loading = false;
               });
             });
@@ -218,6 +136,8 @@ export class YourCrystalsComponent {
           shape: new FormControl(s.crystal.shape),
           subType: new FormControl(s.crystal.subType)
         });
+
+        this.addUserCrystalOfType(s.crystal);
         this.userCrystals.push(s.crystal);
       });
     } else {
@@ -236,5 +156,92 @@ export class YourCrystalsComponent {
     zip(...subscriptions).subscribe(() => {
       this.loading = false;
     });
+  }
+
+  addUserCrystalOfType(userCrystal: any) {
+    let crystal = this.crystals.filter((c: { id: any; }) => c.id === userCrystal.crystal)[0];
+    let parentCrystal = crystal.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === crystal.parentCrystal)[0].id : 0;
+    let parentParentCrystal = parentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentCrystal.parentCrystal)[0].id : 0;
+    let parentParentParentCrystal = parentParentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentParentCrystal.parentCrystal)[0].id : 0;
+
+    if (parentParentParentCrystal) {
+      if (this.userCrystalsOfType[parentParentParentCrystal] === undefined) {
+        this.userCrystalsOfType[parentParentParentCrystal] = {
+          crystals: [],
+          children: []
+        };
+      }
+
+      if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal] === undefined) {
+        this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal] = {
+          crystals: [],
+          children: []
+        };
+      }
+
+      if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal] === undefined) {
+        this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal] = {
+          crystals: [],
+          children: []
+        };
+      }
+
+      if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id] === undefined) {
+        this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id] = {
+          crystals: [],
+          children: []
+        };
+      }
+
+      this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals.push(userCrystal);
+    } else if (parentParentCrystal) {
+      if (this.userCrystalsOfType[parentParentCrystal] === undefined) {
+        this.userCrystalsOfType[parentParentCrystal] = {
+          crystals: [],
+          children: []
+        };
+      }
+
+      if (this.userCrystalsOfType[parentParentCrystal].children[parentCrystal] === undefined) {
+        this.userCrystalsOfType[parentParentCrystal].children[parentCrystal] = {
+          crystals: [],
+          children: []
+        };
+      }
+
+      if (this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id] === undefined) {
+        this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id] = {
+          crystals: [],
+          children: []
+        };
+      }
+
+      this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals.push(userCrystal);
+    } else if (parentCrystal) {
+      if (this.userCrystalsOfType[parentCrystal] === undefined) {
+        this.userCrystalsOfType[parentCrystal] = {
+          crystals: [],
+          children: []
+        };
+      }
+
+      if (this.userCrystalsOfType[parentCrystal].children[crystal.id] === undefined) {
+        this.userCrystalsOfType[parentCrystal].children[crystal.id] = {
+          crystals: [],
+          children: []
+        };
+      }
+
+      this.userCrystalsOfType[parentCrystal].children[crystal.id].crystals.push(userCrystal);
+    } else {
+      if (this.userCrystalsOfType[crystal.id] === undefined) {
+        this.userCrystalsOfType[crystal.id] = {
+          crystals: [],
+          children: []
+        };
+      }
+
+      this.userCrystalsOfType[crystal.id].crystals.push(userCrystal);
+    }
   }
 }
