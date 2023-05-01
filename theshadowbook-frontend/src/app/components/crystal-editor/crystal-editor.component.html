@@ -73,6 +73,6 @@
     <div *ngFor="let s of subTypes">
         {{s.crystal}}
 
-        <button mat-raised-button color="primary" type="button" (click)="router.navigate(['/crystal-editor/' + s.id])">Edit</button>
+        <button mat-raised-button color="primary" type="button" (click)="edit(s.id)">Edit</button>
     </div>
 </div>

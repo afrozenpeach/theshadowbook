@@ -168,4 +168,9 @@ export class CrystalEditorComponent {
       });
     });
   }
+
+  edit(id: number) {
+    this.subTypes = [];
+    this.router.navigate(['/crystal-editor/' + id]);
+  }
 }
