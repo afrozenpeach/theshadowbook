@@ -35,12 +35,6 @@ module.exports = {
       await queryInterface.sequelize.query("UPDATE theshadowbook.CrystalElement cc INNER JOIN theshadowbook.Crystal c ON cc.subType = c.oldSubTypeId SET cc.crystalId = c.id");
       await queryInterface.sequelize.query("UPDATE theshadowbook.CrystalMoonPhase cc INNER JOIN theshadowbook.Crystal c ON cc.subType = c.oldSubTypeId SET cc.crystalId = c.id");
       await queryInterface.sequelize.query("UPDATE theshadowbook.CrystalZodiac cc INNER JOIN theshadowbook.Crystal c ON cc.subType = c.oldSubTypeId SET cc.crystalId = c.id");
-      await queryInterface.sequelize.query("DELETE FROM theshadowbook.CrystalChakra WHERE subType IS NOT NULL");
-      await queryInterface.sequelize.query("DELETE FROM theshadowbook.CrystalCleansing WHERE subType IS NOT NULL");
-      await queryInterface.sequelize.query("DELETE FROM theshadowbook.CrystalDomain WHERE subType IS NOT NULL");
-      await queryInterface.sequelize.query("DELETE FROM theshadowbook.CrystalElement WHERE subType IS NOT NULL");
-      await queryInterface.sequelize.query("DELETE FROM theshadowbook.CrystalMoonPhase WHERE subType IS NOT NULL");
-      await queryInterface.sequelize.query("DELETE FROM theshadowbook.CrystalZodiac WHERE subType IS NOT NULL");
       await queryInterface.removeColumn('CrystalChakra', 'subType');
       await queryInterface.removeColumn('CrystalCleansing', 'subType');
       await queryInterface.removeColumn('CrystalDomain', 'subType');
