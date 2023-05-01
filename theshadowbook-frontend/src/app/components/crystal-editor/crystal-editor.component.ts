@@ -13,6 +13,7 @@ export class CrystalEditorComponent {
   id: String|null = '';
   subTypeId: String|null = '';
 
+  crystals: any = [];
   chakras: any = [];
   cleansings: any = [];
   domains: any = [];
@@ -27,6 +28,7 @@ export class CrystalEditorComponent {
   crystalForm = new FormGroup({
     id: new FormControl(''),
     crystal: new FormControl('', Validators.required),
+    parentCrystal: new FormControl(''),
     chakras: new FormControl([]),
     cleansings: new FormControl([]),
     domains: new FormControl([]),
@@ -56,55 +58,59 @@ export class CrystalEditorComponent {
       this.isAdmin = isAdmin;
 
       if (this.isAdmin) {
-        this.backendService.getChakras().subscribe(chakras => {
-          this.chakras = chakras.chakras;
+        this.backendService.getCrystals().subscribe(crystals => {
+          this.crystals = crystals.crystals;
 
-          this.backendService.getCleansings().subscribe(cleansings => {
-            this.cleansings = cleansings.cleansings;
+          this.backendService.getChakras().subscribe(chakras => {
+            this.chakras = chakras.chakras;
 
-            this.backendService.getDomains().subscribe(domains => {
-              this.domains = domains.domains;
+            this.backendService.getCleansings().subscribe(cleansings => {
+              this.cleansings = cleansings.cleansings;
 
-              this.backendService.getElements().subscribe(elements => {
-                this.elements = elements.elements;
+              this.backendService.getDomains().subscribe(domains => {
+                this.domains = domains.domains;
 
-                this.backendService.getMoonPhases().subscribe(moonPhases => {
-                  this.moonPhases = moonPhases.moonPhases;
+                this.backendService.getElements().subscribe(elements => {
+                  this.elements = elements.elements;
 
-                  this.backendService.getZodiacs().subscribe(zodiacs => {
-                    this.zodiacs = zodiacs.zodiacs;
+                  this.backendService.getMoonPhases().subscribe(moonPhases => {
+                    this.moonPhases = moonPhases.moonPhases;
 
-                    this.route.paramMap.subscribe((params: ParamMap) => {
-                      this.id = params.get('id');
+                    this.backendService.getZodiacs().subscribe(zodiacs => {
+                      this.zodiacs = zodiacs.zodiacs;
 
-                      if (this.id === null) {
-                        this.router.navigate(['404']);
-                      } else {
-                        if (this.id !== null && this.id !== 'new') {
-                          this.backendService.getCrystal(this.id).subscribe((crystal) => {
-                            this.crystal = crystal.crystal;
+                      this.route.paramMap.subscribe((params: ParamMap) => {
+                        this.id = params.get('id');
 
-                            this.crystal.Children.map((s: any) => {
-                              this.subTypes.push(s);
-                              this.subTypeForm[s.id] = new FormGroup({
-                                id: new FormControl(s.id),
-                                type: new FormControl(s.type)
+                        if (this.id === null) {
+                          this.router.navigate(['404']);
+                        } else {
+                          if (this.id !== null && this.id !== 'new') {
+                            this.backendService.getCrystal(this.id).subscribe((crystal) => {
+                              this.crystal = crystal.crystal;
+
+                              this.crystal.Children.map((s: any) => {
+                                this.subTypes.push(s);
+                                this.subTypeForm[s.id] = new FormGroup({
+                                  id: new FormControl(s.id),
+                                  type: new FormControl(s.type)
+                                });
+                              });
+
+                              this.crystalForm.patchValue({
+                                id: this.crystal.id,
+                                crystal: this.crystal.crystal,
+                                chakras: this.crystal.CrystalChakras.map((c: { chakraId: any; }) => c.chakraId),
+                                cleansings: this.crystal.CrystalCleansings.map((c: { cleansingId: any; }) => c.cleansingId),
+                                domains: this.crystal.CrystalDomains.map((d: { domainId: any; }) => d.domainId),
+                                elements: this.crystal.CrystalElements.map((e: { elementId: any; }) => e.elementId),
+                                moonPhases: this.crystal.CrystalMoonPhases.map((m: { moonPhaseId: any; }) => m.moonPhaseId),
+                                zodiacs: this.crystal.CrystalZodiacs.map((z: { zodiacId: any; }) => z.zodiacId)
                               });
                             });
-
-                            this.crystalForm.patchValue({
-                              id: this.crystal.id,
-                              crystal: this.crystal.crystal,
-                              chakras: this.crystal.CrystalChakras.map((c: { chakraId: any; }) => c.chakraId),
-                              cleansings: this.crystal.CrystalCleansings.map((c: { cleansingId: any; }) => c.cleansingId),
-                              domains: this.crystal.CrystalDomains.map((d: { domainId: any; }) => d.domainId),
-                              elements: this.crystal.CrystalElements.map((e: { elementId: any; }) => e.elementId),
-                              moonPhases: this.crystal.CrystalMoonPhases.map((m: { moonPhaseId: any; }) => m.moonPhaseId),
-                              zodiacs: this.crystal.CrystalZodiacs.map((z: { zodiacId: any; }) => z.zodiacId)
-                            });
-                          });
+                          }
                         }
-                      }
+                      });
                     });
                   });
                 });

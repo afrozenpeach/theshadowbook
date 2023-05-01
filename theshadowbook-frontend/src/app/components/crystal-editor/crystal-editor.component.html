@@ -8,6 +8,14 @@
             <input matInput formControlName="crystal">
         </mat-form-field>
 
+        <mat-form-field appearance="fill" *ngIf="id === 'new'">
+            <mat-label>Parent Crystal</mat-label>
+            <mat-select formControlName="parentCrystal">
+                <mat-option [value]="null">- None -</mat-option>
+                <mat-option *ngFor="let c of crystals" [value]="c.id">{{c.crystal}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
         <mat-form-field appearance="fill">
             <mat-label>Chakras</mat-label>
             <mat-select formControlName="chakras" multiple>
