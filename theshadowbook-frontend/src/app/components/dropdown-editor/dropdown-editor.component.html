@@ -1,0 +1,19 @@
+<div class="dropdownEditor">
+    <form [formGroup]="addColorForm" (ngSubmit)="addColor()">
+        <mat-form-field>
+            <mat-label>Color</mat-label>
+            <input matInput formControlName="color">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Add Color</button>
+    </form>
+
+    <form [formGroup]="addDomainForm" (ngSubmit)="addDomain()">
+        <mat-form-field>
+            <mat-label>Domain</mat-label>
+            <input matInput formControlName="domain">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Add Domain</button>
+    </form>
+</div>

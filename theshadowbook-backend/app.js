@@ -66,7 +66,32 @@ function checkAdmin(req, res, next) {
   }
 }
 
-app.use('/api/user', checkAuth)
+app.use('/api/user', checkAuth);
+app.use('/api/admin', checkAdmin);
+
+app.post('/api/admin/colors', async (req, res) => {
+  try {
+    await models.Color.create({
+      color: req.body.color
+    })
+
+    res.json({success: true});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
+});
+
+app.post('/api/admin/domains', async (req, res) => {
+  try {
+    await models.Domain.create({
+      domain: req.body.domain
+    })
+
+    res.json({success: true});
+  } catch (error) {
+    res.json({success: false, error: error});
+  }
+});
 
 app.get('/api/user/:uid', async (req, res) => {
   let idToken = req.headers.authorization.substring(7);

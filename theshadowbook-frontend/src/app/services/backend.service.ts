@@ -187,4 +187,12 @@ export class BackendService {
   deleteUserDeck(id: number) {
     return this.http.delete<any>('/api/collection/decks/' + id);
   }
+
+  addColor(color: String) {
+    return this.http.post<any>('/api/admin/colors', {color})
+  }
+
+  addDomain(domain: String) {
+    return this.http.post<any>('/api/admin/domains', {domain});
+  }
 }

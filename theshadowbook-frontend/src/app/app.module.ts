@@ -32,6 +32,7 @@ import { YourDecksComponent } from './components/your-decks/your-decks.component
 import { DecksComponent } from './components/decks/decks.component';
 import { DeckComponent } from './components/deck/deck.component';
 import { DeckEditorComponent } from './components/deck-editor/deck-editor.component';
+import { DropdownEditorComponent } from './components/dropdown-editor/dropdown-editor.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { DeckEditorComponent } from './components/deck-editor/deck-editor.compon
     YourDecksComponent,
     DecksComponent,
     DeckComponent,
-    DeckEditorComponent
+    DeckEditorComponent,
+    DropdownEditorComponent
   ],
   imports: [
     BrowserModule,

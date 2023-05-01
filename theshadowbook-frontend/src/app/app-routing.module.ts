@@ -17,6 +17,7 @@ import { YourDecksComponent } from './components/your-decks/your-decks.component
 import { DecksComponent } from './components/decks/decks.component';
 import { DeckEditorComponent } from './components/deck-editor/deck-editor.component';
 import { DeckComponent } from './components/deck/deck.component';
+import { DropdownEditorComponent } from './components/dropdown-editor/dropdown-editor.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'decks', component: DecksComponent},
   { path: 'decks/:name', component: DeckComponent },
   { path: 'deck-editor/:id', component: DeckEditorComponent, canActivate: [AdminGuard] },
+  { path: 'admin/dropdown-editor', component: DropdownEditorComponent, canActivate: [AdminGuard] },
   { path: '**', pathMatch: 'full', component: FourOhFourComponent },
 ];
 @NgModule({
