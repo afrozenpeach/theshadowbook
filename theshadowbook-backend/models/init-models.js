@@ -23,7 +23,6 @@ var _UserCrystal = require("./UserCrystal");
 var _UserDeck = require("./UserDeck");
 var _Zodiac = require("./Zodiac");
 var _Shape = require("./Shape");
-var _CrystalSubType = require("./CrystalSubType");
 
 function initModels(sequelize) {
   var Card = _Card(sequelize, DataTypes);
@@ -50,7 +49,6 @@ function initModels(sequelize) {
   var UserDeck = _UserDeck(sequelize, DataTypes);
   var Zodiac = _Zodiac(sequelize, DataTypes);
   var Shape = _Shape(sequelize, DataTypes);
-  var CrystalSubType = _CrystalSubType(sequelize, DataTypes);
 
   CrystalChakra.belongsTo(Chakra, { as: "chakra", foreignKey: "chakraId"});
   Chakra.hasMany(CrystalChakra, { as: "CrystalChakras", foreignKey: "chakraId"});
@@ -78,8 +76,6 @@ function initModels(sequelize) {
   Crystal.hasMany(CrystalZodiac, { as: "CrystalZodiacs", foreignKey: "crystalId"});
   UserCrystal.belongsTo(Crystal, { as: "crystal_Crystal", foreignKey: "crystal"});
   Crystal.hasMany(UserCrystal, { as: "UserCrystals", foreignKey: "crystal"});
-  Crystal.hasMany(CrystalSubType, { as: "CrystalSubTypes", foreignKey: "crystal"});
-  CrystalSubType.belongsTo(Crystal, { as: "crystals", foreignKey: "crystal"});
   Card.belongsTo(Deck, { as: "CardDeck", foreignKey: "deck"});
   Deck.hasMany(Card, { as: "DeckCards", foreignKey: "deck"});
   UserDeck.belongsTo(Deck, { as: "UserDeck", foreignKey: "deck"});
@@ -112,14 +108,8 @@ function initModels(sequelize) {
   Zodiac.hasMany(User, { as: "sunSign_Users", foreignKey: "sunSign"});
   UserCrystal.belongsTo(Shape, { as: "UserShape", foreignKey: "shape"});
   Shape.hasMany(UserCrystal, { as: "UserCrystals", foreignKey: "shape"});
-  UserCrystal.belongsTo(CrystalSubType, { as: "CrystalSubType", foreignKey: "subType"});
-  CrystalSubType.hasMany(CrystalChakra, { as: "CrystalChakras", foreignKey: "subType"});
-  CrystalSubType.hasMany(CrystalCleansing, { as: "CrystalCleansings", foreignKey: "subType"});
-  CrystalSubType.hasMany(CrystalDomain, { as: "CrystalDomains", foreignKey: "subType"});
-  CrystalSubType.hasMany(CrystalElement, { as: "CrystalElements", foreignKey: "subType"});
-  CrystalSubType.hasMany(CrystalMoonPhase, { as: "CrystalMoonPhases", foreignKey: "subType"});
-  CrystalSubType.hasMany(CrystalZodiac, { as: "CrystalZodiacs", foreignKey: "subType"});
-  CrystalSubType.belongsTo(Crystal, { as: "Crystal", foreignKey: "crystal" });
+  Crystal.belongsTo(Crystal, { as: 'ParentCrystal', foreignKey: 'parentCrystal'});
+  Crystal.hasMany(Crystal, { as: 'ChildCrystals', foreignKey: 'id'});
 
   return {
     Card,
@@ -145,8 +135,7 @@ function initModels(sequelize) {
     UserCrystal,
     UserDeck,
     Zodiac,
-    Shape,
-    CrystalSubType
+    Shape
   };
 }
 module.exports = initModels;

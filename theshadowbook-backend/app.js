@@ -192,14 +192,10 @@ app.get('/api/user/checkName/:name/:id', async (req, res) => {
 
 app.get('/api/crystals', async (req, res) => {
   try {
-    let crystals = await models.Crystal.findAll({
-      include: [
-        {as: "CrystalSubTypes", model: sequelize.model('CrystalSubType')}
-      ]
-    });
+    let crystals = await models.Crystal.findAll();
 
     res.json({
-      crystals: crystals.map((c) => c.dataValues)
+      crystals: crystals.dataValues
     });
   } catch (error) {
     res.json({success: false, error: error});
@@ -290,94 +286,6 @@ app.get('/api/zodiac', async (req, res) => {
   }
 });
 
-app.get('/api/crystals/:name/:subType', async (req, res) => {
-  let crystalQueryString = {
-    crystal: req.params.name
-  }
-
-  if (parseInt(req.params.name)) {
-    crystalQueryString = {
-        id: req.params.name
-    };
-  }
-
-  let crystal = await models.Crystal.findOne({
-    where: crystalQueryString,
-    order: [['crystal', 'ASC']]
-  });
-
-  let subTypeQueryString = {
-      crystal: crystal.id,
-      type: req.params.subType
-  };
-
-  if (parseInt(req.params.subType)) {
-    subTypeQueryString = {
-        id: req.params.subType
-    };
-  }
-
-  let crystalSubType = await models.CrystalSubType.findOne({
-    where: subTypeQueryString,
-    order: [['crystal', 'ASC']]
-  });
-
-  let returnValue = crystalSubType.dataValues;
-  returnValue.Crystal = crystal.dataValues;
-
-  returnValue.CrystalChakras = await models.CrystalChakra.findAll({
-    where: {
-      crystalId: crystal.id,
-      subType: crystalSubType.id
-    }
-  });
-
-  returnValue.CrystalCleansings = await models.CrystalCleansing.findAll({
-    where: {
-      crystalId: crystal.id,
-      subType: crystalSubType.id
-    }
-  });
-
-  returnValue.CrystalDomains = await models.CrystalDomain.findAll({
-    where: {
-      crystalId: crystal.id,
-      subType: crystalSubType.id
-    }
-  });
-
-  returnValue.CrystalElements = await models.CrystalElement.findAll({
-    where: {
-      crystalId: crystal.id,
-      subType: crystalSubType.id
-    }
-  });
-
-  returnValue.CrystalMoonPhases = await models.CrystalMoonPhase.findAll({
-    where: {
-      crystalId: crystal.id,
-      subType: crystalSubType.id
-    }
-  });
-
-  returnValue.CrystalZodiacs = await models.CrystalZodiac.findAll({
-    where: {
-      crystalId: crystal.id,
-      subType: crystalSubType.id
-    }
-  });
-
-  if (crystalSubType) {
-    res.json({
-      crystal: returnValue
-    });
-  } else {
-    res.json({
-      crystal: null
-    })
-  }
-});
-
 app.get('/api/crystals/:name', async (req, res) => {
   let queryString = {
       crystal: req.params.name
@@ -391,53 +299,75 @@ app.get('/api/crystals/:name', async (req, res) => {
 
   let crystal = await models.Crystal.findOne({
     where: queryString,
-    include: [
-      {as: "CrystalSubTypes", model: sequelize.model('CrystalSubType')}
-    ],
     order: [['crystal', 'ASC']]
   });
 
   let returnValue = crystal.dataValues;
 
+  let children = await models.Crystal.findAll({
+    where: {
+      parentCrystal: crystal.id
+    },
+    order: [['crystal', 'ASC']]
+  });
+
+  returnValue.Children = children.dataValues;
+
+  for (let c in returnValue.Children) {
+    let childrenChildren = await models.Crystal.findAll({
+      where: {
+        parentCrystal: crystal.id
+      },
+      order: [['crystal', 'ASC']]
+    });
+
+    c.Children = childrenChildren.dataValues;
+
+    for (let cc in c.Children) {
+      let childrenChildrenChildren = await models.Crystal.findAll({
+        where: {
+          parentCrystal: crystal.id
+        },
+        order: [['crystal', 'ASC']]
+      });
+
+      c.Children = childrenChildrenChildren.dataValues;
+    }
+  }
+
   returnValue.CrystalChakras = await models.CrystalChakra.findAll({
     where: {
-      crystalId: crystal.id,
-      subType: null
+      crystalId: crystal.id
     }
   });
 
   returnValue.CrystalCleansings = await models.CrystalCleansing.findAll({
     where: {
-      crystalId: crystal.id,
-      subType: null
+      crystalId: crystal.id
     }
   });
 
   returnValue.CrystalDomains = await models.CrystalDomain.findAll({
     where: {
-      crystalId: crystal.id,
-      subType: null
+      crystalId: crystal.id
     }
   });
 
   returnValue.CrystalElements = await models.CrystalElement.findAll({
     where: {
-      crystalId: crystal.id,
-      subType: null
+      crystalId: crystal.id
     }
   });
 
   returnValue.CrystalMoonPhases = await models.CrystalMoonPhase.findAll({
     where: {
-      crystalId: crystal.id,
-      subType: null
+      crystalId: crystal.id
     }
   });
 
   returnValue.CrystalZodiacs = await models.CrystalZodiac.findAll({
     where: {
-      crystalId: crystal.id,
-      subType: null
+      crystalId: crystal.id
     }
   });
 
@@ -580,7 +510,10 @@ app.post('/api/crystals', checkAdmin, async (req, res) => {
   try {
     const result = await sequelize.transaction(async (t) => {
       let crystal = await models.Crystal.create(
-        { crystal: req.body.crystal.crystal },
+        {
+            crystal: req.body.crystal.crystal,
+            parentCrystal: req.body.crystal.parentCrystal
+        },
         {
           transaction: t
         },
@@ -654,7 +587,7 @@ app.post('/api/crystals', checkAdmin, async (req, res) => {
 });
 
 app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
-  let idToken = req.headers.authorization.substring(7);
+  let idToken = req.headers.authorization.çstring(7);
   admin.auth().verifyIdToken(idToken).then(async d => {
     let user = await models.User.findOne({
       where: {
@@ -667,8 +600,7 @@ app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
         const crystal = await models.UserCrystal.create({
           owner: req.body.userId,
           crystal: req.body.id,
-          status: req.body.status,
-          subType: req.body.subType
+          status: req.body.status
         });
 
         res.json({success: true, crystal: crystal.map(c => c.dataValues)});
@@ -725,8 +657,7 @@ app.put('/api/collection/crystals', checkAuth, async (req, res) => {
         karat: req.body.karat,
         status: req.body.status,
         shape: req.body.shape,
-        notes: req.body.notes,
-        subType: req.body.subType
+        notes: req.body.notes
       }, {
         where: {
           id: req.body.id
@@ -1333,175 +1264,6 @@ app.delete('/api/collection/decks/:id', checkAuth, async (req, res) => {
       res.status(403).send('Unauthorized: UID does not match token.');
     }
   });
-});
-
-app.get('/api/crystalSubTypes', async (req, res) => {
-  try {
-    const crystalSubTypes = await models.CrystalSubType.findAll({
-      order: [['crystal', 'ASC'], ['type', 'ASC']]
-    });
-
-    res.json({success: true, crystalSubTypes: crystalSubTypes});
-  } catch (error) {
-    res.json({success: false, error: error});
-  }
-});
-
-app.post('/api/crystalSubTypes', checkAdmin, async (req, res) => {
-  try {
-    const crystalSubType = await models.CrystalSubType.create({
-      crystal: req.body.crystal,
-      type: req.body.type
-    });
-
-    res.json({succes: true, crystalSubType: crystalSubType});
-  } catch (error) {
-    res.json({success: false, error: error});
-  }
-});
-
-app.delete('/api/crystalSubTypes/:id', checkAdmin, async (req, res) => {
-  try {
-    await models.CrystalSubType.destroy({
-      where: {
-        id: req.params.id
-      }
-    });
-
-    res.json({success: true});
-  } catch (error) {
-    res.json({success: false, error: error});
-  }
-});
-
-app.put('/api/crystalSubTypes/:id', checkAdmin, async (req, res) => {
-  try {
-    const result = await sequelize.transaction(async (t) => {
-      await models.CrystalSubType.update(
-        { type: req.body.subType.type },
-        {
-          where: { id: req.body.subType.id },
-          transaction: t
-        },
-      );
-
-      await models.CrystalChakra.destroy(
-        {
-          where: { subType: req.body.subType.id },
-          transaction: t
-        }
-      );
-
-      for (let c of req.body.subType.chakras) {
-        await models.CrystalChakra.create(
-          {
-            crystalId: req.body.crystal,
-            subType: req.body.subType.id,
-            chakraId: c
-          },
-          { transaction: t }
-        );
-      }
-
-      await models.CrystalCleansing.destroy(
-        {
-          where: { subType: req.body.subType.id },
-          transaction: t
-        }
-      );
-
-      for (let c of req.body.subType.cleansings) {
-        await models.CrystalCleansing.create(
-          {
-            crystalId: req.body.crystal,
-            subType: req.body.subType.id,
-            cleansingId: c
-          },
-          { transaction: t }
-        );
-      }
-
-      await models.CrystalDomain.destroy(
-        {
-          where: { subType: req.body.subType.id },
-          transaction: t
-        }
-      );
-
-      for (let d of req.body.subType.domains) {
-        await models.CrystalDomain.create(
-          {
-            crystalId: req.body.crystal,
-            subType: req.body.subType.id,
-            domainId: d
-          },
-          { transaction: t }
-        );
-      }
-
-      await models.CrystalElement.destroy(
-        {
-          where: { subType: req.body.subType.id },
-          transaction: t
-        }
-      );
-
-      for (let e of req.body.subType.elements) {
-        await models.CrystalElement.create(
-          {
-            crystalId: req.body.crystal,
-            subType: req.body.subType.id,
-            elementId: e
-          },
-          { transaction: t }
-        );
-      }
-
-      await models.CrystalMoonPhase.destroy(
-        {
-          where: { subType: req.body.subType.id },
-          transaction: t
-        }
-      );
-
-      for (let m of req.body.subType.moonPhases) {
-        await models.CrystalMoonPhase.create(
-          {
-            crystalId: req.body.crystal,
-            subType: req.body.subType.id,
-            moonPhaseId: m
-          },
-          { transaction: t }
-        );
-      }
-
-      await models.CrystalZodiac.destroy(
-        {
-          where: { subType: req.body.subType.id },
-          transaction: t
-        }
-      );
-
-      for (let z of req.body.subType.zodiacs) {
-        await models.CrystalZodiac.create(
-          {
-            crystalId: req.body.crystal,
-            subType: req.body.subType.id,
-            zodiacId: z
-          },
-          { transaction: t }
-        );
-      }
-
-      return true;
-    });
-
-    if (result) {
-      res.json({success: true});
-    }
-  } catch (error) {
-    res.json({success: false, error: error});
-  }
 });
 
 module.exports = app;

@@ -171,13 +171,6 @@ module.exports = function(sequelize, DataTypes) {
           { name: "shape" },
         ]
       },
-      {
-        name: "UserCrystal-Type_idx",
-        using: "BTREE",
-        fields: [
-          { name: "subType" },
-        ]
-      },
     ]
   });
 };

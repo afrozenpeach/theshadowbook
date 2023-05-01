@@ -68,14 +68,6 @@ module.exports = function(sequelize, DataTypes) {
           { name: "crystalId" },
         ]
       },
-      {
-        name: "CrystalSubType-idx",
-        using: "BTREE",
-        fields: [
-          { name: 'crystalId' },
-          { name: 'subType' }
-        ]
-      }
     ]
   });
 };

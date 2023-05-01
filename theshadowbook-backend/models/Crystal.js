@@ -11,6 +11,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(45),
       allowNull: false,
       unique: "crystal_UNIQUE"
+    },
+    parentCrystal: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
@@ -31,6 +35,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "crystal" },
+        ]
+      },
+      {
+        name: "parentCrystal",
+        using: "BTREE",
+        fields: [
+          { name: "parentCrystal" },
         ]
       },
     ]
