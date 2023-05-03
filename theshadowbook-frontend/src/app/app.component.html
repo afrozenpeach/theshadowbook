@@ -1,4 +1,6 @@
-<a routerLink="/crystals">Crystal DB</a> | <a routerLink="/decks">Deck DB</a> | <a routerLink="/your-crystals">Your Crystals</a> | <a routerLink="/your-decks">Your Decks</a> | <a routerLink="/dashboard">User Dashboard</a> | <a href="https://discord.gg/ZJ9NnaUZkS">Join the Discord</a>
+<div class="header">
+    <a routerLink="/crystals">Crystal DB</a> | <a routerLink="/decks">Deck DB</a> | <a routerLink="/your-crystals">Your Crystals</a> | <a routerLink="/your-decks">Your Decks</a> | <a routerLink="/dashboard">User Dashboard</a> | <a href="https://discord.gg/ZJ9NnaUZkS">Join the Discord</a>
+</div>
 
 <br/><br/><br/><br/>
 
@@ -8,4 +10,6 @@
     </div>
 </div>
 
-<router-outlet *ngIf="loggedIn !== null"></router-outlet>
+<div class="content">
+    <router-outlet *ngIf="loggedIn !== null"></router-outlet>
+</div>
