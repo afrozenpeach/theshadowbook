@@ -4,6 +4,56 @@
         <button mat-raised-button color="primary" *ngIf="!grouped" (click)="toggleGrouped()">Group</button>
     </div>
 
+    <div class="filters">
+        <form [formGroup]="filterForm" (ngSubmit)="filter()">
+            <mat-form-field appearance="fill">
+                <mat-label>Chakras</mat-label>
+                <mat-select formControlName="chakras" multiple>
+                    <mat-option *ngFor="let c of chakras" [value]="c.id">{{c.chakra}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Cleansings</mat-label>
+                <mat-select formControlName="cleansings" multiple>
+                    <mat-option *ngFor="let c of cleansings" [value]="c.id">{{c.cleansing}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Domains</mat-label>
+                <mat-select formControlName="domains" multiple>
+                    <mat-option *ngFor="let d of domains" [value]="d.id">{{d.domain}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Elements</mat-label>
+                <mat-select formControlName="elements" multiple>
+                    <mat-option *ngFor="let e of elements" [value]="e.id">{{e.element}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Moon Phases</mat-label>
+                <mat-select formControlName="moonPhases" multiple>
+                    <mat-option *ngFor="let m of moonPhases" [value]="m.id">{{m.moonPhase}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Zodiacs</mat-label>
+                <mat-select formControlName="zodiacs" multiple>
+                    <mat-option *ngFor="let z of zodiacs" [value]="z.id">{{z.sign}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-raised-button color="accent" type="button" (click)="clearFilters()">Clear filters</button>
+            <button mat-raised-button color="accent" type="button" (click)="resetFilters()">Reset filters</button>
+            <button mat-raised-button color="primary" type="submit">Filter</button>
+        </form>
+    </div>
+
     <form [formGroup]="addCrystalForm" (ngSubmit)="addUserCrystal(1)">
         <mat-form-field appearance="fill">
             <mat-label>Crystal</mat-label>

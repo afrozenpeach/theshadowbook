@@ -16,10 +16,25 @@ export class YourCrystalsComponent {
   colors: any = [];
   statuses: any = [];
   shapes: any = [];
+  chakras: any = [];
+  cleansings: any = [];
+  domains: any = [];
+  elements: any = [];
+  moonPhases: any = [];
+  zodiacs: any = [];
 
   crystalForms: FormGroup[] = [];
   addCrystalForm: FormGroup = new FormGroup({
     crystal: new FormControl('')
+  });
+
+  filterForm: FormGroup = new FormGroup({
+    chakras: new FormControl([]),
+    cleansings: new FormControl([]),
+    domains: new FormControl([]),
+    elements: new FormControl([]),
+    moonPhases: new FormControl([]),
+    zodiacs: new FormControl([])
   });
 
   userCrystalsOfType: any = [];
@@ -41,40 +56,73 @@ export class YourCrystalsComponent {
         this.backendService.getShapes().subscribe(s => {
           this.shapes = s.shapes;
 
-          this.backendService.getUser().subscribe(u => {
-            this.user = u.user;
+          this.backendService.getChakras().subscribe(cc => {
+            this.chakras = cc.chakras;
 
-            this.grouped = this.user.groupedByDefault;
+            this.backendService.getCleansings().subscribe(cl => {
+              this.cleansings = cl.cleansings;
 
-            this.backendService.getCrystals().subscribe(c => {
-              this.crystals = c.crystals;
+              this.backendService.getDomains().subscribe(d => {
+                this.domains = d.domains;
 
-              this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
-                this.userCrystals = uc.crystals;
+                this.backendService.getElements().subscribe(e => {
+                  this.elements = e.elements;
 
-                for (let userCrystal of this.userCrystals) {
-                  this.crystalForms[userCrystal.id] = new FormGroup({
-                    id: new FormControl(userCrystal.id),
-                    name: new FormControl(userCrystal.name),
-                    primaryColor: new FormControl(userCrystal.primaryColor),
-                    secondaryColor: new FormControl(userCrystal.secondaryColor),
-                    tertiaryColor: new FormControl(userCrystal.tertiaryColor),
-                    sizeX: new FormControl(userCrystal.sizeX),
-                    sizeY: new FormControl(userCrystal.sizeY),
-                    sizeZ: new FormControl(userCrystal.sizeZ),
-                    weight: new FormControl(userCrystal.weight),
-                    karat: new FormControl(userCrystal.karat),
-                    cut: new FormControl(userCrystal.cut),
-                    aura: new FormControl(userCrystal.aura),
-                    status: new FormControl(userCrystal.status),
-                    shape: new FormControl(userCrystal.shape),
-                    notes: new FormControl(userCrystal.notes),
+                  this.backendService.getMoonPhases().subscribe(mp => {
+                    this.moonPhases = mp.moonPhases;
+
+                    this.backendService.getZodiacs().subscribe(z => {
+                      this.zodiacs = z.zodiacs;
+
+                      this.filterForm.patchValue({
+                        chakras: this.chakras.map((chakra: { id: number; }) => chakra.id),
+                        cleansings: this.cleansings.map((cleansing: { id: number; }) => cleansing.id),
+                        domains: this.domains.map((domain: { id: number; }) => domain.id),
+                        elements: this.elements.map((element: { id: number; }) => element.id),
+                        moonPhases: this.moonPhases.map((moonPhase: { id: number; }) => moonPhase.id),
+                        zodiacs: this.zodiacs.map((zodiac: { id: number; }) => zodiac.id),
+                      });
+
+                      this.backendService.getUser().subscribe(u => {
+                        this.user = u.user;
+
+                        this.grouped = this.user.groupedByDefault;
+
+                        this.backendService.getCrystals().subscribe(c => {
+                          this.crystals = c.crystals;
+
+                          this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
+                            this.userCrystals = uc.crystals;
+
+                            for (let userCrystal of this.userCrystals) {
+                              this.crystalForms[userCrystal.id] = new FormGroup({
+                                id: new FormControl(userCrystal.id),
+                                name: new FormControl(userCrystal.name),
+                                primaryColor: new FormControl(userCrystal.primaryColor),
+                                secondaryColor: new FormControl(userCrystal.secondaryColor),
+                                tertiaryColor: new FormControl(userCrystal.tertiaryColor),
+                                sizeX: new FormControl(userCrystal.sizeX),
+                                sizeY: new FormControl(userCrystal.sizeY),
+                                sizeZ: new FormControl(userCrystal.sizeZ),
+                                weight: new FormControl(userCrystal.weight),
+                                karat: new FormControl(userCrystal.karat),
+                                cut: new FormControl(userCrystal.cut),
+                                aura: new FormControl(userCrystal.aura),
+                                status: new FormControl(userCrystal.status),
+                                shape: new FormControl(userCrystal.shape),
+                                notes: new FormControl(userCrystal.notes),
+                              });
+                            }
+
+                            this.buildUserCrystals();
+
+                            this.loading = false;
+                          });
+                        });
+                      });
+                    });
                   });
-                }
-
-                this.buildUserCrystals();
-
-                this.loading = false;
+                });
               });
             });
           });
@@ -286,11 +334,11 @@ export class YourCrystalsComponent {
     this.userCrystalsOfType = [];
 
     if (this.grouped) {
-      for (let uc of this.userCrystals) {
+      for (let uc of this.getFilteredUserCrystals()) {
         this.addUserCrystalOfType(uc);
       }
     } else {
-      for (let uc of this.userCrystals) {
+      for (let uc of this.getFilteredUserCrystals()) {
         if (this.userCrystalsOfType[uc.crystal] === undefined) {
           this.userCrystalsOfType[uc.crystal] = {
             crystals: [],
@@ -301,5 +349,46 @@ export class YourCrystalsComponent {
         this.userCrystalsOfType[uc.crystal].crystals.push(uc);
       }
     }
+  }
+
+  getFilteredUserCrystals() {
+    return this.userCrystals.filter((uc: { crystal: number; }) => {
+      let crystal = this.crystals.filter((c: { id: number; }) => c.id === uc.crystal)[0];
+
+      let containsChakra = this.filterForm.controls["chakras"].value.length === 0 || (this.filterForm.controls["chakras"].value.length > 0 && crystal.CrystalChakras.length === 0) || crystal.CrystalChakras.filter((cc: { chakraId: number; }) => this.filterForm.controls["chakras"].value.includes(cc.chakraId)).length > 0;
+      let containsCleansing = this.filterForm.controls["cleansings"].value.length === 0 || (this.filterForm.controls["cleansings"].value.length > 0 && crystal.CrystalCleansings.length === 0) || crystal.CrystalCleansings.filter((cc: { cleansingId: number; }) => this.filterForm.controls["cleansings"].value.includes(cc.cleansingId)).length > 0;
+      let containsDomain = this.filterForm.controls["domains"].value.length === 0 || (this.filterForm.controls["domains"].value.length > 0 && crystal.CrystalDomains.length === 0) || crystal.CrystalDomains.filter((cd: { domainId: number; }) => this.filterForm.controls["domains"].value.includes(cd.domainId)).length > 0;
+      let containsElement = this.filterForm.controls["elements"].value.length === 0 || (this.filterForm.controls["elements"].value.length > 0 && crystal.CrystalElements.length === 0) || crystal.CrystalElements.filter((ce: { elementId: number; }) => this.filterForm.controls["elements"].value.includes(ce.elementId)).length > 0;
+      let containsMoonPhase = this.filterForm.controls["moonPhases"].value.length === 0 || (this.filterForm.controls["moonPhases"].value.length > 0 && crystal.CrystalMoonPhases.length === 0) || crystal.CrystalMoonPhases.filter((cm: { moonPhaseId: number; }) => this.filterForm.controls["moonPhases"].value.includes(cm.moonPhaseId)).length > 0;
+      let containsZodiac = this.filterForm.controls["zodiacs"].value.length === 0 || (this.filterForm.controls["zodiacs"].value.length > 0 && crystal.CrystalZodiacs.length === 0) || crystal.CrystalZodiacs.filter((cz: {zodiacId: number; }) => this.filterForm.controls["zodiacs"].value.includes(cz.zodiacId)).length > 0;
+
+      return containsChakra && containsCleansing && containsDomain && containsElement && containsMoonPhase && containsZodiac;
+    });
+  }
+
+  filter() {
+    this.buildUserCrystals();
+  }
+
+  clearFilters() {
+    this.filterForm.patchValue({
+      chakras: [],
+      cleansings: [],
+      domains: [],
+      elements: [],
+      moonPhases: [],
+      zodiacs: []
+    });
+  }
+
+  resetFilters() {
+    this.filterForm.patchValue({
+      chakras: this.chakras.map((chakra: { id: number; }) => chakra.id),
+      cleansings: this.cleansings.map((cleansing: { id: number; }) => cleansing.id),
+      domains: this.domains.map((domain: { id: number; }) => domain.id),
+      elements: this.elements.map((element: { id: number; }) => element.id),
+      moonPhases: this.moonPhases.map((moonPhase: { id: number; }) => moonPhase.id),
+      zodiacs: this.zodiacs.map((zodiac: { id: number; }) => zodiac.id),
+    });
   }
 }
