@@ -1,8 +1,15 @@
 <div id="yourCrystals" [ngClass]="{'blurred': loading}">
-    <div>
-        <button mat-raised-button color="primary" *ngIf="grouped" (click)="toggleGrouped()">Ungroup</button>
-        <button mat-raised-button color="primary" *ngIf="!grouped" (click)="toggleGrouped()">Group</button>
-    </div>
+    <form [formGroup]="addCrystalForm" (ngSubmit)="addUserCrystal(1)">
+        <mat-form-field appearance="fill">
+            <mat-label>Crystal</mat-label>
+            <mat-select formControlName="crystal">
+                <mat-option *ngFor="let c of crystals" [value]="c.id">{{c.crystal}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="accent" type="submit">Add to your collection</button>
+        <button mat-raised-button color="accent" type="button" (click)="addUserCrystal(2)">Add to your wish list</button>
+    </form>
 
     <div class="filters">
         <form [formGroup]="filterForm" (ngSubmit)="filter()">
@@ -54,17 +61,10 @@
         </form>
     </div>
 
-    <form [formGroup]="addCrystalForm" (ngSubmit)="addUserCrystal(1)">
-        <mat-form-field appearance="fill">
-            <mat-label>Crystal</mat-label>
-            <mat-select formControlName="crystal">
-                <mat-option *ngFor="let c of crystals" [value]="c.id">{{c.crystal}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <button mat-raised-button color="accent" type="submit">Add to your collection</button>
-        <button mat-raised-button color="accent" type="button" (click)="addUserCrystal(2)">Add to your wish list</button>
-    </form>
+    <div>
+        <button mat-raised-button color="primary" *ngIf="grouped" (click)="toggleGrouped()">Ungroup</button>
+        <button mat-raised-button color="primary" *ngIf="!grouped" (click)="toggleGrouped()">Group</button>
+    </div>
 
     <div *ngFor="let c of getCrystals()">
         <div class="crystalGroup" *ngIf="userCrystalsOfType[c.id]?.crystals.length || userCrystalsOfType[c.id]?.children.length">
