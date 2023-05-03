@@ -1,10 +1,10 @@
+<div *ngIf="isAdmin">
+    <button mat-raised-button color="primary" (click)="router.navigate(['/crystal-editor/new'])">Add Crystal</button>
+</div>
+
 <div>
     <button mat-raised-button color="primary" *ngIf="grouped" (click)="toggleGrouped()">Ungroup</button>
     <button mat-raised-button color="primary" *ngIf="!grouped" (click)="toggleGrouped()">Group</button>
-</div>
-
-<div *ngIf="isAdmin">
-    <button mat-raised-button color="primary" (click)="router.navigate(['/crystal-editor/new'])">Add Crystal</button>
 </div>
 
 <div class="crystal" *ngFor="let c of crystals">
