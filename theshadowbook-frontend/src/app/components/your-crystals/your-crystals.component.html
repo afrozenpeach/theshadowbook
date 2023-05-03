@@ -1,4 +1,9 @@
 <div id="yourCrystals" [ngClass]="{'blurred': loading}">
+    <div>
+        <button mat-raised-button color="primary" *ngIf="grouped" (click)="toggleGrouped()">Ungroup</button>
+        <button mat-raised-button color="primary" *ngIf="!grouped" (click)="toggleGrouped()">Group</button>
+    </div>
+
     <form [formGroup]="addCrystalForm" (ngSubmit)="addUserCrystal(1)">
         <mat-form-field appearance="fill">
             <mat-label>Crystal</mat-label>
@@ -12,7 +17,7 @@
     </form>
 
     <div *ngFor="let c of getCrystals()">
-        <div class="crystalGroup" *ngIf="userCrystalsOfType[c.id]?.crystals.length || userCrystalsOfType[c.id]?.children">
+        <div class="crystalGroup" *ngIf="userCrystalsOfType[c.id]?.crystals.length || userCrystalsOfType[c.id]?.children.length">
             {{c.crystal}}
 
             <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].crystals">
@@ -103,7 +108,7 @@
             </div>
 
             <div *ngFor="let s of getSubTypesOfCrystal(c.id)">
-                <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children">
+                <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children.length">
                     <div>{{getCrystal(s.id).crystal}}</div>
 
                     <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].crystals">
@@ -194,7 +199,7 @@
                     </div>
 
                     <div *ngFor="let ss of getSubTypesOfCrystal(s.crystal)">
-                        <div class="crystalSubSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children">
+                        <div class="crystalSubSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children.length">
                             <div>{{getCrystal(ss.id).crystal}}</div>
 
                             <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].crystals">
@@ -285,7 +290,7 @@
                             </div>
 
                             <div *ngFor="let sss of getSubTypesOfCrystal(ss.id)">
-                                <div class="crystalSubSubSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.children">
+                                <div class="crystalSubSubSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.children.length">
                                     <div>{{getCrystal(sss.id).crystal}}</div>
 
                                     <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].children[sss.id].crystals">

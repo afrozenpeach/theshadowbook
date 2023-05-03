@@ -14,6 +14,7 @@ export class CrystalsComponent {
   isLoggedIn: boolean = false;
   user: any;
   userCrystals: any = [];
+  grouped: boolean = true;
 
   constructor(
     private backendService: BackendService,
@@ -28,6 +29,7 @@ export class CrystalsComponent {
 
       this.backendService.getUser().subscribe(u => {
         this.user = u.user;
+        this.grouped = this.user.groupedByDefault;
 
         this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
           uc.crystals.map((i: { crystal: number; }) => {
@@ -60,5 +62,9 @@ export class CrystalsComponent {
 
   getSubTypesofCrystal(id: number) {
     return this.crystals.filter((c: { parentCrystal: number; }) => c.parentCrystal === id);
+  }
+
+  toggleGrouped() {
+    this.grouped = !this.grouped;
   }
 }

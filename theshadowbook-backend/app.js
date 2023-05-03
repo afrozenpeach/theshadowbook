@@ -153,7 +153,8 @@ app.put('/api/user', async (req, res) => {
         sunSign: req.body.sunSign,
         moonSign: req.body.moonSign,
         risingSign: req.body.risingSign,
-        isPublic: req.body.isPublic
+        isPublic: req.body.isPublic,
+        groupedByDefault: req.body.groupedByDefault
       }, {
         where: {
           id: req.body.id
@@ -220,7 +221,7 @@ app.get('/api/user/checkName/:name/:id', async (req, res) => {
         [Op.and]: [
           {
             name: {
-              [Op.notLike]: req.params.name
+              [Op.like]: req.params.name
             }
           },
           {

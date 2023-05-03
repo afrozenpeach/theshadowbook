@@ -20,7 +20,8 @@ export class DashboardComponent {
     sunSign: new FormControl(''),
     moonSign: new FormControl(''),
     risingSign: new FormControl(''),
-    isPublic: new FormControl(0)
+    isPublic: new FormControl(0),
+    groupedByDefault: new FormControl(1)
   })
 
   constructor(
@@ -48,7 +49,8 @@ export class DashboardComponent {
               sunSign: this.userData.user.sunSign,
               moonSign: this.userData.user.moonSign,
               risingSign: this.userData.user.risingSign,
-              isPublic: this.userData.user.isPublic
+              isPublic: this.userData.user.isPublic,
+              groupedByDefault: this.userData.user.groupedByDefault
             })
           });
         } else {
@@ -69,7 +71,8 @@ export class DashboardComponent {
             sunSign: this.userData.user.sunSign,
             moonSign: this.userData.user.moonSign,
             risingSign: this.userData.user.risingSign,
-            isPublic: this.userData.user.isPublic
+            isPublic: this.userData.user.isPublic,
+            groupedByDefault: this.userData.user.groupedByDefault
           })
         }
       })
@@ -88,7 +91,8 @@ export class DashboardComponent {
           sunSign: this.userForm.value.sunSign,
           moonSign: this.userForm.value.moonSign,
           risingSign: this.userForm.value.risingSign,
-          isPublic: this.userForm.value.isPublic
+          isPublic: this.userForm.value.isPublic,
+          groupedByDefault: this.userForm.value.groupedByDefault
         }).subscribe();
       } else {
         this.userForm.controls['name'].setErrors({'invalid': true});

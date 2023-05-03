@@ -61,8 +61,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     isPublic: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       defaultValue: 0
+    },
+    groupedByDefault: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
     }
   }, {
     sequelize,

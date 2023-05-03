@@ -24,6 +24,7 @@ export class YourCrystalsComponent {
 
   userCrystalsOfType: any = [];
 
+  grouped = true;
   loading = true;
 
   constructor(private backendService: BackendService) {
@@ -43,11 +44,15 @@ export class YourCrystalsComponent {
           this.backendService.getUser().subscribe(u => {
             this.user = u.user;
 
+            this.grouped = this.user.groupedByDefault;
+
             this.backendService.getCrystals().subscribe(c => {
               this.crystals = c.crystals;
 
               this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
-                for (let userCrystal of uc.crystals) {
+                this.userCrystals = uc.crystals;
+
+                for (let userCrystal of this.userCrystals) {
                   this.crystalForms[userCrystal.id] = new FormGroup({
                     id: new FormControl(userCrystal.id),
                     name: new FormControl(userCrystal.name),
@@ -65,11 +70,9 @@ export class YourCrystalsComponent {
                     shape: new FormControl(userCrystal.shape),
                     notes: new FormControl(userCrystal.notes),
                   });
-
-                  this.addUserCrystalOfType(userCrystal);
                 }
 
-                this.userCrystals = uc.crystals;
+                this.buildUserCrystals();
 
                 this.loading = false;
               });
@@ -81,11 +84,15 @@ export class YourCrystalsComponent {
   }
 
   getCrystals() {
-    return this.crystals.filter((c: { parentCrystal: null; }) => c.parentCrystal === null);
+    if (this.grouped) {
+      return this.crystals.filter((c: { parentCrystal: number|null; }) => c.parentCrystal === null);
+    } else {
+      return this.crystals;
+    }
   }
 
   getCrystal(id: number) {
-    return this.crystals.filter((c: { id: null; }) => c.id === id)[0];
+    return this.crystals.filter((c: { id: number; }) => c.id === id)[0];
   }
 
   getUserCrystalsOfType(id: number) {
@@ -261,6 +268,38 @@ export class YourCrystalsComponent {
       }
 
       this.userCrystalsOfType[crystal.id].crystals.push(userCrystal);
+    }
+  }
+
+  toggleGrouped() {
+    if (!this.loading) {
+      this.loading = true;
+      this.grouped = !this.grouped;
+
+      this.buildUserCrystals();
+
+      this.loading = false;
+    }
+  }
+
+  buildUserCrystals() {
+    this.userCrystalsOfType = [];
+
+    if (this.grouped) {
+      for (let uc of this.userCrystals) {
+        this.addUserCrystalOfType(uc);
+      }
+    } else {
+      for (let uc of this.userCrystals) {
+        if (this.userCrystalsOfType[uc.crystal] === undefined) {
+          this.userCrystalsOfType[uc.crystal] = {
+            crystals: [],
+            children: []
+          };
+        }
+
+        this.userCrystalsOfType[uc.crystal].crystals.push(uc);
+      }
     }
   }
 }

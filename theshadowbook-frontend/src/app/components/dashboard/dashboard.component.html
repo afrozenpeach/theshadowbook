@@ -48,6 +48,14 @@
             </mat-select>
         </mat-form-field>
 
+        <mat-form-field>
+            <mat-label>Group Crystals by Default</mat-label>
+            <mat-select formControlName="groupedByDefault">
+                <mat-option [value]="1">Yes</mat-option>
+                <mat-option [value]="0">No</mat-option>
+            </mat-select>
+        </mat-form-field>
+
         <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">Save</button>
     </form>
 

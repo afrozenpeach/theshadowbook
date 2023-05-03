@@ -44,7 +44,8 @@ export class BackendService {
       moonSign: userData.moonSign,
       risingSign: userData.risingSign,
       isPublic: userData.isPublic,
-      id: userData.id
+      id: userData.id,
+      groupedByDefault: userData.groupedByDefault
     });
   }
 
