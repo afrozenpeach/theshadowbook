@@ -1,4 +1,5 @@
-<!-- Show user data when logged in -->
+<h1>User Dashboard</h1>
+
 <div *ngIf="authService.userData as user">
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <mat-form-field>
