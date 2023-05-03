@@ -57,8 +57,28 @@
                 </mat-select>
             </mat-form-field>
 
-            <button mat-raised-button color="accent" type="button" (click)="clearFilters()">Clear filters</button>
-            <button mat-raised-button color="accent" type="button" (click)="resetFilters()">Reset filters</button>
+            <mat-form-field appearance="fill">
+                <mat-label>Shapes (Match Any)</mat-label>
+                <mat-select formControlName="shapes" multiple>
+                    <mat-option *ngFor="let s of shapes" [value]="s.id">{{s.shape}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Statuses (Match Any)</mat-label>
+                <mat-select formControlName="statuses" multiple>
+                    <mat-option *ngFor="let s of statuses" [value]="s.id">{{s.status}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Colors</mat-label>
+                <mat-select formControlName="colors" multiple>
+                    <mat-option *ngFor="let c of colors" [value]="c.id">{{c.color}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-raised-button color="accent" type="button" (click)="clearFilters(); filter();">Clear filters</button>
             <button mat-raised-button color="primary" type="submit">Filter</button>
         </form>
     </div>
