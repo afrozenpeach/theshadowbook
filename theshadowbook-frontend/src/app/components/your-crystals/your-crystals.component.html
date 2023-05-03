@@ -5,7 +5,10 @@
         <mat-form-field appearance="fill">
             <mat-label>Crystal</mat-label>
             <mat-select formControlName="crystal">
-                <mat-option *ngFor="let c of crystals" [value]="c.id">{{c.crystal}}</mat-option>
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="crystalFilterCtrl" placeholderLabel="Find crystal..." noEntriesFoundLabel="'no matching crystals found'"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let c of filteredCrystals | async" [value]="c.id">{{c.crystal}}</mat-option>
             </mat-select>
         </mat-form-field>
 

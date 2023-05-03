@@ -5,7 +5,10 @@
         <mat-form-field appearance="fill">
             <mat-label>Deck Name</mat-label>
             <mat-select formControlName="id">
-                <mat-option *ngFor="let d of decks" [value]="d.id">{{d.name}}</mat-option>
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="deckFilterCtrl" placeholderLabel="Find deck..." noEntriesFoundLabel="'no matching decks found'"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let d of filteredDecks | async" [value]="d.id">{{d.name}}</mat-option>
             </mat-select>
         </mat-form-field>
 

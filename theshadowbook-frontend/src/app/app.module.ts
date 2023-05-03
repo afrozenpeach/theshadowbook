@@ -34,6 +34,7 @@ import { DeckComponent } from './components/deck/deck.component';
 import { DeckEditorComponent } from './components/deck-editor/deck-editor.component';
 import { DropdownEditorComponent } from './components/dropdown-editor/dropdown-editor.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     MatSelectModule,
     MatButtonModule,
     FormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgxMatSelectSearchModule
   ],
   providers: [
     AuthService,

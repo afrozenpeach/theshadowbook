@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, zip } from 'rxjs';
+import { Observable, ReplaySubject, Subject, takeUntil, zip } from 'rxjs';
 import { BackendService } from 'src/app/services/backend.service';
 
 @Component({
@@ -20,18 +20,36 @@ export class YourDecksComponent {
     id: new FormControl('')
   });
 
+  deckFilterCtrl: FormControl<any> = new FormControl<any>('');
+  filteredDecks: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+
   loading = true;
+
+  _onDestroy = new Subject<void>();
 
   constructor(private backendService: BackendService) {
 
   }
 
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
+
   ngOnInit() {
+    this.deckFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterDecks();
+      });
+
     this.backendService.getUser().subscribe(u => {
       this.user = u.user;
 
       this.backendService.getDecks().subscribe(d => {
         this.decks = d.decks;
+
+        this.filteredDecks.next(this.decks.slice());
 
         this.backendService.getStatuses().subscribe(s => {
           this.statuses = s.statuses;
@@ -104,5 +122,23 @@ export class YourDecksComponent {
     zip(...subscriptions).subscribe(() => {
       this.loading = false;
     });
+  }
+
+  protected filterDecks() {
+    if (!this.decks) {
+      return;
+    }
+    // get the search keyword
+    let search = this.deckFilterCtrl.value;
+    if (!search) {
+      this.filteredDecks.next(this.decks.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the decks
+    this.filteredDecks.next(
+      this.decks.filter((d: { name: string; }) => d.name.toLowerCase().indexOf(search) > -1)
+    );
   }
 }

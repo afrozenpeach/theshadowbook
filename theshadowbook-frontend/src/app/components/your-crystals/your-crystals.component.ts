@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, zip } from 'rxjs';
+import { Observable, ReplaySubject, Subject, takeUntil, zip } from 'rxjs';
 import { BackendService } from 'src/app/services/backend.service';
 
 @Component({
@@ -40,16 +40,32 @@ export class YourCrystalsComponent {
     colors: new FormControl([])
   });
 
+  crystalFilterCtrl: FormControl<any> = new FormControl<any>('');
+  filteredCrystals: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+
   userCrystalsOfType: any = [];
 
   grouped = true;
   loading = true;
 
+  protected _onDestroy = new Subject<void>();
+
   constructor(private backendService: BackendService) {
 
   }
 
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
+
   ngOnInit() {
+    this.crystalFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterCrystals();
+      });
+
     this.backendService.getColors().subscribe(c => {
       this.colors = c.colors;
 
@@ -86,6 +102,8 @@ export class YourCrystalsComponent {
 
                         this.backendService.getCrystals().subscribe(c => {
                           this.crystals = c.crystals;
+
+                          this.filteredCrystals.next(this.crystals.slice());
 
                           this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
                             this.userCrystals = uc.crystals;
@@ -381,5 +399,23 @@ export class YourCrystalsComponent {
       statuses: [],
       colors: []
     });
+  }
+
+  protected filterCrystals() {
+    if (!this.crystals) {
+      return;
+    }
+    // get the search keyword
+    let search = this.crystalFilterCtrl.value;
+    if (!search) {
+      this.filteredCrystals.next(this.crystals.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the crystals
+    this.filteredCrystals.next(
+      this.crystals.filter((c: { crystal: string; }) => c.crystal.toLowerCase().indexOf(search) > -1)
+    );
   }
 }
