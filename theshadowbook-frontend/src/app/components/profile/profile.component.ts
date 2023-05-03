@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { subscribeOn } from 'rxjs';
 import { BackendService } from 'src/app/services/backend.service';
 
 @Component({
@@ -43,7 +42,7 @@ export class ProfileComponent {
   this.backendService.getUser().subscribe(ul => {
     this.userLoggedIn = ul?.user;
 
-    this.grouped = this.userLoggedIn !== null ? this.userLoggedIn.groupedByDefault : false;
+    this.grouped = this.userLoggedIn !== undefined ? this.userLoggedIn.groupedByDefault : true;
 
     this.backendService.getChakras().subscribe(c => {
       this.chakras = c.chakras;
