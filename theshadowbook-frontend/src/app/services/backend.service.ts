@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +15,10 @@ export class BackendService {
     if (user) {
       return this.http.get<any>('/api/user/' + user.uid);
     } else {
-      let result = new Subject<any>;
-      result.next(null);
-      result.complete();
-
-      return result.asObservable();
+      return new Observable(s => {
+        s.next(null);
+        s.complete();
+      });
     }
   }
 

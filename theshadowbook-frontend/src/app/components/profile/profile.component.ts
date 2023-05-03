@@ -9,6 +9,7 @@ import { BackendService } from 'src/app/services/backend.service';
 })
 export class ProfileComponent {
   user: any = null;
+  userLoggedIn: any = null;
   crystals: any = [];
   userCrystals: any = [];
   userCrystalsOfType: any = [];
@@ -31,57 +32,64 @@ export class ProfileComponent {
  }
 
  ngOnInit() {
-  this.backendService.getChakras().subscribe(c => {
-    this.chakras = c.chakras;
+  this.backendService.getUser().subscribe(ul => {
+    this.userLoggedIn = ul?.user;
 
-    this.backendService.getColors().subscribe(co => {
-      this.colors = co.colors;
+    this.backendService.getChakras().subscribe(c => {
+      this.chakras = c.chakras;
 
-      this.backendService.getDomains().subscribe(d => {
-        this.domains = d.domains;
+      this.backendService.getColors().subscribe(co => {
+        this.colors = co.colors;
 
-        this.backendService.getElements().subscribe(e => {
-          this.elements = e.elements;
+        this.backendService.getDomains().subscribe(d => {
+          this.domains = d.domains;
 
-          this.backendService.getMoonPhases().subscribe(m => {
-            this.moonPhases = m.moonPhases;
+          this.backendService.getElements().subscribe(e => {
+            this.elements = e.elements;
 
-            this.backendService.getZodiacs().subscribe(z => {
-              this.zodiacs = z.zodiacs;
+            this.backendService.getMoonPhases().subscribe(m => {
+              this.moonPhases = m.moonPhases;
 
-              this.backendService.getShapes().subscribe(s => {
-                this.shapes = s.shapes;
+              this.backendService.getZodiacs().subscribe(z => {
+                this.zodiacs = z.zodiacs;
 
-                this.backendService.getStatuses().subscribe(st => {
-                    this.statuses = st.statuses;
+                this.backendService.getShapes().subscribe(s => {
+                  this.shapes = s.shapes;
 
-                    this.backendService.getCrystals().subscribe(cr => {
-                      this.crystals = cr.crystals;
+                  this.backendService.getStatuses().subscribe(st => {
+                      this.statuses = st.statuses;
 
-                      this.route.paramMap.subscribe(params => {
-                        let name = params.get('name');
+                      this.backendService.getCrystals().subscribe(cr => {
+                        this.crystals = cr.crystals;
 
-                        if (name !== null) {
-                          this.backendService.getProfile(name).subscribe(u => {
-                            this.user = u.user;
+                        this.route.paramMap.subscribe(params => {
+                          let name = params.get('name');
 
-                            if (!this.user.isPublic) {
+                          if (name !== null) {
+                            this.backendService.getProfile(name).subscribe(u => {
+                              this.user = u.user;
+
+                              if (this.user?.isPublic || (this.userLoggedIn !== null && this.userLoggedIn?.id === this.user.id)) {
+                                this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
+                                  this.userCrystals = uc.crystals;
+
+                                  for (let crystal of this.userCrystals) {
+                                    this.addUserCrystalOfType(crystal);
+                                  }
+                                })
+                              } else {
+                                this.router.navigate(['404']);
+                              }
+                            },
+                            (error) => {
                               this.router.navigate(['404']);
-                            } else {
-                              this.backendService.getUserCrystals(this.user.id).subscribe(uc => {
-                                this.userCrystals = uc.crystals;
-
-                                for (let crystal of this.userCrystals) {
-                                  this.addUserCrystalOfType(crystal);
-                                }
-                              })
-                            }
-                          });
-                        } else {
-                          this.router.navigate(['404']);
-                        }
-                      })
-                    });
+                            });
+                          } else {
+                            this.router.navigate(['404']);
+                          }
+                        })
+                      });
+                  });
                 });
               });
             });

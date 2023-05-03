@@ -60,7 +60,8 @@
         <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">Save</button>
     </form>
 
-    <div id="isAdmin" *ngIf="this.userData.user?.isAdmin">You're an <a routerLink="/admin/dropdown-editor">admin</a>!</div>
+    <div id="viewProfile"><a routerLink="/profile/{{userData.user?.name}}">View your profile!</a></div>
+    <div id="isAdmin" *ngIf="userData.user?.isAdmin">You're an <a routerLink="/admin/dropdown-editor">admin</a>!</div>
 
     <button mat-raised-button color="accent" (click)="router.navigate(['/update-email'])">Update email</button>
 

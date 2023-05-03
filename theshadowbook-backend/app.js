@@ -170,18 +170,38 @@ app.put('/api/user', async (req, res) => {
 
 app.get('/api/profile/:name', async (req, res) => {
   try {
-    let user = await models.User.findOne({
-      where: {
-        name: {
-          [Op.like]: req.params.name
-        }
-      }
-    });
+    let idToken = req.headers?.authorization?.substring(7);
 
-    if (user?.isPublic) {
-      res.json({success: true, user: user});
+    if (idToken) {
+      admin.auth().verifyIdToken(idToken).then(async d => {
+        let user = await models.User.findOne({
+          where: {
+            name: {
+              [Op.like]: req.params.name
+            }
+          }
+        });
+
+        if (user?.isPublic || user?.firebaseId === d.uid) {
+          res.json({success: true, user: user});
+        } else {
+          res.status('404').json({});
+        }
+      });
     } else {
-      res.status('404').json({});
+      let user = await models.User.findOne({
+        where: {
+          name: {
+            [Op.like]: req.params.name
+          }
+        }
+      });
+
+      if (user?.isPublic) {
+        res.json({success: true, user: user});
+      } else {
+        res.status('404').json({});
+      }
     }
   } catch (error) {
     res.status('503').json({success: false, error: error});
