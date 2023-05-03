@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { subscribeOn } from 'rxjs';
 import { BackendService } from 'src/app/services/backend.service';
 
 @Component({
@@ -13,6 +14,8 @@ export class ProfileComponent {
   crystals: any = [];
   userCrystals: any = [];
   userCrystalsOfType: any = [];
+  decks: any = [];
+  userDecks: any = [];
 
   chakras: any = [];
   colors: any = [];
@@ -57,10 +60,13 @@ export class ProfileComponent {
                   this.shapes = s.shapes;
 
                   this.backendService.getStatuses().subscribe(st => {
-                      this.statuses = st.statuses;
+                    this.statuses = st.statuses;
 
-                      this.backendService.getCrystals().subscribe(cr => {
-                        this.crystals = cr.crystals;
+                    this.backendService.getCrystals().subscribe(cr => {
+                      this.crystals = cr.crystals;
+
+                      this.backendService.getDecks().subscribe(de => {
+                        this.decks = de.decks;
 
                         this.route.paramMap.subscribe(params => {
                           let name = params.get('name');
@@ -76,6 +82,10 @@ export class ProfileComponent {
                                   for (let crystal of this.userCrystals) {
                                     this.addUserCrystalOfType(crystal);
                                   }
+
+                                  this.backendService.getUserDecks(this.user.id).subscribe(ud => {
+                                    this.userDecks = ud.decks;
+                                  });
                                 })
                               } else {
                                 this.router.navigate(['404']);
@@ -87,8 +97,9 @@ export class ProfileComponent {
                           } else {
                             this.router.navigate(['404']);
                           }
-                        })
+                        });
                       });
+                    });
                   });
                 });
               });
@@ -215,5 +226,14 @@ export class ProfileComponent {
    let returnValue = this.crystals.filter((s: { parentCrystal: number; }) => s.parentCrystal === id);
    returnValue.unshift({id: 0, crystal: id, type: ''});
    return returnValue;
+ }
+
+ getDeckName(id: number) {
+  return this.decks.filter((d: { id: number; }) => d.id === id)[0].name;
+ }
+
+ getTypesOfDeck(id: number) {
+  let returnValue = this.userDecks.filter((d: { id: number; }) => d.id === id);
+  return returnValue;
  }
 }

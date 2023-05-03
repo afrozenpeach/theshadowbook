@@ -16,3 +16,17 @@
     position: relative;
     left: 25px;
 }
+
+.individualDeck {
+    position: relative;
+    left: 50px;
+    padding: 10px;
+}
+
+.individualDeck:nth-of-type(even) {
+    background-color: darkgrey;
+}
+
+.individualDeck:nth-of-type(odd) {
+    background-color: lightgrey;
+}
