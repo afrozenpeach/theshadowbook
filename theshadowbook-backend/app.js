@@ -12,7 +12,6 @@ const { name, user, password, options } = configure(config)
 const sequelize = new Sequelize(name, user, password, options);
 const { Op } = require("sequelize");
 var initModels = require("./models/init-models");
-const { get } = require('http');
 var models = initModels(sequelize);
 
 admin.initializeApp({
@@ -696,15 +695,49 @@ app.post('/api/collection/crystals/', checkAuth, async (req, res) => {
 
 app.get('/api/collection/crystals/:userId', async (req, res) => {
   try {
-    const crystals = await models.UserCrystal.findAll({
-      where: {
-        owner: req.params.userId
-      }
-    });
+    let idToken = req.headers?.authorization?.substring(7);
 
-    res.json({success: true, crystals: crystals.map(c => c.dataValues)});
+    if (idToken) {
+      admin.auth().verifyIdToken(idToken).then(async d => {
+        let user = await models.User.findOne({
+          where: {
+            id: req.params.userId
+          }
+        });
+
+        if (user?.isPublic || user?.firebaseId === d.uid) {
+          const crystals = await models.UserCrystal.findAll({
+            where: {
+              owner: req.params.userId
+            }
+          });
+
+          res.json({success: true, crystals: crystals.map(c => c.dataValues)});
+        } else {
+          res.status('404').json({});
+        }
+      });
+    } else {
+      let user = await models.User.findOne({
+        where: {
+          id: req.params.userId
+        }
+      });
+
+      if (user?.isPublic) {
+        const crystals = await models.UserCrystal.findAll({
+          where: {
+            owner: req.params.userId
+          }
+        });
+
+        res.json({success: true, crystals: crystals.map(c => c.dataValues)});
+      } else {
+        res.status('404').json({});
+      }
+    }
   } catch (error) {
-    res.json({success: false, error: error});
+    res.status('503').json({success: false, error: error});
   }
 });
 
@@ -864,15 +897,49 @@ app.post('/api/collection/decks/', checkAuth, async (req, res) => {
 
 app.get('/api/collection/decks/:userId', async (req, res) => {
   try {
-    const decks = await models.UserDeck.findAll({
-      where: {
-        owner: req.params.userId
-      }
-    });
+    let idToken = req.headers?.authorization?.substring(7);
 
-    res.json({success: true, decks: decks});
+    if (idToken) {
+      admin.auth().verifyIdToken(idToken).then(async d => {
+        let user = await models.User.findOne({
+          where: {
+            id: req.params.userId
+          }
+        });
+
+        if (user?.isPublic || user?.firebaseId === d.uid) {
+          const decks = await models.UserDeck.findAll({
+            where: {
+              owner: req.params.userId
+            }
+          });
+
+          res.json({success: true, decks: decks});
+        } else {
+          res.status('404').json({});
+        }
+      });
+    } else {
+      let user = await models.User.findOne({
+        where: {
+          id: req.params.userId
+        }
+      });
+
+      if (user?.isPublic) {
+        const decks = await models.UserDeck.findAll({
+          where: {
+            owner: req.params.userId
+          }
+        });
+
+        res.json({success: true, decks: decks});
+      } else {
+        res.status('404').json({});
+      }
+    }
   } catch (error) {
-    res.json({success: false, error: error});
+    res.status('503').json({success: false, error: error});
   }
 });
 
