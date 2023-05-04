@@ -6,27 +6,15 @@
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item>
-                    <a routerLink="/crystals"><fa-icon [icon]="faGem"></fa-icon>Crystal DB</a>
-                </button>
-                <button mat-menu-item *ngIf="loggedIn">
-                    <a routerLink="/your-crystals"><fa-icon [icon]="faGem" class="yours"></fa-icon>Your Crystals</a>
-                </button>
+                <a mat-menu-item routerLink="/crystals"><fa-icon [icon]="faGem"></fa-icon>Crystal DB</a>
+                <a mat-menu-item *ngIf="loggedIn" routerLink="/your-crystals"><fa-icon [icon]="faGem" class="yours"></fa-icon>Your Crystals</a>
                 <mat-divider></mat-divider>
-                <button mat-menu-item>
-                    <a routerLink="/decks"><fa-icon [icon]="faLayerGroup"></fa-icon>Deck DB</a>
-                </button>
-                <button mat-menu-item *ngIf="loggedIn">
-                    <a routerLink="/your-decks"><fa-icon [icon]="faLayerGroup" class="yours"></fa-icon>Your Decks</a>
-                </button>
+                <a mat-menu-item routerLink="/decks"><fa-icon [icon]="faLayerGroup"></fa-icon>Deck DB</a>
+                <a mat-menu-item *ngIf="loggedIn" routerLink="/your-decks"><fa-icon [icon]="faLayerGroup" class="yours"></fa-icon>Your Decks</a>
                 <mat-divider></mat-divider>
-                <button mat-menu-item>
-                    <a routerLink="/dashboard"><fa-icon [icon]="faHatWizard"></fa-icon>User Dashboard</a>
-                </button>
+                <a mat-menu-item routerLink="/dashboard"><fa-icon [icon]="faHatWizard"></fa-icon>User Dashboard</a>
                 <mat-divider></mat-divider>
-                <button mat-menu-item>
-                    <a href="https://discord.gg/ZJ9NnaUZkS"><fa-icon [icon]="faDiscord" class="discord"></fa-icon>Join the Discord</a>
-                </button>
+                <a mat-menu-item href="https://discord.gg/ZJ9NnaUZkS"><fa-icon [icon]="faDiscord" class="discord"></fa-icon>Join the Discord</a>
             </mat-menu>
             <div class="bigMenu">
                 <a mat-button routerLink="/crystals" routerLinkActive="hilight"><fa-icon [icon]="faGem"></fa-icon>Crystal DB</a>

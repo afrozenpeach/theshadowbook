@@ -14,25 +14,9 @@
         }
     }
 
-    fa-icon {
-        color: plum;
-    }
-
-    fa-icon.yours {
-        color: greenyellow;
-    }
-
-    fa-icon.discord {
-        color: #7289DA;
-    }
-
     mat-toolbar {
         > button {
             display: none;
-        }
-
-        fa-icon {
-            margin-right: 5px;
         }
 
         .spacer {
@@ -80,4 +64,20 @@ a:hover {
 .container {
    min-height: 100%;
    position: relative;
+}
+
+fa-icon {
+    margin-right: 5px;
+}
+
+fa-icon {
+    color: plum;
+}
+
+fa-icon.yours {
+    color: greenyellow;
+}
+
+fa-icon.discord {
+    color: #7289DA;
 }
