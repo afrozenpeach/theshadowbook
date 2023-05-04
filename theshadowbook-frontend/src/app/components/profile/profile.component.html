@@ -2,101 +2,109 @@
     <h1>{{user.name}}'s Profile</h1>
 
     <div class="zodiac">
-        <p>Sun Sign: {{getZodiacName(user.sunSign)}}</p>
-        <p>Moon Sign: {{getZodiacName(user.moonSign)}}</p>
-        <p>Rising Sign: {{getZodiacName(user.risingSign)}}</p>
+        <p><span class="bold">Sun Sign:</span> {{getZodiacName(user.sunSign)}}</p>
+        <p><span class="bold">Moon Sign:</span> {{getZodiacName(user.moonSign)}}</p>
+        <p><span class="bold">Rising Sign:</span> {{getZodiacName(user.risingSign)}}</p>
     </div>
 
     <div class="profileText">
-        <p>Profile: {{user.profile}}</p>
+        <p><span class="bold">Profile:</span> {{user.profile}}</p>
     </div>
 
     <div class="crystals">
         <h2>Crystals</h2>
 
-        <div>
+        <div class="groupedButtons">
             <button mat-raised-button color="primary" *ngIf="grouped" (click)="toggleGrouped()">Ungroup</button>
             <button mat-raised-button color="primary" *ngIf="!grouped" (click)="toggleGrouped()">Group</button>
         </div>
 
         <div *ngFor="let c of getCrystals()">
             <div class="crystalGroup" *ngIf="userCrystalsOfType[c.id]?.crystals.length || userCrystalsOfType[c.id]?.children.length">
-                {{c.crystal}}
+                <h3>{{c.crystal}}</h3>
 
-                <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].crystals">
-                    <div *ngIf="cot.name" class="crystalName">Name: {{cot.name}}</div>
-                    <div *ngIf="cot.shape" class="crystalShape">Shape: {{getShapeName(cot.shape)}}</div>
-                    <div *ngIf="cot.primaryColor" class="crystalPrimaryColor">Primary Color: {{getColorName(cot.primaryColor)}}</div>
-                    <div *ngIf="cot.secondaryColor" class="crystalSecondaryColor">Secondary Color: {{getColorName(cot.secondaryColor)}}</div>
-                    <div *ngIf="cot.tertiaryColor" class="crystalTertiaryColor">Teriary Color: {{getColorName(cot.tertiaryColor)}}</div>
-                    <div *ngIf="cot.aura" class="crystalAura">Titanium Aura</div>
-                    <div *ngIf="cot.sizeX" class="crystalSizeX">Size X: {{cot.sizeX}}</div>
-                    <div *ngIf="cot.sizeY" class="crystalSizeY">Size Y: {{cot.sizeY}}</div>
-                    <div *ngIf="cot.sizeZ" class="crystalSizeZ">Size Z: {{cot.sizeZ}}</div>
-                    <div *ngIf="cot.weight" class="crystalWeight">Weight: {{cot.weight}}</div>
-                    <div *ngIf="cot.karat" class="crystalKarat">Karat: {{cot.karat}}</div>
-                    <div *ngIf="cot.status" class="crystalStatus">Status: {{getStatusName(cot.status)}}</div>
-                    <div *ngIf="cot.notes" class="crystalNotes">Notes: {{cot.notes}}</div>
+                <div class="individualCrystals">
+                    <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].crystals">
+                        <div *ngIf="cot.name" class="crystalName">Name: {{cot.name}}</div>
+                        <div *ngIf="cot.shape" class="crystalShape">Shape: {{getShapeName(cot.shape)}}</div>
+                        <div *ngIf="cot.primaryColor" class="crystalPrimaryColor">Primary Color: {{getColorName(cot.primaryColor)}}</div>
+                        <div *ngIf="cot.secondaryColor" class="crystalSecondaryColor">Secondary Color: {{getColorName(cot.secondaryColor)}}</div>
+                        <div *ngIf="cot.tertiaryColor" class="crystalTertiaryColor">Teriary Color: {{getColorName(cot.tertiaryColor)}}</div>
+                        <div *ngIf="cot.aura" class="crystalAura">Titanium Aura</div>
+                        <div *ngIf="cot.sizeX" class="crystalSizeX">Size X: {{cot.sizeX}}</div>
+                        <div *ngIf="cot.sizeY" class="crystalSizeY">Size Y: {{cot.sizeY}}</div>
+                        <div *ngIf="cot.sizeZ" class="crystalSizeZ">Size Z: {{cot.sizeZ}}</div>
+                        <div *ngIf="cot.weight" class="crystalWeight">Weight: {{cot.weight}}</div>
+                        <div *ngIf="cot.karat" class="crystalKarat">Karat: {{cot.karat}}</div>
+                        <div *ngIf="cot.status" class="crystalStatus">Status: {{getStatusName(cot.status)}}</div>
+                        <div *ngIf="cot.notes" class="crystalNotes">Notes: {{cot.notes}}</div>
+                    </div>
                 </div>
 
                 <div *ngFor="let s of getSubTypesOfCrystal(c.id)">
                     <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children.length">
-                        <div>{{getCrystal(s.id).crystal}}</div>
+                        <h4>{{getCrystal(s.id).crystal}}</h4>
 
-                        <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].crystals">
-                            <div *ngIf="cot.name" class="crystalName">Name: {{cot.name}}</div>
-                            <div *ngIf="cot.shape" class="crystalShape">Shape: {{getShapeName(cot.shape)}}</div>
-                            <div *ngIf="cot.primaryColor" class="crystalPrimaryColor">Primary Color: {{getColorName(cot.primaryColor)}}</div>
-                            <div *ngIf="cot.secondaryColor" class="crystalSecondaryColor">Secondary Color: {{getColorName(cot.secondaryColor)}}</div>
-                            <div *ngIf="cot.tertiaryColor" class="crystalTertiaryColor">Teriary Color: {{getColorName(cot.tertiaryColor)}}</div>
-                            <div *ngIf="cot.aura" class="crystalAura">Titanium Aura</div>
-                            <div *ngIf="cot.sizeX" class="crystalSizeX">Size X: {{cot.sizeX}}</div>
-                            <div *ngIf="cot.sizeY" class="crystalSizeY">Size Y: {{cot.sizeY}}</div>
-                            <div *ngIf="cot.sizeZ" class="crystalSizeZ">Size Z: {{cot.sizeZ}}</div>
-                            <div *ngIf="cot.weight" class="crystalWeight">Weight: {{cot.weight}}</div>
-                            <div *ngIf="cot.karat" class="crystalKarat">Karat: {{cot.karat}}</div>
-                            <div *ngIf="cot.status" class="crystalStatus">Status: {{getStatusName(cot.status)}}</div>
-                            <div *ngIf="cot.notes" class="crystalNotes">Notes: {{cot.notes}}</div>
+                        <div class="individualCrystals">
+                            <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].crystals">
+                                <div *ngIf="cot.name" class="crystalName">Name: {{cot.name}}</div>
+                                <div *ngIf="cot.shape" class="crystalShape">Shape: {{getShapeName(cot.shape)}}</div>
+                                <div *ngIf="cot.primaryColor" class="crystalPrimaryColor">Primary Color: {{getColorName(cot.primaryColor)}}</div>
+                                <div *ngIf="cot.secondaryColor" class="crystalSecondaryColor">Secondary Color: {{getColorName(cot.secondaryColor)}}</div>
+                                <div *ngIf="cot.tertiaryColor" class="crystalTertiaryColor">Teriary Color: {{getColorName(cot.tertiaryColor)}}</div>
+                                <div *ngIf="cot.aura" class="crystalAura">Titanium Aura</div>
+                                <div *ngIf="cot.sizeX" class="crystalSizeX">Size X: {{cot.sizeX}}</div>
+                                <div *ngIf="cot.sizeY" class="crystalSizeY">Size Y: {{cot.sizeY}}</div>
+                                <div *ngIf="cot.sizeZ" class="crystalSizeZ">Size Z: {{cot.sizeZ}}</div>
+                                <div *ngIf="cot.weight" class="crystalWeight">Weight: {{cot.weight}}</div>
+                                <div *ngIf="cot.karat" class="crystalKarat">Karat: {{cot.karat}}</div>
+                                <div *ngIf="cot.status" class="crystalStatus">Status: {{getStatusName(cot.status)}}</div>
+                                <div *ngIf="cot.notes" class="crystalNotes">Notes: {{cot.notes}}</div>
+                            </div>
                         </div>
 
                         <div *ngFor="let ss of getSubTypesOfCrystal(s.crystal)">
-                            <div class="crystalSubSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children">
-                                <div>{{getCrystal(ss.id).crystal}}</div>
+                            <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children">
+                                <h5>{{getCrystal(ss.id).crystal}}</h5>
 
-                                <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].crystals">
-                                    <div *ngIf="cot.name" class="crystalName">Name: {{cot.name}}</div>
-                                    <div *ngIf="cot.shape" class="crystalShape">Shape: {{getShapeName(cot.shape)}}</div>
-                                    <div *ngIf="cot.primaryColor" class="crystalPrimaryColor">Primary Color: {{getColorName(cot.primaryColor)}}</div>
-                                    <div *ngIf="cot.secondaryColor" class="crystalSecondaryColor">Secondary Color: {{getColorName(cot.secondaryColor)}}</div>
-                                    <div *ngIf="cot.tertiaryColor" class="crystalTertiaryColor">Teriary Color: {{getColorName(cot.tertiaryColor)}}</div>
-                                    <div *ngIf="cot.aura" class="crystalAura">Titanium Aura</div>
-                                    <div *ngIf="cot.sizeX" class="crystalSizeX">Size X: {{cot.sizeX}}</div>
-                                    <div *ngIf="cot.sizeY" class="crystalSizeY">Size Y: {{cot.sizeY}}</div>
-                                    <div *ngIf="cot.sizeZ" class="crystalSizeZ">Size Z: {{cot.sizeZ}}</div>
-                                    <div *ngIf="cot.weight" class="crystalWeight">Weight: {{cot.weight}}</div>
-                                    <div *ngIf="cot.karat" class="crystalKarat">Karat: {{cot.karat}}</div>
-                                    <div *ngIf="cot.status" class="crystalStatus">Status: {{getStatusName(cot.status)}}</div>
-                                    <div *ngIf="cot.notes" class="crystalNotes">Notes: {{cot.notes}}</div>
+                                <div class="individualCrystals">
+                                    <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].crystals">
+                                        <div *ngIf="cot.name" class="crystalName">Name: {{cot.name}}</div>
+                                        <div *ngIf="cot.shape" class="crystalShape">Shape: {{getShapeName(cot.shape)}}</div>
+                                        <div *ngIf="cot.primaryColor" class="crystalPrimaryColor">Primary Color: {{getColorName(cot.primaryColor)}}</div>
+                                        <div *ngIf="cot.secondaryColor" class="crystalSecondaryColor">Secondary Color: {{getColorName(cot.secondaryColor)}}</div>
+                                        <div *ngIf="cot.tertiaryColor" class="crystalTertiaryColor">Teriary Color: {{getColorName(cot.tertiaryColor)}}</div>
+                                        <div *ngIf="cot.aura" class="crystalAura">Titanium Aura</div>
+                                        <div *ngIf="cot.sizeX" class="crystalSizeX">Size X: {{cot.sizeX}}</div>
+                                        <div *ngIf="cot.sizeY" class="crystalSizeY">Size Y: {{cot.sizeY}}</div>
+                                        <div *ngIf="cot.sizeZ" class="crystalSizeZ">Size Z: {{cot.sizeZ}}</div>
+                                        <div *ngIf="cot.weight" class="crystalWeight">Weight: {{cot.weight}}</div>
+                                        <div *ngIf="cot.karat" class="crystalKarat">Karat: {{cot.karat}}</div>
+                                        <div *ngIf="cot.status" class="crystalStatus">Status: {{getStatusName(cot.status)}}</div>
+                                        <div *ngIf="cot.notes" class="crystalNotes">Notes: {{cot.notes}}</div>
+                                    </div>
                                 </div>
 
                                 <div *ngFor="let sss of getSubTypesOfCrystal(ss.id)">
-                                    <div class="crystalSubSubSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.children.length">
-                                        <div>{{getCrystal(sss.id).crystal}}</div>
+                                    <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.children.length">
+                                        <h6>{{getCrystal(sss.id).crystal}}</h6>
 
-                                        <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].children[sss.id].crystals">
-                                            <div *ngIf="cot.name" class="crystalName">Name: {{cot.name}}</div>
-                                            <div *ngIf="cot.shape" class="crystalShape">Shape: {{getShapeName(cot.shape)}}</div>
-                                            <div *ngIf="cot.primaryColor" class="crystalPrimaryColor">Primary Color: {{getColorName(cot.primaryColor)}}</div>
-                                            <div *ngIf="cot.secondaryColor" class="crystalSecondaryColor">Secondary Color: {{getColorName(cot.secondaryColor)}}</div>
-                                            <div *ngIf="cot.tertiaryColor" class="crystalTertiaryColor">Teriary Color: {{getColorName(cot.tertiaryColor)}}</div>
-                                            <div *ngIf="cot.aura" class="crystalAura">Titanium Aura</div>
-                                            <div *ngIf="cot.sizeX" class="crystalSizeX">Size X: {{cot.sizeX}}</div>
-                                            <div *ngIf="cot.sizeY" class="crystalSizeY">Size Y: {{cot.sizeY}}</div>
-                                            <div *ngIf="cot.sizeZ" class="crystalSizeZ">Size Z: {{cot.sizeZ}}</div>
-                                            <div *ngIf="cot.weight" class="crystalWeight">Weight: {{cot.weight}}</div>
-                                            <div *ngIf="cot.karat" class="crystalKarat">Karat: {{cot.karat}}</div>
-                                            <div *ngIf="cot.status" class="crystalStatus">Status: {{getStatusName(cot.status)}}</div>
-                                            <div *ngIf="cot.notes" class="crystalNotes">Notes: {{cot.notes}}</div>
+                                        <div class="individualCrystals">
+                                            <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].children[sss.id].crystals">
+                                                <div *ngIf="cot.name" class="crystalName">Name: {{cot.name}}</div>
+                                                <div *ngIf="cot.shape" class="crystalShape">Shape: {{getShapeName(cot.shape)}}</div>
+                                                <div *ngIf="cot.primaryColor" class="crystalPrimaryColor">Primary Color: {{getColorName(cot.primaryColor)}}</div>
+                                                <div *ngIf="cot.secondaryColor" class="crystalSecondaryColor">Secondary Color: {{getColorName(cot.secondaryColor)}}</div>
+                                                <div *ngIf="cot.tertiaryColor" class="crystalTertiaryColor">Teriary Color: {{getColorName(cot.tertiaryColor)}}</div>
+                                                <div *ngIf="cot.aura" class="crystalAura">Titanium Aura</div>
+                                                <div *ngIf="cot.sizeX" class="crystalSizeX">Size X: {{cot.sizeX}}</div>
+                                                <div *ngIf="cot.sizeY" class="crystalSizeY">Size Y: {{cot.sizeY}}</div>
+                                                <div *ngIf="cot.sizeZ" class="crystalSizeZ">Size Z: {{cot.sizeZ}}</div>
+                                                <div *ngIf="cot.weight" class="crystalWeight">Weight: {{cot.weight}}</div>
+                                                <div *ngIf="cot.karat" class="crystalKarat">Karat: {{cot.karat}}</div>
+                                                <div *ngIf="cot.status" class="crystalStatus">Status: {{getStatusName(cot.status)}}</div>
+                                                <div *ngIf="cot.notes" class="crystalNotes">Notes: {{cot.notes}}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -112,10 +120,12 @@
         <h2>Decks</h2>
         <div *ngFor="let d of decks">
             <div class="deckGroup" *ngIf="getTypesOfDeck(d.id).length">
-                {{getDeckName(d.id)}}
+                <h3>{{getDeckName(d.id)}}</h3>
 
-                <div class="individualDeck" *ngFor="let ud of getTypesOfDeck(d.id)">
-                    <div class="deckUserName">Name: {{ud.name}}</div>
+                <div class="individualDecks">
+                    <div class="individualDeck" *ngFor="let ud of getTypesOfDeck(d.id)">
+                        <div class="deckUserName">Name: {{ud.name}}</div>
+                    </div>
                 </div>
             </div>
         </div>
