@@ -102,9 +102,7 @@ module.exports = function(sequelize, DataTypes) {
         name: "name_UNIQUE",
         unique: true,
         using: "BTREE",
-        fields: [
-          { name: "name" },
-        ]
+        fields: [sequelize.fn('lower', sequelize.col('name'))]
       },
       {
         name: "firebaseId_UNIQUE",

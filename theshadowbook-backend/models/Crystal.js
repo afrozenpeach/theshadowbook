@@ -33,9 +33,7 @@ module.exports = function(sequelize, DataTypes) {
         name: "crystal_UNIQUE",
         unique: true,
         using: "BTREE",
-        fields: [
-          { name: "crystal" },
-        ]
+        fields: [sequelize.fn('lower', sequelize.col('crystal'))]
       },
       {
         name: "parentCrystal",

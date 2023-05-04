@@ -52,6 +52,12 @@ module.exports = function(sequelize, DataTypes) {
           { name: "id" },
         ]
       },
+      {
+        name: "name_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [sequelize.fn('lower', sequelize.col('name'))]
+      },
     ]
   });
 };

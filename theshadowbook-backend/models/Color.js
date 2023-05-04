@@ -32,6 +32,14 @@ module.exports = function(sequelize, DataTypes) {
           { name: "id" },
         ]
       },
+      {
+        name: "color_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "color" },
+        ]
+      },
     ]
   });
 };
