@@ -50,7 +50,7 @@ export class CrystalComponent {
                 this.zodiacs = zodiacs.zodiacs;
 
                 this.route.paramMap.subscribe((params: ParamMap) => {
-                  this.name = params.get('name')?.replace('-', ' ');
+                  this.name = params.get('name')?.replaceAll('-', ' ');
 
                   if (this.name != null) {
                     this.backendService.getCrystal(this.name).subscribe((crystal) => {

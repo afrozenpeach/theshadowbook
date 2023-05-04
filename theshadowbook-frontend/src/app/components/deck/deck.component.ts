@@ -31,7 +31,7 @@ export class DeckComponent {
       this.deckTypes = deckTypes.deckTypes;
 
       this.route.paramMap.subscribe((params: ParamMap) => {
-        this.name = params.get('name')?.replace('-', ' ');
+        this.name = params.get('name')?.replaceAll('-', ' ');
 
         if (this.name != null) {
           this.backendService.getDeck(this.name).subscribe((deck) => {
