@@ -4,7 +4,7 @@
 
 <div class="decks">
     <div class="deckLine" *ngFor="let d of decks">
-        <a routerLink="/decks/{{d.name}}">{{d.name}}</a>
+        <a routerLink="/decks/{{d.name.replace(' ', '-')}}">{{d.name}}</a>
 
         <span *ngIf="userDecks[d.id]" class="userDeckCount">({{userDecks[d.id]}})</span>
 

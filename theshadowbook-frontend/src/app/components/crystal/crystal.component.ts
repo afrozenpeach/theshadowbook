@@ -9,8 +9,7 @@ import { BackendService } from 'src/app/services/backend.service';
   styleUrls: ['./crystal.component.scss']
 })
 export class CrystalComponent {
-  name: String|null = '';
-  subType: String|null = '';
+  name: String|undefined = '';
 
   chakras: any = [];
   cleansings: any = [];
@@ -51,7 +50,7 @@ export class CrystalComponent {
                 this.zodiacs = zodiacs.zodiacs;
 
                 this.route.paramMap.subscribe((params: ParamMap) => {
-                  this.name = params.get('name');
+                  this.name = params.get('name')?.replace('-', ' ');
 
                   if (this.name != null) {
                     this.backendService.getCrystal(this.name).subscribe((crystal) => {
@@ -98,10 +97,6 @@ export class CrystalComponent {
   }
 
   edit() {
-    if (this.subType) {
-      this.router.navigate(['/crystal-editor/' + this.crystal.Crystal.id + '/' + this.crystal.id])
-    } else {
-      this.router.navigate(['/crystal-editor/' + this.crystal.id]);
-    }
+    this.router.navigate(['/crystal-editor/' + this.crystal.id]);
   }
 }
