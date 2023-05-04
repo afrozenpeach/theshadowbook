@@ -10,7 +10,7 @@ import { BackendService } from 'src/app/services/backend.service';
   styleUrls: ['./deck.component.scss']
 })
 export class DeckComponent {
-  name: String|undefined = '';
+  name: String|null = '';
 
   deckTypes: any = [];
 
@@ -31,7 +31,7 @@ export class DeckComponent {
       this.deckTypes = deckTypes.deckTypes;
 
       this.route.paramMap.subscribe((params: ParamMap) => {
-        this.name = params.get('name')?.replaceAll('-', ' ');
+        this.name = params.get('name');
 
         if (this.name != null) {
           this.backendService.getDeck(this.name).subscribe((deck) => {
