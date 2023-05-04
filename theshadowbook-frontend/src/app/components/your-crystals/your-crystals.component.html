@@ -97,7 +97,7 @@
         <div class="crystalGroup" *ngIf="userCrystalsOfType[c.id]?.crystals.length || userCrystalsOfType[c.id]?.children.length">
             <h1>{{c.crystal}}</h1>
 
-            <div>
+            <div class="individualCrystals">
                 <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].crystals">
                     <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
                         <mat-form-field>
@@ -190,7 +190,7 @@
                 <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children.length">
                     <h2>{{getCrystal(s.id).crystal}}</h2>
 
-                    <div>
+                    <div class="individualCrystals">
                         <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].crystals">
                             <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
                                 <mat-form-field>
@@ -283,7 +283,7 @@
                         <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children.length">
                             <h3>{{getCrystal(ss.id).crystal}}</h3>
 
-                            <div>
+                            <div class="individualCrystals">
                                 <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].crystals">
                                     <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
                                         <mat-form-field>
@@ -376,7 +376,7 @@
                                 <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.children.length">
                                     <h4>{{getCrystal(sss.id).crystal}}</h4>
 
-                                    <div>
+                                    <div class="individualCrystals">
                                         <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].children[sss.id].crystals">
                                             <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
                                                 <mat-form-field>
