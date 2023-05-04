@@ -1327,7 +1327,9 @@ app.post('/api/decks', checkAdmin, async (req, res) => {
 app.get('/api/decks/:name', async (req, res) => {
   try {
     let queryString = {
-      name: req.params.name
+      name: {
+        [Op.like]: req.params.name
+      }
     };
 
     if (parseInt(req.params.name)) {
