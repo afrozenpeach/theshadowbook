@@ -473,7 +473,10 @@
         </div>
     </div>
 
-    <button id="saveAllButton" mat-raised-button color="primary" type="button" (click)="saveAllUserCrystals()">Save All</button>
+    <div class="floatingButtons">
+        <button id="saveAllButton" mat-raised-button color="primary" type="button" (click)="saveAllUserCrystals()">Save All</button>
+        <button id="backToTopButton" mat-raised-button color="primary" type="button" (click)="backTopTop()"><fa-icon [icon]="faArrowUp"></fa-icon></button>
+    </div>
 </div>
 
 <div id="loadingSpinner" *ngIf="loading" class="logged-wrapper">

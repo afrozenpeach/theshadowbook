@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { faArrowUpFromBracket, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { Observable, ReplaySubject, Subject, takeUntil, zip } from 'rxjs';
 import { BackendService } from 'src/app/services/backend.service';
 
@@ -47,6 +48,8 @@ export class YourCrystalsComponent {
 
   grouped = true;
   loading = true;
+
+  faArrowUp: IconDefinition = faArrowUpFromBracket;
 
   protected _onDestroy = new Subject<void>();
 
@@ -417,5 +420,9 @@ export class YourCrystalsComponent {
     this.filteredCrystals.next(
       this.crystals.filter((c: { crystal: string; }) => c.crystal.toLowerCase().indexOf(search) > -1)
     );
+  }
+
+  backTopTop() {
+    window.scroll(0, 0);
   }
 }

@@ -30,10 +30,14 @@
     margin-bottom: 10px;
 }
 
-#saveAllButton {
+.floatingButtons {
     position: fixed;
     right: 10px;
     bottom: 10px;
+
+    button {
+        margin-left: 10px;
+    }
 }
 
 .blurred {
@@ -82,6 +86,7 @@ mat-form-field {
     background-color: darkviolet;
     z-index: 100;
     padding-left: 10px;
+    padding-top: 10px;
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
 }
@@ -90,6 +95,7 @@ mat-form-field {
     background-color: #7600a8;
     z-index: 101;
     padding-left: 10px;
+    padding-top: 10px;
     margin-left: 150px;
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
@@ -99,6 +105,7 @@ mat-form-field {
     background-color: #5e0086;
     z-index: 102;
     padding-left: 10px;
+    padding-top: 10px;
     margin-left: 300px;
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
@@ -108,6 +115,7 @@ mat-form-field {
     background-color: #4b006b;
     z-index: 103;
     padding-left: 10px;
+    padding-top: 10px;
     margin-left: 450px;
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
