@@ -367,7 +367,9 @@ app.get('/api/zodiac', async (req, res) => {
 
 app.get('/api/crystals/:name', async (req, res) => {
   let queryString = {
-      crystal: req.params.name
+      crystal: {
+        [Op.like]: req.params.name
+      }
   };
 
   if (parseInt(req.params.name)) {
