@@ -21,7 +21,7 @@
 
             <div class="groupedDiv" *ngIf="grouped">
                 <div class="subCrystalLine" *ngFor="let s of getSubTypesofCrystal(c.id)">
-                    <a routerLink="/crystals/{{s.id}}">{{s.crystal}}</a>
+                    <a routerLink="/crystals/{{s.crystal}}">{{s.crystal}}</a>
 
                     <span *ngIf="userCrystals[s.id]" class="userCrystalCount">({{userCrystals[s.id]}})</span>
 
