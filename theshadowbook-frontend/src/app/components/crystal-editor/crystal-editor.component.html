@@ -65,22 +65,3 @@
         <button mat-raised-button color="primary" type="submit" [disabled]="!crystalForm.valid">Save</button>
     </form>
 </div>
-
-<div id="subTypes" *ngIf="id !== 'new' && !subTypeId">
-    <div id="addNewSubType">
-        <form [formGroup]="addSubTypeForm" (ngSubmit)="addSubType()">
-            <mat-form-field>
-                <mat-label>Sub Type</mat-label>
-                <input matInput formControlName="type">
-            </mat-form-field>
-
-            <button mat-raised-button color="primary" type="submit">Add Sub Type</button>
-        </form>
-    </div>
-
-    <div *ngFor="let s of subTypes">
-        {{s.crystal}}
-
-        <button mat-raised-button color="primary" type="button" (click)="edit(s.id)">Edit</button>
-    </div>
-</div>

@@ -11,7 +11,6 @@ import { BackendService } from 'src/app/services/backend.service';
 })
 export class CrystalEditorComponent {
   id: String|null = '';
-  subTypeId: String|null = '';
 
   crystals: any = [];
   chakras: any = [];
@@ -36,13 +35,6 @@ export class CrystalEditorComponent {
     moonPhases: new FormControl([]),
     zodiacs: new FormControl([])
   });
-
-  subTypeForm: FormGroup[] = [];
-
-  addSubTypeForm = new FormGroup({
-    id: new FormControl(''),
-    type: new FormControl('', Validators.required)
-  })
 
   constructor(
     private backendService: BackendService,
@@ -88,14 +80,6 @@ export class CrystalEditorComponent {
                           if (this.id !== null && this.id !== 'new') {
                             this.backendService.getCrystal(this.id).subscribe((crystal) => {
                               this.crystal = crystal.crystal;
-
-                              this.crystal.Children.map((s: any) => {
-                                this.subTypes.push(s);
-                                this.subTypeForm[s.id] = new FormGroup({
-                                  id: new FormControl(s.id),
-                                  type: new FormControl(s.type)
-                                });
-                              });
 
                               this.crystalForm.patchValue({
                                 id: this.crystal.id,
@@ -150,29 +134,6 @@ export class CrystalEditorComponent {
     } else {
       this.router.navigate(['/crystals']);
     }
-  }
-
-  addSubType() {
-    this.backendService.createCrystal({
-      crystal: this.addSubTypeForm.controls["type"].value,
-      parentCrystal: this.crystal.id,
-      chakras: [],
-      cleansings: [],
-      domains: [],
-      elements: [],
-      moonPhases: [],
-      zodiacs: []
-    }).subscribe(s => {
-      this.subTypeForm[this.crystal.id] = new FormGroup({
-        id: new FormControl(s.crystalId),
-        crystal: new FormControl(s.crystal.crystal)
-      });
-
-      this.subTypes.push(s.crystal);
-      this.addSubTypeForm.patchValue({
-        type: ''
-      });
-    });
   }
 
   edit(id: number) {
