@@ -1,5 +1,5 @@
 <div class="profile" *ngIf="user">
-    <h1>{{user.name}}'s Profile</h1>
+    <h1>{{user.name}}'s Profile <span *ngIf="user?.isPublic"><a (click)="share()" class="pointer"><fa-icon [icon]="faShareNodes"></fa-icon></a></span></h1>
 
     <div class="private" *ngIf="!user?.isPublic">
         Private: Only the owner and their coven(s) can view this
@@ -16,7 +16,7 @@
     </div>
 
     <div class="crystals">
-        <h2><a (click)="toggleCrystals()" class="toggle">Crystals</a></h2>
+        <h2><a (click)="toggleCrystals()" class="pointer">Crystals</a></h2>
 
         <div *ngIf="crystalToggle">
             <div class="groupedButtons">
@@ -123,7 +123,7 @@
     </div>
 
     <div class="decks">
-        <h2><a (click)="toggleDecks()" class="toggle">Decks</a></h2>
+        <h2><a (click)="toggleDecks()" class="pointer">Decks</a></h2>
         <div *ngIf="deckToggle">
             <div *ngFor="let d of decks">
                 <div class="deckGroup" *ngIf="getTypesOfDeck(d.id).length">

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { BackendService } from 'src/app/services/backend.service';
+import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile',
@@ -31,10 +34,13 @@ export class ProfileComponent {
   crystalToggle: boolean = true;
   deckToggle: boolean = true;
 
+  faShareNodes: IconDefinition = faShareNodes;
+
  constructor(
   private backendService: BackendService,
   private route: ActivatedRoute,
-  private router: Router
+  private router: Router,
+  private snackBar: MatSnackBar
   ) {
 
  }
@@ -291,4 +297,11 @@ export class ProfileComponent {
    this.deckToggle = !this.deckToggle;
    return this.deckToggle;
  }
+
+  share() {
+    navigator.clipboard.writeText('https://theshadowbook.com/profile/' + this.user.name)
+    this.snackBar.open('Copied profile link to clipboard', 'close', {
+      duration: 5000
+    })
+  }
 }
