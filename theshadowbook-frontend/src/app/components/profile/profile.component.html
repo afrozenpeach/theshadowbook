@@ -1,6 +1,10 @@
 <div class="profile" *ngIf="user">
     <h1>{{user.name}}'s Profile</h1>
 
+    <div class="private" *ngIf="!user?.isPublic">
+        Private: Only the owner and their coven(s) can view this
+    </div>
+
     <div class="zodiac">
         <p><span class="bold">Sun Sign:</span> {{getZodiacName(user.sunSign)}}</p>
         <p><span class="bold">Moon Sign:</span> {{getZodiacName(user.moonSign)}}</p>
