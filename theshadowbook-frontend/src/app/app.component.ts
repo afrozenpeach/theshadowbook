@@ -17,9 +17,9 @@ const firebaseConfig = {
 export class AppComponent {
   title = 'The Shadow Book';
   loggedIn: boolean|null = null;
-  date = new Date();
-  launchYear = 2023;
-  year = this.date.getFullYear();
+  date: Date = new Date();
+  launchYear: number = 2023;
+  year: number = this.date.getFullYear();
 
   faDiscord: IconDefinition = faDiscord;
   faGem: IconDefinition = faGem;
