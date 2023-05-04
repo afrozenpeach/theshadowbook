@@ -95,7 +95,7 @@
 
     <div *ngFor="let c of getCrystals()">
         <div class="crystalGroup" *ngIf="userCrystalsOfType[c.id]?.crystals.length || userCrystalsOfType[c.id]?.children.length">
-            <h1>{{c.crystal}}</h1>
+            <my-sticky-header  class="sticky" stickyClass="stickied"><h1>{{c.crystal}}</h1></my-sticky-header>
 
             <div class="individualCrystals">
                 <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].crystals">
@@ -188,7 +188,7 @@
 
             <div *ngFor="let s of getSubTypesOfCrystal(c.id)">
                 <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children.length">
-                    <h2>{{getCrystal(s.id).crystal}}</h2>
+                    <my-sticky-header  class="sticky" stickyClass="stickiedSub"><h2>{{getCrystal(s.id).crystal}}</h2></my-sticky-header>
 
                     <div class="individualCrystals">
                         <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].crystals">
@@ -279,9 +279,9 @@
                         </div>
                     </div>
 
-                    <div *ngFor="let ss of getSubTypesOfCrystal(s.crystal)">
+                    <div *ngFor="let ss of getSubTypesOfCrystal(s.id)">
                         <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children.length">
-                            <h3>{{getCrystal(ss.id).crystal}}</h3>
+                            <my-sticky-header class="sticky" stickyClass="stickiedSubSub"><h3>{{getCrystal(ss.id).crystal}}</h3></my-sticky-header>
 
                             <div class="individualCrystals">
                                 <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].crystals">
@@ -374,7 +374,7 @@
 
                             <div *ngFor="let sss of getSubTypesOfCrystal(ss.id)">
                                 <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.children.length">
-                                    <h4>{{getCrystal(sss.id).crystal}}</h4>
+                                    <my-sticky-header class="sticky" stickyClass="stickiedSubSubSub"><h4>{{getCrystal(sss.id).crystal}}</h4></my-sticky-header>
 
                                     <div class="individualCrystals">
                                         <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].children[sss.id].crystals">

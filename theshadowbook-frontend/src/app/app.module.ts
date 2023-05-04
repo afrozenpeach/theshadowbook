@@ -41,6 +41,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { StickyHeaderComponent } from './components/sticky-header/sticky-header.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     DeckComponent,
     DeckEditorComponent,
     DropdownEditorComponent,
-    ProfileComponent
+    ProfileComponent,
+    StickyHeaderComponent
   ],
   imports: [
     BrowserModule,

@@ -248,79 +248,79 @@ export class YourCrystalsComponent {
 
   addUserCrystalOfType(userCrystal: any) {
     let crystal = this.crystals.filter((c: { id: any; }) => c.id === userCrystal.crystal)[0];
-    let parentCrystal = crystal.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === crystal.parentCrystal)[0].id : 0;
-    let parentParentCrystal = parentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentCrystal.parentCrystal)[0].id : 0;
-    let parentParentParentCrystal = parentParentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentParentCrystal.parentCrystal)[0].id : 0;
+    let parentCrystal = crystal.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === crystal.parentCrystal)[0] : null;
+    let parentParentCrystal = parentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentCrystal.parentCrystal)[0] : null;
+    let parentParentParentCrystal = parentParentCrystal?.parentCrystal ? this.crystals.filter((c: { id: any; }) => c.id === parentParentCrystal.parentCrystal)[0] : null;
 
     if (parentParentParentCrystal) {
-      if (this.userCrystalsOfType[parentParentParentCrystal] === undefined) {
-        this.userCrystalsOfType[parentParentParentCrystal] = {
+      if (this.userCrystalsOfType[parentParentParentCrystal.id] === undefined) {
+        this.userCrystalsOfType[parentParentParentCrystal.id] = {
           crystals: [],
           children: []
         };
       }
 
-      if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal] === undefined) {
-        this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal] = {
+      if (this.userCrystalsOfType[parentParentParentCrystal.id].children[parentParentCrystal.id] === undefined) {
+        this.userCrystalsOfType[parentParentParentCrystal.id].children[parentParentCrystal.id] = {
           crystals: [],
           children: []
         };
       }
 
-      if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal] === undefined) {
-        this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal] = {
+      if (this.userCrystalsOfType[parentParentParentCrystal.id].children[parentParentCrystal.id].children[parentCrystal.id] === undefined) {
+        this.userCrystalsOfType[parentParentParentCrystal.id].children[parentParentCrystal.id].children[parentCrystal.id] = {
           crystals: [],
           children: []
         };
       }
 
-      if (this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id] === undefined) {
-        this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id] = {
+      if (this.userCrystalsOfType[parentParentParentCrystal.id].children[parentParentCrystal.id].children[parentCrystal.id].children[crystal.id] === undefined) {
+        this.userCrystalsOfType[parentParentParentCrystal.id].children[parentParentCrystal.id].children[parentCrystal.id].children[crystal.id] = {
           crystals: [],
           children: []
         };
       }
 
-      this.userCrystalsOfType[parentParentParentCrystal].children[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals.push(userCrystal);
+      this.userCrystalsOfType[parentParentParentCrystal.id].children[parentParentCrystal.id].children[parentCrystal.id].children[crystal.id].crystals.push(userCrystal);
     } else if (parentParentCrystal) {
-      if (this.userCrystalsOfType[parentParentCrystal] === undefined) {
-        this.userCrystalsOfType[parentParentCrystal] = {
+      if (this.userCrystalsOfType[parentParentCrystal.id] === undefined) {
+        this.userCrystalsOfType[parentParentCrystal.id] = {
           crystals: [],
           children: []
         };
       }
 
-      if (this.userCrystalsOfType[parentParentCrystal].children[parentCrystal] === undefined) {
-        this.userCrystalsOfType[parentParentCrystal].children[parentCrystal] = {
+      if (this.userCrystalsOfType[parentParentCrystal.id].children[parentCrystal.id] === undefined) {
+        this.userCrystalsOfType[parentParentCrystal.id].children[parentCrystal.id] = {
           crystals: [],
           children: []
         };
       }
 
-      if (this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id] === undefined) {
-        this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id] = {
+      if (this.userCrystalsOfType[parentParentCrystal.id].children[parentCrystal.id].children[crystal.id] === undefined) {
+        this.userCrystalsOfType[parentParentCrystal.id].children[parentCrystal.id].children[crystal.id] = {
           crystals: [],
           children: []
         };
       }
 
-      this.userCrystalsOfType[parentParentCrystal].children[parentCrystal].children[crystal.id].crystals.push(userCrystal);
+      this.userCrystalsOfType[parentParentCrystal.id].children[parentCrystal.id].children[crystal.id].crystals.push(userCrystal);
     } else if (parentCrystal) {
-      if (this.userCrystalsOfType[parentCrystal] === undefined) {
-        this.userCrystalsOfType[parentCrystal] = {
+      if (this.userCrystalsOfType[parentCrystal.id] === undefined) {
+        this.userCrystalsOfType[parentCrystal.id] = {
           crystals: [],
           children: []
         };
       }
 
-      if (this.userCrystalsOfType[parentCrystal].children[crystal.id] === undefined) {
-        this.userCrystalsOfType[parentCrystal].children[crystal.id] = {
+      if (this.userCrystalsOfType[parentCrystal.id].children[crystal.id] === undefined) {
+        this.userCrystalsOfType[parentCrystal.id].children[crystal.id] = {
           crystals: [],
           children: []
         };
       }
 
-      this.userCrystalsOfType[parentCrystal].children[crystal.id].crystals.push(userCrystal);
+      this.userCrystalsOfType[parentCrystal.id].children[crystal.id].crystals.push(userCrystal);
     } else {
       if (this.userCrystalsOfType[crystal.id] === undefined) {
         this.userCrystalsOfType[crystal.id] = {
