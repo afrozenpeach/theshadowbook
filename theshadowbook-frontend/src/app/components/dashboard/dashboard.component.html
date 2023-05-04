@@ -1,5 +1,3 @@
-<h1>User Dashboard</h1>
-
 <div *ngIf="authService.userData as user">
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <mat-form-field>
@@ -63,7 +61,11 @@
     <div id="viewProfile"><a routerLink="/profile/{{userData.user?.name}}">View your profile!</a></div>
     <div id="isAdmin" *ngIf="userData.user?.isAdmin">You're an <a routerLink="/admin/dropdown-editor">admin</a>!</div>
 
+    <br/><br/>
+
     <button mat-raised-button color="accent" (click)="router.navigate(['/update-email'])">Update email</button>
+
+    <br/><br/>
 
     <button mat-raised-button color="warn" (click)="authService.SignOut()">Sign Out</button>
 </div>

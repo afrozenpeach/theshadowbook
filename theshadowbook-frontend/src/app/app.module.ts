@@ -35,6 +35,11 @@ import { DeckEditorComponent } from './components/deck-editor/deck-editor.compon
 import { DropdownEditorComponent } from './components/dropdown-editor/dropdown-editor.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -72,7 +77,12 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatButtonModule,
     FormsModule,
     MatProgressSpinnerModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    FontAwesomeModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
+    MatDividerModule
   ],
   providers: [
     AuthService,

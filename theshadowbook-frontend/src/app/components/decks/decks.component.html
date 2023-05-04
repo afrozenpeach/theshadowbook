@@ -1,14 +1,16 @@
-<h1>Deck DB</h1>
-
-<div *ngIf="isAdmin">
-    <button mat-raised-button color="primary" (click)="router.navigate(['/deck-editor/new'])">Add Deck</button>
+<div *ngIf="isAdmin" class="adminButtons">
+    <button mat-raised-button color="primary" (click)="router.navigate(['/deck-editor/new'])">Admin: Create Deck</button>
 </div>
 
-<div class="deckLine" *ngFor="let d of decks">
-    <a routerLink="/decks/{{d.name}}">{{d.name}}</a>
+<div class="decks">
+    <div class="deckLine" *ngFor="let d of decks">
+        <a routerLink="/decks/{{d.name}}">{{d.name}}</a>
 
-    <span *ngIf="userDecks[d.id]">({{userDecks[d.id]}})</span>
+        <span *ngIf="userDecks[d.id]" class="userDeckCount">({{userDecks[d.id]}})</span>
 
-    <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(d.id, 1)">Add to collection</button>
-    <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(d.id, 2)">Add to wish list</button>
+        <span class="collectionButtons">
+            <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(d.id, 1)">Add to collection</button>
+            <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(d.id, 2)">Add to wish list</button>
+        </span>
+    </div>
 </div>

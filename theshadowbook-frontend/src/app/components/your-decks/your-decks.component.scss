@@ -1,15 +1,26 @@
 .individualDeck {
     position: relative;
     left: 50px;
-    padding-top: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.individualDeck:first-of-type {
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+}
+
+.individualDeck:last-of-type {
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
 }
 
 .individualDeck:nth-of-type(even) {
-    background-color: darkgrey;
+    background-color: rgba(0, 0, 0, .20);
 }
 
 .individualDeck:nth-of-type(odd) {
-    background-color: lightgrey;
+    background-color: rgba(0, 0, 0, .10);
 }
 
 #saveAllButton {
@@ -30,4 +41,19 @@
     margin-left: -50px;
     width: 100px;
     height: 100px;
+}
+
+mat-form-field {
+    margin-right: 10px;
+}
+
+div.formDiv > form {
+    margin: 20px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, .10);
+    border-radius: 1em;
+
+    button {
+        margin: 10px;
+    }
 }

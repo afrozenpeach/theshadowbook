@@ -1,23 +1,25 @@
-<h1>Your Crystals</h1>
-
 <div id="yourCrystals" [ngClass]="{'blurred': loading}">
-    <form [formGroup]="addCrystalForm" (ngSubmit)="addUserCrystal(1)">
-        <mat-form-field appearance="fill">
-            <mat-label>Crystal</mat-label>
-            <mat-select formControlName="crystal">
-                <mat-option>
-                    <ngx-mat-select-search [formControl]="crystalFilterCtrl" placeholderLabel="Find crystal..." noEntriesFoundLabel="'no matching crystals found'"></ngx-mat-select-search>
-                </mat-option>
-                <mat-option *ngFor="let c of filteredCrystals | async" [value]="c.id">{{c.crystal}}</mat-option>
-            </mat-select>
-        </mat-form-field>
+    <div class="formDiv">
+        <form [formGroup]="addCrystalForm" (ngSubmit)="addUserCrystal(1)">
+            <h1>Add new crystals</h1>
 
-        <button mat-raised-button color="accent" type="submit">Add to your collection</button>
-        <button mat-raised-button color="accent" type="button" (click)="addUserCrystal(2)">Add to your wish list</button>
-    </form>
+            <mat-form-field appearance="fill">
+                <mat-label>Crystal</mat-label>
+                <mat-select formControlName="crystal">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="crystalFilterCtrl" placeholderLabel="Find crystal..." noEntriesFoundLabel="'no matching crystals found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let c of filteredCrystals | async" [value]="c.id">{{c.crystal}}</mat-option>
+                </mat-select>
+            </mat-form-field>
 
-    <div class="filters">
+            <button mat-raised-button color="accent" type="submit">Add to your collection</button>
+            <button mat-raised-button color="accent" type="button" (click)="addUserCrystal(2)">Add to your wish list</button>
+        </form>
+
         <form [formGroup]="filterForm" (ngSubmit)="filter()">
+            <h1>Filters</h1>
+
             <mat-form-field appearance="fill">
                 <mat-label>Chakras</mat-label>
                 <mat-select formControlName="chakras" multiple>
@@ -80,379 +82,387 @@
                     <mat-option *ngFor="let c of colors" [value]="c.id">{{c.color}}</mat-option>
                 </mat-select>
             </mat-form-field>
-
+            <br/>
             <button mat-raised-button color="accent" type="button" (click)="clearFilters(); filter();">Clear filters</button>
             <button mat-raised-button color="primary" type="submit">Filter</button>
         </form>
     </div>
 
-    <div>
+    <div class="groupButtons">
         <button mat-raised-button color="primary" *ngIf="grouped" (click)="toggleGrouped()">Ungroup</button>
         <button mat-raised-button color="primary" *ngIf="!grouped" (click)="toggleGrouped()">Group</button>
     </div>
 
     <div *ngFor="let c of getCrystals()">
         <div class="crystalGroup" *ngIf="userCrystalsOfType[c.id]?.crystals.length || userCrystalsOfType[c.id]?.children.length">
-            {{c.crystal}}
+            <h1>{{c.crystal}}</h1>
 
-            <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].crystals">
-                <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
-                    <mat-form-field>
-                        <mat-label>Name</mat-label>
-                        <input matInput formControlName="name">
-                    </mat-form-field>
+            <div>
+                <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].crystals">
+                    <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
+                        <mat-form-field>
+                            <mat-label>Name</mat-label>
+                            <input matInput formControlName="name">
+                        </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                        <mat-label>Shape</mat-label>
-                        <mat-select formControlName="shape">
-                            <mat-option *ngFor="let shape of shapes" [value]="shape.id">{{shape.shape}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Shape</mat-label>
+                            <mat-select formControlName="shape">
+                                <mat-option *ngFor="let shape of shapes" [value]="shape.id">{{shape.shape}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                        <mat-label>Primary Color</mat-label>
-                        <mat-select formControlName="primaryColor">
-                            <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Primary Color</mat-label>
+                            <mat-select formControlName="primaryColor">
+                                <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                        <mat-label>Secondary Color</mat-label>
-                        <mat-select formControlName="secondaryColor">
-                            <mat-option [value]="null">- None -</mat-option>
-                            <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Secondary Color</mat-label>
+                            <mat-select formControlName="secondaryColor">
+                                <mat-option [value]="null">- None -</mat-option>
+                                <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                        <mat-label>Tertiary Color</mat-label>
-                        <mat-select formControlName="tertiaryColor">
-                            <mat-option [value]="null">- None -</mat-option>
-                            <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Tertiary Color</mat-label>
+                            <mat-select formControlName="tertiaryColor">
+                                <mat-option [value]="null">- None -</mat-option>
+                                <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                        <mat-label>Titanium Aura</mat-label>
-                        <mat-select formControlName="aura">
-                            <mat-option [value]="0">No</mat-option>
-                            <mat-option [value]="1">Yes</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Titanium Aura</mat-label>
+                            <mat-select formControlName="aura">
+                                <mat-option [value]="0">No</mat-option>
+                                <mat-option [value]="1">Yes</mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>Size X (mm)</mat-label>
-                        <input matInput formControlName="sizeX">
-                    </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Size X (mm)</mat-label>
+                            <input matInput formControlName="sizeX">
+                        </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>Size Y (mm)</mat-label>
-                        <input matInput formControlName="sizeY">
-                    </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Size Y (mm)</mat-label>
+                            <input matInput formControlName="sizeY">
+                        </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>Size Z (mm)</mat-label>
-                        <input matInput formControlName="sizeZ">
-                    </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Size Z (mm)</mat-label>
+                            <input matInput formControlName="sizeZ">
+                        </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>Weight (g)</mat-label>
-                        <input matInput formControlName="sizeZ">
-                    </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Weight (g)</mat-label>
+                            <input matInput formControlName="sizeZ">
+                        </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>karat</mat-label>
-                        <input matInput formControlName="karat">
-                    </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>karat</mat-label>
+                            <input matInput formControlName="karat">
+                        </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                        <mat-label>Status</mat-label>
-                        <mat-select formControlName="status">
-                            <mat-option *ngFor="let status of statuses" [value]="status.id">{{status.status}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Status</mat-label>
+                            <mat-select formControlName="status">
+                                <mat-option *ngFor="let status of statuses" [value]="status.id">{{status.status}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>Notes</mat-label>
-                        <textarea matInput formControlName="notes"></textarea>
-                    </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Notes</mat-label>
+                            <textarea matInput formControlName="notes"></textarea>
+                        </mat-form-field>
 
-                    <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(cot.id)">Save</button>
-                    <button mat-raised-button color="accent" type="button" (click)="deleteUserCrystal(cot.id)">Delete</button>
-                </form>
+                        <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(cot.id)">Save</button>
+                        <button mat-raised-button color="accent" type="button" (click)="deleteUserCrystal(cot.id)">Delete</button>
+                    </form>
+                </div>
             </div>
 
             <div *ngFor="let s of getSubTypesOfCrystal(c.id)">
                 <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children.length">
-                    <div>{{getCrystal(s.id).crystal}}</div>
+                    <h2>{{getCrystal(s.id).crystal}}</h2>
 
-                    <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].crystals">
-                        <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
-                            <mat-form-field>
-                                <mat-label>Name</mat-label>
-                                <input matInput formControlName="name">
-                            </mat-form-field>
+                    <div>
+                        <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].crystals">
+                            <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
+                                <mat-form-field>
+                                    <mat-label>Name</mat-label>
+                                    <input matInput formControlName="name">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="fill">
-                                <mat-label>Shape</mat-label>
-                                <mat-select formControlName="shape">
-                                    <mat-option *ngFor="let shape of shapes" [value]="shape.id">{{shape.shape}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Shape</mat-label>
+                                    <mat-select formControlName="shape">
+                                        <mat-option *ngFor="let shape of shapes" [value]="shape.id">{{shape.shape}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
 
-                            <mat-form-field appearance="fill">
-                                <mat-label>Primary Color</mat-label>
-                                <mat-select formControlName="primaryColor">
-                                    <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Primary Color</mat-label>
+                                    <mat-select formControlName="primaryColor">
+                                        <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
 
-                            <mat-form-field appearance="fill">
-                                <mat-label>Secondary Color</mat-label>
-                                <mat-select formControlName="secondaryColor">
-                                    <mat-option [value]="null">- None -</mat-option>
-                                    <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Secondary Color</mat-label>
+                                    <mat-select formControlName="secondaryColor">
+                                        <mat-option [value]="null">- None -</mat-option>
+                                        <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
 
-                            <mat-form-field appearance="fill">
-                                <mat-label>Tertiary Color</mat-label>
-                                <mat-select formControlName="tertiaryColor">
-                                    <mat-option [value]="null">- None -</mat-option>
-                                    <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Tertiary Color</mat-label>
+                                    <mat-select formControlName="tertiaryColor">
+                                        <mat-option [value]="null">- None -</mat-option>
+                                        <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
 
-                            <mat-form-field appearance="fill">
-                                <mat-label>Titanium Aura</mat-label>
-                                <mat-select formControlName="aura">
-                                    <mat-option [value]="0">No</mat-option>
-                                    <mat-option [value]="1">Yes</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Titanium Aura</mat-label>
+                                    <mat-select formControlName="aura">
+                                        <mat-option [value]="0">No</mat-option>
+                                        <mat-option [value]="1">Yes</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
 
-                            <mat-form-field>
-                                <mat-label>Size X (mm)</mat-label>
-                                <input matInput formControlName="sizeX">
-                            </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Size X (mm)</mat-label>
+                                    <input matInput formControlName="sizeX">
+                                </mat-form-field>
 
-                            <mat-form-field>
-                                <mat-label>Size Y (mm)</mat-label>
-                                <input matInput formControlName="sizeY">
-                            </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Size Y (mm)</mat-label>
+                                    <input matInput formControlName="sizeY">
+                                </mat-form-field>
 
-                            <mat-form-field>
-                                <mat-label>Size Z (mm)</mat-label>
-                                <input matInput formControlName="sizeZ">
-                            </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Size Z (mm)</mat-label>
+                                    <input matInput formControlName="sizeZ">
+                                </mat-form-field>
 
-                            <mat-form-field>
-                                <mat-label>Weight (g)</mat-label>
-                                <input matInput formControlName="sizeZ">
-                            </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Weight (g)</mat-label>
+                                    <input matInput formControlName="sizeZ">
+                                </mat-form-field>
 
-                            <mat-form-field>
-                                <mat-label>karat</mat-label>
-                                <input matInput formControlName="karat">
-                            </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>karat</mat-label>
+                                    <input matInput formControlName="karat">
+                                </mat-form-field>
 
-                            <mat-form-field appearance="fill">
-                                <mat-label>Status</mat-label>
-                                <mat-select formControlName="status">
-                                    <mat-option *ngFor="let status of statuses" [value]="status.id">{{status.status}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Status</mat-label>
+                                    <mat-select formControlName="status">
+                                        <mat-option *ngFor="let status of statuses" [value]="status.id">{{status.status}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
 
-                            <mat-form-field>
-                                <mat-label>Notes</mat-label>
-                                <textarea matInput formControlName="notes"></textarea>
-                            </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Notes</mat-label>
+                                    <textarea matInput formControlName="notes"></textarea>
+                                </mat-form-field>
 
-                            <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(cot.id)">Save</button>
-                            <button mat-raised-button color="accent" type="button" (click)="deleteUserCrystal(cot.id)">Delete</button>
-                        </form>
+                                <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(cot.id)">Save</button>
+                                <button mat-raised-button color="accent" type="button" (click)="deleteUserCrystal(cot.id)">Delete</button>
+                            </form>
+                        </div>
                     </div>
 
                     <div *ngFor="let ss of getSubTypesOfCrystal(s.crystal)">
-                        <div class="crystalSubSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children.length">
-                            <div>{{getCrystal(ss.id).crystal}}</div>
+                        <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children.length">
+                            <h3>{{getCrystal(ss.id).crystal}}</h3>
 
-                            <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].crystals">
-                                <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
-                                    <mat-form-field>
-                                        <mat-label>Name</mat-label>
-                                        <input matInput formControlName="name">
-                                    </mat-form-field>
+                            <div>
+                                <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].crystals">
+                                    <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
+                                        <mat-form-field>
+                                            <mat-label>Name</mat-label>
+                                            <input matInput formControlName="name">
+                                        </mat-form-field>
 
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Shape</mat-label>
-                                        <mat-select formControlName="shape">
-                                            <mat-option *ngFor="let shape of shapes" [value]="shape.id">{{shape.shape}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Shape</mat-label>
+                                            <mat-select formControlName="shape">
+                                                <mat-option *ngFor="let shape of shapes" [value]="shape.id">{{shape.shape}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
 
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Primary Color</mat-label>
-                                        <mat-select formControlName="primaryColor">
-                                            <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Primary Color</mat-label>
+                                            <mat-select formControlName="primaryColor">
+                                                <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
 
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Secondary Color</mat-label>
-                                        <mat-select formControlName="secondaryColor">
-                                            <mat-option [value]="null">- None -</mat-option>
-                                            <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Secondary Color</mat-label>
+                                            <mat-select formControlName="secondaryColor">
+                                                <mat-option [value]="null">- None -</mat-option>
+                                                <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
 
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Tertiary Color</mat-label>
-                                        <mat-select formControlName="tertiaryColor">
-                                            <mat-option [value]="null">- None -</mat-option>
-                                            <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Tertiary Color</mat-label>
+                                            <mat-select formControlName="tertiaryColor">
+                                                <mat-option [value]="null">- None -</mat-option>
+                                                <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
 
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Titanium Aura</mat-label>
-                                        <mat-select formControlName="aura">
-                                            <mat-option [value]="0">No</mat-option>
-                                            <mat-option [value]="1">Yes</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Titanium Aura</mat-label>
+                                            <mat-select formControlName="aura">
+                                                <mat-option [value]="0">No</mat-option>
+                                                <mat-option [value]="1">Yes</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
 
-                                    <mat-form-field>
-                                        <mat-label>Size X (mm)</mat-label>
-                                        <input matInput formControlName="sizeX">
-                                    </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Size X (mm)</mat-label>
+                                            <input matInput formControlName="sizeX">
+                                        </mat-form-field>
 
-                                    <mat-form-field>
-                                        <mat-label>Size Y (mm)</mat-label>
-                                        <input matInput formControlName="sizeY">
-                                    </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Size Y (mm)</mat-label>
+                                            <input matInput formControlName="sizeY">
+                                        </mat-form-field>
 
-                                    <mat-form-field>
-                                        <mat-label>Size Z (mm)</mat-label>
-                                        <input matInput formControlName="sizeZ">
-                                    </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Size Z (mm)</mat-label>
+                                            <input matInput formControlName="sizeZ">
+                                        </mat-form-field>
 
-                                    <mat-form-field>
-                                        <mat-label>Weight (g)</mat-label>
-                                        <input matInput formControlName="sizeZ">
-                                    </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Weight (g)</mat-label>
+                                            <input matInput formControlName="sizeZ">
+                                        </mat-form-field>
 
-                                    <mat-form-field>
-                                        <mat-label>karat</mat-label>
-                                        <input matInput formControlName="karat">
-                                    </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>karat</mat-label>
+                                            <input matInput formControlName="karat">
+                                        </mat-form-field>
 
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Status</mat-label>
-                                        <mat-select formControlName="status">
-                                            <mat-option *ngFor="let status of statuses" [value]="status.id">{{status.status}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Status</mat-label>
+                                            <mat-select formControlName="status">
+                                                <mat-option *ngFor="let status of statuses" [value]="status.id">{{status.status}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
 
-                                    <mat-form-field>
-                                        <mat-label>Notes</mat-label>
-                                        <textarea matInput formControlName="notes"></textarea>
-                                    </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Notes</mat-label>
+                                            <textarea matInput formControlName="notes"></textarea>
+                                        </mat-form-field>
 
-                                    <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(cot.id)">Save</button>
-                                    <button mat-raised-button color="accent" type="button" (click)="deleteUserCrystal(cot.id)">Delete</button>
-                                </form>
+                                        <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(cot.id)">Save</button>
+                                        <button mat-raised-button color="accent" type="button" (click)="deleteUserCrystal(cot.id)">Delete</button>
+                                    </form>
+                                </div>
                             </div>
 
                             <div *ngFor="let sss of getSubTypesOfCrystal(ss.id)">
-                                <div class="crystalSubSubSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.children.length">
-                                    <div>{{getCrystal(sss.id).crystal}}</div>
+                                <div class="crystalSubTypeGroup" *ngIf="userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.crystals.length || userCrystalsOfType[c.id]?.children[s.id]?.children[ss.id]?.children[sss.id]?.children.length">
+                                    <h4>{{getCrystal(sss.id).crystal}}</h4>
 
-                                    <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].children[sss.id].crystals">
-                                        <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
-                                            <mat-form-field>
-                                                <mat-label>Name</mat-label>
-                                                <input matInput formControlName="name">
-                                            </mat-form-field>
+                                    <div>
+                                        <div class="individualCrystal" *ngFor="let cot of userCrystalsOfType[c.id].children[s.id].children[ss.id].children[sss.id].crystals">
+                                            <form *ngIf="crystalForms[cot.id]" [formGroup]="crystalForms[cot.id]" (ngSubmit)="saveUserCrystal(cot.id)">
+                                                <mat-form-field>
+                                                    <mat-label>Name</mat-label>
+                                                    <input matInput formControlName="name">
+                                                </mat-form-field>
 
-                                            <mat-form-field appearance="fill">
-                                                <mat-label>Shape</mat-label>
-                                                <mat-select formControlName="shape">
-                                                    <mat-option *ngFor="let shape of shapes" [value]="shape.id">{{shape.shape}}</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Shape</mat-label>
+                                                    <mat-select formControlName="shape">
+                                                        <mat-option *ngFor="let shape of shapes" [value]="shape.id">{{shape.shape}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
 
-                                            <mat-form-field appearance="fill">
-                                                <mat-label>Primary Color</mat-label>
-                                                <mat-select formControlName="primaryColor">
-                                                    <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Primary Color</mat-label>
+                                                    <mat-select formControlName="primaryColor">
+                                                        <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
 
-                                            <mat-form-field appearance="fill">
-                                                <mat-label>Secondary Color</mat-label>
-                                                <mat-select formControlName="secondaryColor">
-                                                    <mat-option [value]="null">- None -</mat-option>
-                                                    <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Secondary Color</mat-label>
+                                                    <mat-select formControlName="secondaryColor">
+                                                        <mat-option [value]="null">- None -</mat-option>
+                                                        <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
 
-                                            <mat-form-field appearance="fill">
-                                                <mat-label>Tertiary Color</mat-label>
-                                                <mat-select formControlName="tertiaryColor">
-                                                    <mat-option [value]="null">- None -</mat-option>
-                                                    <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Tertiary Color</mat-label>
+                                                    <mat-select formControlName="tertiaryColor">
+                                                        <mat-option [value]="null">- None -</mat-option>
+                                                        <mat-option *ngFor="let color of colors" [value]="color.id">{{color.color}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
 
-                                            <mat-form-field appearance="fill">
-                                                <mat-label>Titanium Aura</mat-label>
-                                                <mat-select formControlName="aura">
-                                                    <mat-option [value]="0">No</mat-option>
-                                                    <mat-option [value]="1">Yes</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Titanium Aura</mat-label>
+                                                    <mat-select formControlName="aura">
+                                                        <mat-option [value]="0">No</mat-option>
+                                                        <mat-option [value]="1">Yes</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
 
-                                            <mat-form-field>
-                                                <mat-label>Size X (mm)</mat-label>
-                                                <input matInput formControlName="sizeX">
-                                            </mat-form-field>
+                                                <mat-form-field>
+                                                    <mat-label>Size X (mm)</mat-label>
+                                                    <input matInput formControlName="sizeX">
+                                                </mat-form-field>
 
-                                            <mat-form-field>
-                                                <mat-label>Size Y (mm)</mat-label>
-                                                <input matInput formControlName="sizeY">
-                                            </mat-form-field>
+                                                <mat-form-field>
+                                                    <mat-label>Size Y (mm)</mat-label>
+                                                    <input matInput formControlName="sizeY">
+                                                </mat-form-field>
 
-                                            <mat-form-field>
-                                                <mat-label>Size Z (mm)</mat-label>
-                                                <input matInput formControlName="sizeZ">
-                                            </mat-form-field>
+                                                <mat-form-field>
+                                                    <mat-label>Size Z (mm)</mat-label>
+                                                    <input matInput formControlName="sizeZ">
+                                                </mat-form-field>
 
-                                            <mat-form-field>
-                                                <mat-label>Weight (g)</mat-label>
-                                                <input matInput formControlName="sizeZ">
-                                            </mat-form-field>
+                                                <mat-form-field>
+                                                    <mat-label>Weight (g)</mat-label>
+                                                    <input matInput formControlName="sizeZ">
+                                                </mat-form-field>
 
-                                            <mat-form-field>
-                                                <mat-label>karat</mat-label>
-                                                <input matInput formControlName="karat">
-                                            </mat-form-field>
+                                                <mat-form-field>
+                                                    <mat-label>karat</mat-label>
+                                                    <input matInput formControlName="karat">
+                                                </mat-form-field>
 
-                                            <mat-form-field appearance="fill">
-                                                <mat-label>Status</mat-label>
-                                                <mat-select formControlName="status">
-                                                    <mat-option *ngFor="let status of statuses" [value]="status.id">{{status.status}}</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Status</mat-label>
+                                                    <mat-select formControlName="status">
+                                                        <mat-option *ngFor="let status of statuses" [value]="status.id">{{status.status}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
 
-                                            <mat-form-field>
-                                                <mat-label>Notes</mat-label>
-                                                <textarea matInput formControlName="notes"></textarea>
-                                            </mat-form-field>
+                                                <mat-form-field>
+                                                    <mat-label>Notes</mat-label>
+                                                    <textarea matInput formControlName="notes"></textarea>
+                                                </mat-form-field>
 
-                                            <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(cot.id)">Save</button>
-                                            <button mat-raised-button color="accent" type="button" (click)="deleteUserCrystal(cot.id)">Delete</button>
-                                        </form>
+                                                <button mat-raised-button color="primary" type="submit" [disabled]="saveDisabled(cot.id)">Save</button>
+                                                <button mat-raised-button color="accent" type="button" (click)="deleteUserCrystal(cot.id)">Delete</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

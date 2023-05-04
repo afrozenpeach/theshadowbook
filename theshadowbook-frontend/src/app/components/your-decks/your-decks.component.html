@@ -1,24 +1,25 @@
-<h1>Your Decks</h1>
-
 <div id="yourDecks" [ngClass]="{'blurred': loading}">
-    <form [formGroup]="addDeckForm" (ngSubmit)="addUserDeck(1)">
-        <mat-form-field appearance="fill">
-            <mat-label>Deck Name</mat-label>
-            <mat-select formControlName="id">
-                <mat-option>
-                    <ngx-mat-select-search [formControl]="deckFilterCtrl" placeholderLabel="Find deck..." noEntriesFoundLabel="'no matching decks found'"></ngx-mat-select-search>
-                </mat-option>
-                <mat-option *ngFor="let d of filteredDecks | async" [value]="d.id">{{d.name}}</mat-option>
-            </mat-select>
-        </mat-form-field>
+    <div class="formDiv">
+        <form [formGroup]="addDeckForm" (ngSubmit)="addUserDeck(1)">
+            <h1>Add new decks</h1>
+            <mat-form-field appearance="fill">
+                <mat-label>Deck Name</mat-label>
+                <mat-select formControlName="id">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="deckFilterCtrl" placeholderLabel="Find deck..." noEntriesFoundLabel="'no matching decks found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let d of filteredDecks | async" [value]="d.id">{{d.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
 
-        <button mat-raised-button color="accent" type="submit">Add to your collection</button>
-        <button mat-raised-button color="accent" type="button" (click)="addUserDeck(2)">Add to your wish list</button>
-    </form>
+            <button mat-raised-button color="accent" type="submit">Add to your collection</button>
+            <button mat-raised-button color="accent" type="button" (click)="addUserDeck(2)">Add to your wish list</button>
+        </form>
+    </div>
 
     <div id="decksDiv" *ngFor="let d of this.decks">
         <div *ngIf="getUserDecksOfType(d.id).length">
-            {{d.name}}
+            <h1>{{d.name}}</h1>
 
             <div class="individualDeck" *ngFor="let dot of getUserDecksOfType(d.id)">
                 <form *ngIf="deckForm[dot.id]" [formGroup]="deckForm[dot.id]" (ngSubmit)="saveUserDeck(dot.id)">

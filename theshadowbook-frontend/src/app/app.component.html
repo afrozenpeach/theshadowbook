@@ -1,13 +1,60 @@
-<div class="header">
-    <a routerLink="/crystals">Crystal DB</a> | <a routerLink="/decks">Deck DB</a> | <a routerLink="/your-crystals">Your Crystals</a> | <a routerLink="/your-decks">Your Decks</a> | <a routerLink="/dashboard">User Dashboard</a> | <a href="https://discord.gg/ZJ9NnaUZkS">Join the Discord</a>
-</div>
-
-<div *ngIf="loggedIn === null" class="logged-wrapper">
-    <div class="spinner-wrapper">
-        <mat-spinner class="spinner"></mat-spinner>
+<div class="container">
+    <div class="header">
+        <h1><fa-icon [icon]="faBook"></fa-icon>The Shadow Book</h1>
+        <mat-toolbar color="primary">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                    <a routerLink="/crystals"><fa-icon [icon]="faGem"></fa-icon>Crystal DB</a>
+                </button>
+                <button mat-menu-item>
+                    <a routerLink="/your-crystals"><fa-icon [icon]="faGem" class="yours"></fa-icon>Your Crystals</a>
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item>
+                    <a routerLink="/decks"><fa-icon [icon]="faLayerGroup"></fa-icon>Deck DB</a>
+                </button>
+                <button mat-menu-item>
+                    <a routerLink="/your-decks"><fa-icon [icon]="faLayerGroup" class="yours"></fa-icon>Your Decks</a>
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item>
+                    <a routerLink="/dashboard"><fa-icon [icon]="faHatWizard"></fa-icon>User Dashboard</a>
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item>
+                    <a href="https://discord.gg/ZJ9NnaUZkS"><fa-icon [icon]="faDiscord" class="discord"></fa-icon>Join the Discord</a>
+                </button>
+            </mat-menu>
+            <div class="bigMenu">
+                <a mat-button routerLink="/crystals" routerLinkActive="hilight"><fa-icon [icon]="faGem"></fa-icon>Crystal DB</a>
+                <a mat-button routerLink="/your-crystals" routerLinkActive="hilight"><fa-icon [icon]="faGem" class="yours"></fa-icon>Your Crystals</a>
+                <a mat-button routerLink="/decks" routerLinkActive="hilight"><fa-icon [icon]="faLayerGroup"></fa-icon>Deck DB</a>
+                <a mat-button routerLink="/your-decks" routerLinkActive="hilight"><fa-icon [icon]="faLayerGroup" class="yours"></fa-icon>Your Decks</a>
+                <a mat-button routerLink="/dashboard" routerLinkActive="hilight"><fa-icon [icon]="faHatWizard"></fa-icon>User Dashboard</a>
+            </div>
+            <span class="spacer"></span>
+            <div class="bigMenu">
+                <a mat-button href="https://discord.gg/ZJ9NnaUZkS"><fa-icon [icon]="faDiscord" class="discord"></fa-icon>Join the Discord</a>
+            </div>
+        </mat-toolbar>
     </div>
-</div>
 
-<div class="content">
-    <router-outlet *ngIf="loggedIn !== null"></router-outlet>
+    <div class="content">
+        <div *ngIf="loggedIn === null" class="logged-wrapper">
+            <div class="spinner-wrapper">
+                <mat-spinner class="spinner"></mat-spinner>
+            </div>
+        </div>
+
+        <router-outlet *ngIf="loggedIn !== null"></router-outlet>
+    </div>
+
+    <div class="footer">
+        <mat-toolbar color="accent">
+            &copy; <span *ngIf="year !== launchYear">{{launchYear}}-</span>{{year}} The Shadow Book
+        </mat-toolbar>
+    </div>
 </div>

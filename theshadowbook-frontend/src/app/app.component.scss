@@ -1,9 +1,83 @@
-.content {
-    position: relative;
-    left: 25px;
-    width: 80%;
+.header {
+    background-color: black;
+    width: 100%;
+
+    h1 {
+        color: lightgrey;
+        font-family: "kapelka-new", script;
+        font-size: 4em;
+        padding: 20px;
+
+        fa-icon {
+            color: darkgrey;
+            padding: 20px;
+        }
+    }
+
+    fa-icon {
+        color: plum;
+    }
+
+    fa-icon.yours {
+        color: greenyellow;
+    }
+
+    fa-icon.discord {
+        color: #7289DA;
+    }
+
+    mat-toolbar {
+        > button {
+            display: none;
+        }
+
+        fa-icon {
+            margin-right: 5px;
+        }
+
+        .spacer {
+            flex: 1 1 auto;
+        }
+
+        a {
+            margin-right: 10px;
+        }
+    }
+
+    @media (max-width: 860px) {
+        mat-toolbar {
+            > button {
+                display: block;
+            }
+
+            .bigMenu {
+                display: none;
+            }
+        }
+    }
 }
 
-.header {
-    padding: 10px;
+.hilight {
+    background-color: lightseagreen;
+}
+
+a:hover {
+    background-color: lightskyblue;
+}
+
+.content {
+    padding: 20px;
+    width: 85%;
+    padding-bottom: 100px;
+}
+
+.footer {
+    bottom: 0;
+    width: 100%;
+    position: absolute;
+}
+
+.container {
+   min-height: 100%;
+   position: relative;
 }

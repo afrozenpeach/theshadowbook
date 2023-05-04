@@ -1,47 +1,55 @@
-<h1>Crystal DB</h1>
-
-<div *ngIf="isAdmin">
-    <button mat-raised-button color="primary" (click)="router.navigate(['/crystal-editor/new'])">Add Crystal</button>
+<div *ngIf="isAdmin" class="adminButtons">
+    <button mat-raised-button color="primary" (click)="router.navigate(['/crystal-editor/new'])">Admin: Create Crystal</button>
 </div>
 
-<div>
+<div class="groupedButtons">
     <button mat-raised-button color="primary" *ngIf="grouped" (click)="toggleGrouped()">Ungroup</button>
     <button mat-raised-button color="primary" *ngIf="!grouped" (click)="toggleGrouped()">Group</button>
 </div>
 
-<div class="crystal" *ngFor="let c of crystals">
-    <div class="crystalLine" *ngIf="!grouped || !c.parentCrystal">
-        <a routerLink="/crystals/{{c.crystal}}">{{c.crystal}}</a>
+<div class="crystals">
+    <div class="crystal" *ngFor="let c of getCrystals()">
+        <div class="crystalLine">
+            <a routerLink="/crystals/{{c.crystal}}">{{c.crystal}}</a>
 
-        <span *ngIf="userCrystals[c.id]">({{userCrystals[c.id]}})</span>
+            <span *ngIf="userCrystals[c.id]" class="userCrystalCount">({{userCrystals[c.id]}})</span>
 
-        <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 1)">Add to collection</button>
-        <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 2)">Add to wish list</button>
+            <span class="collectionButtons">
+                <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 1)">Add to collection</button>
+                <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 2)">Add to wish list</button>
+            </span>
 
-        <div class="groupedDiv" *ngIf="grouped">
-            <div class="subCrystalLine" *ngFor="let s of getSubTypesofCrystal(c.id)">
-                <a routerLink="/crystals/{{s.id}}">{{s.crystal}}</a>
+            <div class="groupedDiv" *ngIf="grouped">
+                <div class="subCrystalLine" *ngFor="let s of getSubTypesofCrystal(c.id)">
+                    <a routerLink="/crystals/{{s.id}}">{{s.crystal}}</a>
 
-                <span *ngIf="userCrystals[s.id]">({{userCrystals[s.id]}})</span>
+                    <span *ngIf="userCrystals[s.id]" class="userCrystalCount">({{userCrystals[s.id]}})</span>
 
-                <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(s.id, 1)">Add to collection</button>
-                <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(s.id, 2)">Add to wish list</button>
+                    <span class="collectionButtons">
+                        <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 1)">Add to collection</button>
+                        <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 2)">Add to wish list</button>
+                    </span>
 
-                <div class="subSubCrystalLine" *ngFor="let ss of getSubTypesofCrystal(s.id)">
-                    <a routerLink="/crystals/{{ss.crystal}}">{{ss.crystal}}</a>
+                    <div class="subSubCrystalLine" *ngFor="let ss of getSubTypesofCrystal(s.id)">
+                        <a routerLink="/crystals/{{ss.crystal}}">{{ss.crystal}}</a>
 
-                    <span *ngIf="userCrystals[ss.id]">({{userCrystals[ss.id]}})</span>
+                        <span *ngIf="userCrystals[ss.id]" class="userCrystalCount">({{userCrystals[ss.id]}})</span>
 
-                    <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(ss.id, 1)">Add to collection</button>
-                    <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(ss.id, 2)">Add to wish list</button>
+                        <span class="collectionButtons">
+                            <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 1)">Add to collection</button>
+                            <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 2)">Add to wish list</button>
+                        </span>
 
-                    <div class="subSubSubCrystalLine" *ngFor="let sss of getSubTypesofCrystal(ss.id)">
-                        <a routerLink="/crystals/{{sss.crystal}}">{{sss.crystal}}</a>
+                        <div class="subSubSubCrystalLine" *ngFor="let sss of getSubTypesofCrystal(ss.id)">
+                            <a routerLink="/crystals/{{sss.crystal}}">{{sss.crystal}}</a>
 
-                        <span *ngIf="userCrystals[sss.id]">({{userCrystals[sss.id]}})</span>
+                            <span *ngIf="userCrystals[sss.id]" class="userCrystalCount">({{userCrystals[sss.id]}})</span>
 
-                        <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(sss.id, 1)">Add to collection</button>
-                        <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(sss.id, 2)">Add to wish list</button>
+                            <span class="collectionButtons">
+                                <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 1)">Add to collection</button>
+                                <button *ngIf="isLoggedIn" mat-raised-button color="accent" (click)="addToCollection(c.id, 2)">Add to wish list</button>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

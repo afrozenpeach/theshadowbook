@@ -67,4 +67,12 @@ export class CrystalsComponent {
   toggleGrouped() {
     this.grouped = !this.grouped;
   }
+
+  getCrystals() {
+    if (this.grouped) {
+      return this.crystals.filter((c: { parentCrystal: null; }) => c.parentCrystal === null);
+    } else {
+      return this.crystals;
+    }
+  }
 }
