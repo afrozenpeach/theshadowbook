@@ -28,6 +28,9 @@ export class ProfileComponent {
   grouped: boolean = true;
   loading: boolean = true;
 
+  crystalToggle: boolean = true;
+  deckToggle: boolean = true;
+
  constructor(
   private backendService: BackendService,
   private route: ActivatedRoute,
@@ -277,5 +280,15 @@ export class ProfileComponent {
        this.userCrystalsOfType[uc.crystal].crystals.push(uc);
      }
    }
+ }
+
+ toggleCrystals() {
+   this.crystalToggle = !this.crystalToggle;
+   return this.crystalToggle;
+ }
+
+ toggleDecks() {
+   this.deckToggle = !this.deckToggle;
+   return this.deckToggle;
  }
 }
