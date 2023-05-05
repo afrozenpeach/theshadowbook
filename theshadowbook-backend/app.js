@@ -1332,11 +1332,13 @@ app.get('/api/decks/:name', async (req, res) => {
       }
     };
 
-    if (parseInt(req.params.name)) {
+    if (Number(req.params.name)) {
       queryString = {
           id: req.params.name
       };
     }
+
+    console.log(queryString);
 
     let deck = await models.Deck.findOne({
       where: queryString,
